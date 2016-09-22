@@ -36,11 +36,11 @@ This job supports the following job data map parameters:
 
 `sshPassword`: an SSH password to authenticate the user with if the password-based authentication should be used.
 
-`sshPrivKeyFile`: – filepath of the SSH private key file to authenticate the user with if the key-based authentication should be used.
+`sshPrivKeyFile`: filepath of the SSH private key file to authenticate the user with if the key-based authentication should be used.
 
-`command`: – a shell command or script to execute on the remote host.
+`command`: a shell command or script to execute on the remote host.
 
-`commandArgs`: – an optional, space-separated list of arguments to pass to the command / script. If you need to pass an argument containing spaces, enclose the argument value in double or single quotes.
+`commandArgs`: an optional, space-separated list of arguments to pass to the command / script. If you need to pass an argument containing spaces, enclose the argument value in double or single quotes.
 
 If both `sshPassword` and `sshPrivKeyFile` are specified, then the key-based authentication takes precedence.
 
