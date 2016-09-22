@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+  <import resource="classpath:META-INF/spring/applicationContext-dao.xml"/>
+
+
+  <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="ignoreResourceNotFound" value="true"/>
+    <property name="locations">
+      <list>
+        <value>classpath:default-quartzdesk-executor.properties</value>
+        <value>file:${quartzdesk-executor.work.dir}/quartzdesk-executor.properties</value>
+      </list>
+    </property>
+  </bean>
+
+
+  <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"
+        p:order="1"
+        p:ignoreUnresolvablePlaceholders="true"
+        p:properties-ref="properties"/>
+
+  <!--
+    Executor used by the CommandExecutorJob to read the standard and error output of the
+    spawned command processes.
+  -->
+  <bean id="processOutputExecutor"
+        class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean"
+        p:corePoolSize="${processOutputExecutor.coreSize}"
+        p:maxPoolSize="${processOutputExecutor.maxSize}"
+        p:queueCapacity="${processOutputExecutor.queueCapacity}"
+        p:threadGroupName="${processOutputExecutor.threadGroupName}"
+        p:threadNamePrefix="${processOutputExecutor.threadNamePrefix}"
+        p:waitForTasksToCompleteOnShutdown="${processOutputExecutor.waitForTasksToCompleteOnShutdown}"/>
+
+  <!--
+    Quartz scheduler.
+  -->
+  <bean id="scheduler"
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+
+    <property name="schedulerName" value="QuartzDeskExecutor"/>
+
+    <property name="autoStartup" value="true"/>
+
+    <property name="waitForJobsToCompleteOnShutdown" value="true"/>
+
+    <property name="dataSource" ref="dataSource"/>
+
+    <property name="overwriteExistingJobs" value="true"/>
+
+    <property name="quartzProperties">
+      <props>
+        <prop key="org.quartz.scheduler.instanceId">${scheduler.org.quartz.scheduler.instanceId}</prop>
+        <prop key="org.quartz.scheduler.instanceIdGenerator.class">${scheduler.org.quartz.scheduler.instanceIdGenerator.class}</prop>
+        <prop key="org.quartz.jobStore.driverDelegateClass">${scheduler.org.quartz.jobStore.driverDelegateClass}</prop>
+
+        <prop key="org.quartz.jobStore.tablePrefix">${scheduler.org.quartz.jobStore.tablePrefix}</prop>
+        <prop key="org.quartz.jobStore.isClustered">${scheduler.org.quartz.jobStore.isClustered}</prop>
+        <prop key="org.quartz.jobStore.selectWithLockSQL">${scheduler.org.quartz.jobStore.selectWithLockSQL}</prop>
+        <prop key="org.quartz.jobStore.lockHandler.class">${scheduler.org.quartz.jobStore.lockHandler.class}</prop>
+
+        <!--
+          The "use properties" flag instructs JDBCJobStore that all values in JobDataMaps will be Strings,
+          and therefore can be stored as name-value pairs, rather than storing more complex objects in their
+          serialized form in the BLOB column. This is can be handy, as you avoid the class versioning issues
+          that can arise from serializing your non-String classes into a BLOB.
+        -->
+        <prop key="org.quartz.jobStore.useProperties">true</prop>
+
+        <!--
+          The the number of milliseconds the scheduler will 'tolerate' a trigger to pass its next-fire-time by,
+          before being considered "misfired". The default value (if you don't make an entry of this property in
+          your configuration) is 60000 (60 seconds).
+        -->
+        <prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
+
+        <!--
+          Configures Quartz to expose the scheduler through an MBean in the JMX MBeanServer.
+        -->
+        <prop key="org.quartz.scheduler.jmx.export">true</prop>
+
+        <!--
+          The scheduler thread will be marked as a daemon thread.
+        -->
+        <prop key="org.quartz.scheduler.makeSchedulerThreadDaemon">true</prop>
+        <!--
+          The scheduler thread pool threads will be marked as daemon threads.
+        -->
+        <prop key="org.quartz.threadPool.makeThreadsDaemons">true</prop>
+      </props>
+    </property>
+
+    <property name="jobFactory">
+      <bean class="org.springframework.scheduling.quartz.SpringBeanJobFactory"/>
+    </property>
+
+    <!--
+      Name of the property in the scheduler context the Spring application context
+      will be exposed through.
+    -->
+    <property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+  </bean>
+
+
+  <!--
+   The build properties of the quartzdesk-core module created by the Maven maven-buildmetadata-plugin plugin.
+  -->
+  <bean id="buildProperties"
+        class="com.quartzdesk.executor.common.spring.metadata.BuildPropertiesFactoryBean"
+        p:moduleName="quartzdesk-executor-core"/>
+
+  <!--
+    Version of the deployed product extracted from the build properties.
+  -->
+  <bean id="productVersion"
+        class="com.quartzdesk.executor.core.metadata.ProductVersionFactoryBean"
+        p:buildProperties-ref="buildProperties"/>
+
+</beans>

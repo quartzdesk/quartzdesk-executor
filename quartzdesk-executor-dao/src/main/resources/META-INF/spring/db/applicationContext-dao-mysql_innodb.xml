@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       profile="mysql_innodb">
+
+  <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+    <property name="ignoreUnresolvablePlaceholders" value="false"/>
+    <property name="ignoreResourceNotFound" value="false"/>
+    <property name="locations">
+      <list>
+        <value>classpath:META-INF/spring/db/dao-mysql_innodb.properties</value>
+      </list>
+    </property>
+  </bean>
+
+
+  <!--
+    Initializes an empty, or upgrades non-empty DB schema by applying the specified
+    DB init/upgrade scripts.
+  -->
+  <bean id="databaseSchemaManager"
+        class="com.quartzdesk.executor.dao.schema.DatabaseSchemaManager"
+        p:transactionManager-ref="transactionManager"
+        p:databaseSchemaDao-ref="databaseSchemaDao"
+        p:productVersion-ref="productVersion"
+        p:initScriptsRoot="/META-INF/db/quartzdesk-executor/init/mysql_innodb"
+        p:upgradeScriptsRoot="/META-INF/db/quartzdesk-executor/upgrade/mysql_innodb"/>
+
+</beans>

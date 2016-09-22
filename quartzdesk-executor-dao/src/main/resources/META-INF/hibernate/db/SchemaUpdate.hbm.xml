@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="com.quartzdesk.executor.domain.model.db.SchemaUpdate"
+         table="qd_schema_update">
+
+    <id name="id" type="QD_LONG">
+      <column name="schema_update_id"/>
+      <generator class="native">
+        <!--
+          Fall-back sequence name for DBs that do not support identity columns (Oracle,...).
+        -->
+        <param name="sequence">seq_qd_schema_update</param>
+      </generator>
+    </id>
+
+    <property name="major" type="QD_INTEGER">
+      <column name="major" not-null="true"/>
+    </property>
+
+    <property name="minor" type="QD_INTEGER">
+      <column name="minor" not-null="true"/>
+    </property>
+
+    <property name="maintenance" type="QD_INTEGER">
+      <column name="maintenance" not-null="true"/>
+    </property>
+
+    <property name="appliedAt" type="QD_TIMESTAMP_WITH_TZ">
+      <column name="applied_at" not-null="true"/>
+    </property>
+
+  </class>
+</hibernate-mapping>

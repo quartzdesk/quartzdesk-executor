@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>quartzdesk-executor-domain</artifactId>
+  <packaging>jar</packaging>
+
+  <description>
+    The quartzdesk-executor-domain project contains the QuartzDesk Executor domain model and related APIs.
+  </description>
+
+  <parent>
+    <groupId>com.quartzdesk-executor</groupId>
+    <artifactId>quartzdesk-executor-pom</artifactId>
+    <version>2.7.0-SNAPSHOT</version>
+  </parent>
+
+  <dependencies>
+
+    <!-- 3rd party dependencies -->
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!--
+      Required at compile time and runtime to support various JAXB2 plugin features.
+    -->
+    <dependency>
+      <groupId>org.jvnet.jaxb2_commons</groupId>
+      <artifactId>jaxb2-basics-runtime</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <groupId>de.smartics.maven.plugin</groupId>
+        <artifactId>maven-buildmetadata-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>provide-buildmetadata</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jvnet.jaxb2.maven2</groupId>
+        <artifactId>maven-jaxb2-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+
+            <configuration>
+              <args>
+                <!--
+                  Get methods for boolean values.
+                -->
+                <arg>-Xboolean-getter</arg>
+                <!--
+                  Fluent API support ("with" setters).
+                -->
+                <arg>-Xfluent-api</arg>
+                <!--
+                  Set methods for collection values.
+                -->
+                <arg>-Xcollection-setter-injector</arg>
+                <!--
+                  Support for deep-copying.
+                  See http://confluence.highsource.org/display/J2B/Copyable+plugin
+                -->
+                <arg>-Xcopyable</arg>
+                <!--
+                  Support for equals.
+                  See http://confluence.highsource.org/display/J2B/Equals+plugin
+                -->
+                <arg>-Xequals</arg>
+                <!--
+                  Support for hashCode.
+                  See http://confluence.highsource.org/display/J2B/HashCode+plugin
+                -->
+                <arg>-XhashCode</arg>
+                <!--
+                  Support for toString.
+                  See http://confluence.highsource.org/display/J2B/ToString+plugin
+                -->
+                <arg>-XtoString</arg>
+              </args>
+              <extension>true</extension>
+              <forceRegenerate>true</forceRegenerate>
+              <verbose>true</verbose>
+
+              <!--
+                Important, if omitted xjc complains about undefined types that
+                are imported.
+              -->
+              <strict>false</strict>
+
+              <bindings>
+                <binding>
+                  <fileset>
+                    <directory>${basedir}/src/main/resources/META-INF</directory>
+                    <includes>
+                      <include>xjc-bindings.xjb</include>
+                    </includes>
+                  </fileset>
+                </binding>
+              </bindings>
+
+              <schemas>
+                <schema>
+                  <fileset>
+                    <directory>${basedir}/src/main/resources/META-INF/xsd</directory>
+                    <includes>
+                      <include>model/**/*.xsd</include>
+                    </includes>
+                  </fileset>
+                </schema>
+              </schemas>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+
+  </build>
+</project>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<wls:weblogic-web-app xmlns:wls="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.0/weblogic-web-app.xsd">
+
+  <!--
+    Name of the QuartzDesk Executor web-application context root.
+  -->
+  <wls:context-root>quartzdesk-executor</wls:context-root>
+
+
+  <!--
+    Important setting instructing WebLogic to use the 'parent-last' class-loading strategy
+    for WEB-INF/lib libraries.
+  -->
+  <wls:container-descriptor>
+    <wls:prefer-web-inf-classes>true</wls:prefer-web-inf-classes>
+  </wls:container-descriptor>
+
+
+  <wls:session-descriptor>
+    <!--
+      Not strictly neccessary because the QuartzDesk Executor web-application does not make use of sessions.
+      So currently there is no need to replicate any session data.
+    -->
+    <wls:persistent-store-type>replicated_if_clustered</wls:persistent-store-type>
+  </wls:session-descriptor>
+
+
+  <!--
+    QuartzDeskExecutorDS data-source mapping.
+  -->
+  <wls:resource-description>
+    <wls:res-ref-name>QuartzDeskExecutorDS</wls:res-ref-name>
+    <wls:jndi-name>jdbc/QuartzDeskExecutorDS</wls:jndi-name>
+  </wls:resource-description>
+
+</wls:weblogic-web-app>

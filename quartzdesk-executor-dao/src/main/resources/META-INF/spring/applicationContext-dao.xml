@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+  <!--
+    Partial Spring application contexts for individual QuartzDesk Executor database profiles.
+    These contexts are activated by the SpringProfilesActivator.
+  -->
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-db2.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-h2.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-mssql.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-mysql.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-mysql_innodb.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-oracle8.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-oracle9.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-postgres81.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-postgres82.xml"/>
+
+
+  <!--
+     QuartzDeskExecutorDS data source.
+   -->
+  <jee:jndi-lookup id="dataSource"
+                   jndi-name="${ds.jndi.name}"
+                   cache="true"
+                   resource-ref="true"
+                   lookup-on-startup="true"
+                   proxy-interface="javax.sql.DataSource"/>
+
+  <!--
+    Auxiliary bean that sets the JavaAssist class loader used by Hibernate. For details
+    please refer to com.quartzdesk.executor.common.spring.hibernate.JavaAssistHelper javadoc.
+  -->
+  <bean id="javaAssistClassLoader"
+        class="com.quartzdesk.executor.common.spring.hibernate.JavaAssistHelper"
+        factory-method="createJavaAssistClassLoader"/>
+
+
+  <!-- Hibernate session factory -->
+  <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+        depends-on="javaAssistClassLoader">
+
+    <property name="dataSource" ref="dataSource"/>
+
+    <property name="mappingLocations">
+      <list>
+        <value>classpath:META-INF/hibernate/**/*.hbm.xml</value>
+      </list>
+    </property>
+
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">${hibernate.db.dialect}</prop>
+        <!--
+          Write all SQL statements to console. This is an alternative to setting the log
+          category org.hibernate.SQL to debug.
+        -->
+        <prop key="hibernate.show_sql">false</prop>
+        <!--
+          Pretty print the SQL in the log and console.
+        -->
+        <prop key="hibernate.format_sql">true</prop>
+        <!--
+          If enabled, Hibernate will collect statistics useful for performance tuning.
+        -->
+        <prop key="hibernate.generate_statistics">true</prop>
+        <!--
+          If turned on, Hibernate will generate comments inside the SQL, for easier debugging,
+          defaults to false.
+        -->
+        <prop key="hibernate.use_sql_comments">true</prop>
+
+        <!--
+          Size of the batch used by Hibernate.
+        -->
+        <prop key="hibernate.jdbc.batch_size">100</prop>
+      </props>
+    </property>
+  </bean>
+
+
+  <!--
+    Transaction manager.
+
+    globalRollbackOnParticipationFailure should be set to false (default is true) so that
+    the transaction gets rolled-back if and only if the up-most transactional method throws
+    a runtime exception.
+
+    defaultTimeout value overrides the default transaction timeout.
+  -->
+  <bean id="transactionManager"
+        class="org.springframework.orm.hibernate4.HibernateTransactionManager"
+        p:dataSource-ref="dataSource"
+        p:sessionFactory-ref="sessionFactory"
+        p:globalRollbackOnParticipationFailure="false"
+        p:defaultTimeout="300"/>
+
+  <!--
+    Universal DAO base class that allows for mixing both Hibernate and plain JDBC operations
+    in a single transaction managed by the Hibernate transaction manager above.
+  -->
+  <bean id="abstractDao"
+        class="com.quartzdesk.executor.dao.AbstractDao"
+        abstract="true"
+        p:dataSource-ref="dataSource"
+        p:sessionFactory-ref="sessionFactory"/>
+
+  <bean id="databaseSchemaDao"
+        class="com.quartzdesk.executor.dao.schema.DatabaseSchemaDao"
+        parent="abstractDao"/>
+
+</beans>

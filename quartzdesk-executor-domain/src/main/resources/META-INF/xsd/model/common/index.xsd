@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://domain.executor.quartzdesk.com/model/common"
+           targetNamespace="http://domain.executor.quartzdesk.com/model/common"
+           elementFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation>
+      Auxiliary index schema that can be included in other schemas using any
+      of the types below. This schema can also be associated with the types'
+      namespace in IDEs.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:include schemaLocation="Version.xsd"/>
+
+</xs:schema>

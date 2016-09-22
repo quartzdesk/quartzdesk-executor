@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+  <!-- ### Start of common types ### -->
+
+  <typedef name="QD_BOOLEAN"
+           class="org.hibernate.type.BooleanType"/>
+
+  <typedef name="QD_BLOB"
+           class="org.hibernate.type.BinaryType"/>
+
+  <typedef name="QD_CLOB"
+           class="org.hibernate.type.StringType"/>
+
+  <typedef name="QD_DATE"
+           class="org.hibernate.type.DateType"/>
+
+  <typedef name="QD_DOUBLE"
+           class="org.hibernate.type.DoubleType"/>
+
+  <typedef name="QD_INTEGER"
+           class="org.hibernate.type.IntegerType"/>
+
+  <typedef name="QD_LONG"
+           class="org.hibernate.type.LongType"/>
+
+  <typedef name="QD_SHORT"
+           class="org.hibernate.type.ShortType"/>
+
+  <typedef name="QD_STRING"
+           class="org.hibernate.type.StringType"/>
+
+  <typedef name="QD_TIMESTAMP_WITH_TZ"
+           class="org.hibernate.type.CalendarType"/>
+
+  <!-- ### End of common types ### -->
+</hibernate-mapping>

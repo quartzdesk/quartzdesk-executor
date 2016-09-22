@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <!--
+    Activates various annotations to be detected in bean classes:
+    Spring's @Required and @Autowired, as well as JSR 250 annotations
+    (e.g. @Resource, @PostConstruct, @PreDestroy etc.)
+  -->
+  <context:annotation-config/>
+
+  <!--
+    Auto-detects service MBeans and binds them to JMX using the bean ID.
+  -->
+  <context:mbean-export/>
+
+  <!--
+    Special bean that exposes the Spring application context throughout the entire application.
+  -->
+  <bean id="applicationContextProvider"
+        class="com.quartzdesk.executor.common.spring.ApplicationContextProvider"/>
+
+  <!--
+    Partial Spring contexts.
+  -->
+  <import resource="classpath:META-INF/spring/applicationContext-core.xml"/>
+
+</beans>

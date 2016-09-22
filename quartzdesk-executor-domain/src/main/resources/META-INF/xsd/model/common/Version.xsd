@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://domain.executor.quartzdesk.com/model/common"
+           targetNamespace="http://domain.executor.quartzdesk.com/model/common"
+           elementFormDefault="qualified">
+
+  <xs:complexType name="Version">
+    <xs:sequence>
+      <xs:element name="major" type="xs:int"/>
+      <xs:element name="minor" type="xs:int"/>
+      <xs:element name="maintenance" type="xs:int"/>
+      <xs:element name="qualifier" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

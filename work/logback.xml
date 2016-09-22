@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+  <!--
+    Registers the MBean for logback management in the JMX server under the given context name.
+  -->
+  <contextName>quartzdesk-executor</contextName>
+  <jmxConfigurator/>
+
+  <!--
+    Logback context property logback.config.dir is set by the LogbackInitContextListener
+    to point to the parent directory of the logback configuration file (logback.xml).
+  -->
+  <property name="logs.dir" value="${logback.config.dir:-.}/logs"/>
+
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${logs.dir}/quartzdesk-executor.log</file>
+    <append>true</append>
+
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>INFO</level>
+    </filter>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- daily rollover -->
+      <fileNamePattern>${logs.dir}/quartzdesk-executor.log.%d{yyyy-MM-dd}</fileNamePattern>
+      <!-- keep 10 days' worth of history -->
+      <maxHistory>10</maxHistory>
+    </rollingPolicy>
+
+    <encoder>
+      <charset>UTF-8</charset>
+      <pattern>[%date] %.-1level [%thread] [%mdc] [%logger:%line] - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+
+  <appender name="TRACE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${logs.dir}/quartzdesk-executor-trace.log</file>
+    <append>true</append>
+
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>TRACE</level>
+    </filter>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>${logs.dir}/quartzdesk-executor-trace.log.%i</fileNamePattern>
+      <minIndex>1</minIndex>
+      <maxIndex>5</maxIndex>
+    </rollingPolicy>
+
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>2MB</maxFileSize>
+    </triggeringPolicy>
+
+    <encoder>
+      <charset>UTF-8</charset>
+      <pattern>[%date] %.-1level [%thread] [%mdc] [%logger:%line] - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+
+  <appender name="QUARTZDESK_JVM_AGENT" class="com.quartzdesk.api.agent.log.logback.LogbackInterceptionAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>TRACE</level>
+    </filter>
+
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>[%date] %.-1level [%thread] [%logger:%line] - %msg%n</pattern>
+    </layout>
+  </appender>
+
+
+  <logger name="com.quartzdesk"
+          level="TRACE"/>
+
+  <!-- Stripes framework logging -->
+  <!--
+  <logger name="net.sourceforge.stripes"
+          level="TRACE"/>
+  -->
+
+  <!--
+    Start of Spring framework logging configuration
+  -->
+
+  <!--
+    Loading of Spring application contexts from XML resources.
+  -->
+  <logger name="org.springframework.beans.factory.xml"
+          level="INFO"/>
+
+  <!--
+    Loading of properties resources (eg. through the context:property-placeholder directive).
+  -->
+  <logger name="org.springframework.core.io.support.PropertiesLoaderSupport"
+          level="TRACE"/>
+
+  <!--
+    Spring web.
+  -->
+  <logger name="org.springframework.web"
+          level="INFO"/>
+
+  <!--
+    Spring WS.
+  -->
+  <logger name="org.springframework.ws"
+          level="TRACE"/>
+
+  <!--
+    Spring WS - logging of SOAP requests/responses.
+  -->
+  <logger name="org.springframework.ws.server.endpoint.AbstractLoggingInterceptor"
+          level="TRACE"/>
+
+  <!--
+     Hibernate
+   -->
+  <logger name="org.hibernate"
+          level="INFO"/>
+
+  <!--
+    Hibernate - logging of SQL queries.
+  -->
+  <logger name="org.hibernate.SQL"
+          level="DEBUG"/>
+
+  <!--
+    Hibernate - logging of JDBC bind parameters in SQL queries.
+  -->
+  <logger name="org.hibernate.type"
+          level="TRACE"/>
+
+  <!--
+    Hibernate - logging of extracted result set values.
+  -->
+  <logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
+          level="INFO"/>
+
+
+  <!--
+    All >= WARN messages from all libraries should be logged.
+  -->
+  <root level="WARN">
+    <appender-ref ref="FILE"/>
+    <appender-ref ref="TRACE_FILE"/>
+    <appender-ref ref="QUARTZDESK_JVM_AGENT"/>
+  </root>
+</configuration>

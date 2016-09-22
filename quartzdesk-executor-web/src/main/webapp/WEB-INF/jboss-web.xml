@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<!DOCTYPE jboss-web PUBLIC
+        "-//JBoss//DTD Web Application 5.0//EN"
+        "http://www.jboss.org/j2ee/dtd/jboss-web_5_0.dtd">
+
+<jboss-web>
+  <!--
+    For JBoss 6 it is absolutely necessary to use parent-last class-loading delegation model
+    because JBoss 6 has Quartz 1.8.3 API on the classpath and that causes clashes with the
+    Quartz API bundled inside the QuartzDesk Executor web-application.
+
+    For JBoss 7, the class-loading section must be commented out / removed to prevent the
+    following exception during application startup:
+
+    Caused by: javax.xml.stream.XMLStreamException: ParseError at [row,col]:[13,3]
+    Message: Unexpected element 'class-loading' encountered
+            at org.jboss.metadata.parser.util.MetaDataElementParser.unexpectedElement(MetaDataElementParser.java:108)
+            at org.jboss.metadata.parser.jbossweb.JBossWebMetaDataParser.parse(JBossWebMetaDataParser.java:211)
+            at org.jboss.as.web.deployment.JBossWebParsingDeploymentProcessor.deploy(JBossWebParsingDeploymentProcessor.java:69)
+
+    For details refer to https://docs.jboss.org/author/display/AS7/How+do+I+migrate+my+application+from+AS5+or+AS6+to+AS7#HowdoImigratemyapplicationfromAS5orAS6toAS7-ClassLoadingChanges.
+  -->
+  <!--
+  <class-loading java2ClassLoadingCompliance="false">
+    <loader-repository>
+       com.quartzdesk.executor:archive=quartzdesk-executor
+       <loader-repository-config>java2ParentDelegation=false</loader-repository-config>
+    </loader-repository>
+  </class-loading>
+  -->
+
+  <!--
+    Name of the QuartzDesk Executor web-application context root.
+  -->
+  <context-root>quartzdesk-executor</context-root>
+
+  <!--
+    JDBC data source resource reference mapping.
+    JAC: Profile - Connector - Datasources
+  -->
+  <resource-ref>
+    <res-ref-name>QuartzDeskExecutorDS</res-ref-name>
+    <!--<res-type>javax.sql.DataSource</res-type>-->
+    <jndi-name>java:/jdbc/QuartzDeskExecutorDS</jndi-name>
+  </resource-ref>
+
+</jboss-web>

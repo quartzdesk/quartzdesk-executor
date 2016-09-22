@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>quartzdesk-executor-web</artifactId>
+  <packaging>war</packaging>
+
+  <description>
+    The quartzdesk-executor-web project contains the QuartzDesk Executor web application.
+  </description>
+
+  <parent>
+    <groupId>com.quartzdesk-executor</groupId>
+    <artifactId>quartzdesk-executor-pom</artifactId>
+    <version>2.7.0-SNAPSHOT</version>
+  </parent>
+
+  <dependencies>
+
+    <!-- Project dependencies -->
+
+    <dependency>
+      <groupId>com.quartzdesk-executor</groupId>
+      <artifactId>quartzdesk-executor-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.quartzdesk-executor</groupId>
+      <artifactId>quartzdesk-executor-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.quartzdesk-executor</groupId>
+      <artifactId>quartzdesk-executor-domain</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+
+    <!-- QuartzDesk.com dependencies -->
+
+    <!--
+      Provided dependency so that we can debug the QuartzDesk JVM Agent.
+    -->
+    <dependency>
+      <groupId>com.quartzdesk</groupId>
+      <artifactId>quartzdesk-agent</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--
+      Library quartzdesk-api MUST be on the application runtime classpath in case
+      the application is started in a JVM with the QuartzDesk JVM Agent. This library
+      allows for relaying Quartz scheduler/job/trigger events and logging events
+      to the QuartzDesk JVM Agent.
+    -->
+    <dependency>
+      <groupId>com.quartzdesk</groupId>
+      <artifactId>quartzdesk-api</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+
+    <!--  3rd party dependencies -->
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <!-- Provided by the servlet engine runtime -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>de.smartics.maven.plugin</groupId>
+        <artifactId>maven-buildmetadata-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>provide-buildmetadata</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+</project>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<scanning xmlns="urn:jboss:scanning:1.0">
+  <!--
+    This file prevents JBoss from scanning the deployment for annotations.
+
+    If the scanning is enabled, the JBoss ClassLoaderManager issues the
+    following warnings in the log file:
+
+    16:09:42,982 WARN  [org.jboss.detailed.classloader.ClassLoaderManager]
+    Unexpected error during load of:org.springframework.scheduling.quartz.JobDetailBean:
+    java.lang.IncompatibleClassChangeError: class org.springframework.scheduling.quartz.JobDetailBean has interface org.quartz.JobDetail as super class
+  -->
+</scanning>

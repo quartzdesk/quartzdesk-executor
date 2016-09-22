@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+          extensionBindingPrefixes="xjc"
+          version="2.1">
+
+  <globalBindings>
+
+    <!--
+      All generated classes are serializable.
+    -->
+    <serializable uid="1"/>
+
+    <!--
+      All generated classes extend com.quartzdesk.executor.domain.model.DomainModel.
+    -->
+    <xjc:superClass name="com.quartzdesk.executor.domain.model.DomainModel"/>
+
+    <xjc:typeSubstitution type="complex"/>
+
+    <xjc:javaType name="java.lang.Integer"
+                  xmlType="xs:int"
+                  adapter="com.quartzdesk.executor.domain.jaxb.adapter.XsdInt2IntegerAdapter"/>
+
+		<xjc:javaType name="java.lang.Long"
+                  xmlType="xs:long"
+                  adapter="com.quartzdesk.executor.domain.jaxb.adapter.XsdLong2LongAdapter"/>
+
+    <!--
+      We must avoid using the primitive Java boolean type because for this type XJC generates
+      an 'is' getter which makes the field unavailable to various Java frameworks (BeanUtils,
+      Spring, JSTL etc).
+    -->
+    <xjc:javaType name="java.lang.Boolean"
+                  xmlType="xs:boolean"
+                  adapter="com.quartzdesk.executor.domain.jaxb.adapter.XsdBoolean2BooleanAdapter"/>
+
+    <!--
+      The following customizations for xs:dateTime, xs:date and xs:time types make
+      JAXB use java.util.Calendar to represent these types rather then the default
+      javax.xml.datatype.XMLGregorianCalendar.
+    -->
+    <xjc:javaType name="java.util.Calendar"
+                  xmlType="xs:dateTime"
+                  adapter="com.quartzdesk.executor.domain.jaxb.adapter.XsdDateTime2CalendarAdapter"/>
+
+    <xjc:javaType name="java.util.Calendar"
+                  xmlType="xs:date"
+                  adapter="com.quartzdesk.executor.domain.jaxb.adapter.XsdDate2CalendarAdapter"/>
+
+    <xjc:javaType name="java.util.Calendar"
+                  xmlType="xs:time"
+                  adapter="com.quartzdesk.service.api.jaxb.adapter.XsdTime2CalendarAdapter"/>
+
+  </globalBindings>
+
+</bindings>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://domain.executor.quartzdesk.com/model/db"
+           targetNamespace="http://domain.executor.quartzdesk.com/model/db"
+           elementFormDefault="qualified">
+
+  <xs:complexType name="SchemaUpdate">
+    <xs:annotation>
+      <xs:documentation>
+        DB schema update type.
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:sequence>
+      <xs:element name="id" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>
+            Schema update ID.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="major" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Major version number of the database schema.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="minor" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Minor version number of database schema.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="maintenance" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Maintenance version number of the database schema.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="appliedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>
+            Datetime when the schema update was performed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

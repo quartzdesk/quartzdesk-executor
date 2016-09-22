@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<Context>
+
+  <!--
+    Servlet context parameter pointing to the QuartzDeskExecutor working directory.
+  -->
+  <!-- <Parameter name="quartzdesk-executor.work.dir" value="/var/quartzdesk-executor/work"/> -->
+
+  <!--
+    Links the global JDBC resource registered under "jdbc/QuartzDeskExecutorDS" name and
+    application resource reference using the "QuartzDeskExecutorDS" name (declared in web.xml).
+  -->
+  <ResourceLink name="QuartzDeskExecutorDS" global="jdbc/QuartzDeskExecutorDS" type="javax.sql.DataSource" />
+
+</Context>

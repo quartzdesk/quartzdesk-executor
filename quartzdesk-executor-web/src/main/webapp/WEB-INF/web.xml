@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<web-app id="quartzdesk-shop-web"
+         version="2.5"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<display-name>QuartzDesk Executor</display-name>
+
+  <distributable/>
+
+  <!--
+    Must be the first listener so that Logback gets initialized before the other
+    parts of the application.
+  -->
+  <listener>
+    <description>
+      Checks if the specified Logback configuration file exists and if so, it
+      uses it to (re)initialize the Logback logging framework at application
+      startup. The specified logback location may refer to the servlet context
+      parameters and/or JVM properties using the ${system_property_name} syntax.
+    </description>
+    <display-name>Logback Init Listener</display-name>
+    <listener-class>com.quartzdesk.executor.common.web.listener.log.LogbackInitContextListener</listener-class>
+  </listener>
+
+  <context-param>
+    <param-name>logbackConfigLocation</param-name>
+    <param-value>${quartzdesk-executor.work.dir}/logback.xml</param-value>
+  </context-param>
+
+
+  <listener>
+    <description>
+      Logs the application environment info at application startup.
+    </description>
+    <display-name>Log Application Environment Info Listener</display-name>
+    <listener-class>com.quartzdesk.executor.web.listener.LogEnvironmentInfoContextListener</listener-class>
+  </listener>
+
+
+  <!-- START OF SPRING STUFF -->
+  <listener>
+    <description>
+      Spring context listener that loads up the application context configuration
+      specified in the contextConfigLocation context parameter.
+    </description>
+    <display-name>Spring Context Loader Listener</display-name>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <context-param>
+    <description>The bootstrap application context.</description>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/spring/applicationContext-web.xml</param-value>
+  </context-param>
+
+  <context-param>
+    <description>
+      Activates a Spring profile based on the configured database profile.
+    </description>
+    <param-name>contextInitializerClasses</param-name>
+    <param-value>com.quartzdesk.executor.web.spring.SpringProfilesActivator</param-value>
+  </context-param>
+  <!-- END OF SPRING STUFF -->
+
+
+  <welcome-file-list>
+   <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+
+  <!--
+    QuartzDesk Executor data source reference.
+  -->
+  <resource-ref id="resource-ref-data-source">
+    <res-ref-name>QuartzDeskExecutorDS</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
+
+</web-app>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<!--
+  Used by JBoss 7.x.
+-->
+
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.1">
+    <deployment>
+      <module-alias name="quartzdesk-executor"/>
+      <dependencies>
+        <system export="true">
+          <paths>
+
+            <!--
+              Required to prevent the following exception when opening a JMXMP connection:
+              java.lang.NoClassDefFoundError: com/sun/jmx/mbeanserver/GetPropertyAction
+                at javax.management.remote.generic.GenericConnector.<init>(GenericConnector.java:117) [jmxremote_optional-1.0.1_04.jar:]
+                at javax.management.remote.jmxmp.JMXMPConnector.<init>(JMXMPConnector.java:78) [jmxremote_optional-1.0.1_04.jar:]
+                at com.sun.jmx.remote.protocol.jmxmp.ClientProvider.newJMXConnector(ClientProvider.java:31) [jmxremote_optional-1.0.1_04.jar:]
+                at javax.management.remote.JMXConnectorFactory.getConnectorAsService(JMXConnectorFactory.java:427) [rt.jar:1.6.0_43]
+                at javax.management.remote.JMXConnectorFactory.newJMXConnector(JMXConnectorFactory.java:310) [rt.jar:1.6.0_43]
+                at javax.management.remote.JMXConnectorFactory.connect(JMXConnectorFactory.java:247) [rt.jar:1.6.0_43]
+                at com.quartzdesk.common.jmx.JmxConnection$3.run(JmxConnection.java:418) [quartzdesk-common-1.1.9.jar:1.1.9]
+                at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:439) [rt.jar:1.6.0_43]
+                at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303) [rt.jar:1.6.0_43]
+                at java.util.concurrent.FutureTask.run(FutureTask.java:138) [rt.jar:1.6.0_43]
+                at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895) [rt.jar:1.6.0_43]
+                at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918) [rt.jar:1.6.0_43]
+            -->
+            <path name="com/sun/jmx/mbeanserver" />
+          </paths>
+        </system>
+      </dependencies>
+
+
+      <!--
+        Exclude JBoss modules.
+
+        SLF4J must be excluded so that QuartzDesk Executor Web Application can use the SLF4J APIs
+        bundled in the application's WAR (in WEB-INF/lib).
+      -->
+      <exclusions>
+        <module name="org.slf4j" />
+        <module name="org.slf4j.impl" />
+      </exclusions>
+
+    </deployment>
+</jboss-deployment-structure>

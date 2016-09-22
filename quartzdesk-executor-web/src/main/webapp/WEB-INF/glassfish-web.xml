@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2015-2016 QuartzDesk.com.
+  ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  -->
+
+<!DOCTYPE glassfish-web-app PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN"
+    "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd">
+<glassfish-web-app>
+
+  <session-config>
+    <session-manager/>
+  </session-config>
+
+  <resource-ref>
+    <res-ref-name>QuartzDeskExecutorDS</res-ref-name>
+    <jndi-name>jdbc/QuartzDeskExecutorDS</jndi-name>
+  </resource-ref>
+
+  <!--
+    Parent-last: delegate=false
+    Parent-first: delegate=true
+  -->
+  <class-loader delegate="false"/>
+
+  <jsp-config/>
+
+</glassfish-web-app>
