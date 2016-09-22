@@ -84,9 +84,9 @@ This job supports the following job data map parameters:
 
 `jobHomeDir`: the Quartz job home directory that contains all classes and libraries required by the job. This directory must have the following structure:
 
-   `classes`: a directory containing classes and resources required by the Quartz job.
+&nbsp;&nbsp;&nbsp;&nbsp;`classes`: a directory containing classes and resources required by the Quartz job.
   
-   `lib`: a directory containing libraries (JAR files) required by the Quartz job. Do not add the Quartz library into this directory because this library is already provided by QE!
+&nbsp;&nbsp;&nbsp;&nbsp;`lib`: a directory containing libraries (JAR files) required by the Quartz job. Do not add the Quartz library into this directory because this library is already provided by QE!
 
 
 # Forking
