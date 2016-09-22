@@ -10,6 +10,8 @@ QuartzDesk Executor (QE) is a simple, yet powerful Quartz scheduler based web ap
 
 **In order to make use of all these features, it is required that you also install [QuartzDesk](https://www.quartzdesk.com).** QuartzDesk is an enterprise-class management and monitoring platform for Java Quartz schedulers embedded in all types of Java applications. 
 
+# ![QuartzDesk GUI](media/quartzdesk-gui.png)
+
 QE currently provides the following Quartz job implementation classes:
 
 ## com.quartzdesk.executor.core.job.LocalCommandExecutorJob
