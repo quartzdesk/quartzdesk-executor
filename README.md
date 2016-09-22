@@ -18,7 +18,9 @@ A Quartz job implementation class that can be used to execute local commands (e.
 This job supports the following job data map parameters:
 
 *command* – a shell command or script to execute on the local host.
+
 *commandWorkDir* – an optional work directory to pass to the executed command / script as the "current working directory".
+
 *commandArgs* – an optional, space-separated list of arguments to pass to the command / script. If you need to pass an argument containing spaces, enclose the argument value in double or single quotes.
 
 ## com.quartzdesk.executor.core.job.SshRemoteCommandExecutorJob
@@ -27,11 +29,17 @@ A Quartz job implementation class that can be used to execute commands (e.g. she
 This job supports the following job data map parameters:
 
 *sshHost* – a host name or IP of the remote host where the command or script should be executed.
+
 *sshPort* – an SSH port number of the SSHD service running on the remote host.
+
 *sshUser* – an SSH username to authenticate the user with.
+
 *sshPassword* - an SSH password to authenticate the user with if the password-based authentication should be used.
+
 *sshPrivKeyFile* – filepath of the SSH private key file to authenticate the user with if the key-based authentication should be used.
+
 *command* – a shell command or script to execute on the remote host.
+
 *commandArgs* – an optional, space-separated list of arguments to pass to the command / script. If you need to pass an argument containing spaces, enclose the argument value in double or single quotes.
 
 If both *sshPassword* and *sshPrivKeyFile* are specified, then the key-based authentication takes precedence.
@@ -43,7 +51,9 @@ A Quartz job implementation class that can be used to execute HTTP POST requests
 This job supports the following job data map parameters:
 
 *url* – the URL to send the HTTP POST requests to.
+
 *username* – an optional HTTP Basic authentication username.
+
 *password* – an optional HTTP Basic authentication password.
 
 
@@ -53,9 +63,13 @@ A Quartz job implementation class that can be used to execute arbitrary SQL quer
 This job supports the following job data map parameters:
 
 *jdbcDriver* – the fully-qualified class name of the JDBC driver to use. The driver must be on the QE application's classpath.
+
 *jdbcUsername* – a JDBC username.
+
 *jdbcPassword* – a JDBC password.
+
 *jdbcUrl* – a JDBC URL pointing to the target database.
+
 *sqlQuery* – the SQL query to execute.
 
 
@@ -65,8 +79,11 @@ A Quartz job implementation class that allows you to schedule externalized Quart
 This job supports the following job data map parameters:
 
 *jobClassName* - the fully qualified Quartz job implementation class name. The job class must extend the Quartz org.quartz.Job interface.
+
 *jobHomeDir* - the Quartz job home directory that contains all classes and libraries required by the job. This directory must have the following structure:
+
   **classes** - a directory containing classes and resources required by the Quartz job.
+  
   **lib** - a directory containing libraries (JAR files) required by the Quartz job. Do not add the Quartz library into this directory because this library is already provided by QE!
 
 
