@@ -5,7 +5,7 @@ QuartzDesk Executor (QE) is a simple, yet powerful Quartz scheduler based webapp
 * Job execution notifications.
 * Job chaining.
 * Visual execution statistics.
-* Interception of output (log) messages produced by executed jobs.
+* Interception of messages produced by executed jobs in the log and/or on stdout/sterr.
 * Etc. 
 
 **In order to make use of all these features, it is required that you also install [QuartzDesk](https://www.quartzdesk.com).** QuartzDesk is an enterprise-class management and monitoring platform for Java Quartz schedulers embedded in all types of Java applications. 
