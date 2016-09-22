@@ -56,5 +56,18 @@ jdbcUrl – a JDBC URL pointing to the target database.
 sqlQuery – the SQL query to execute.
 
 
+#
+# com.quartzdesk.executor.core.job.ExternalQuartzJobExecutorJob
+#
+A Quartz job implementation class that allows you to schedule externalized Quartz job implementation classes that reside outside of QE. Therefore you can easily update these externalized Quartz jobs without restarting and redeploying QE and you can even schedule execution of multiple versions of the same Quartz job implementation class.
+
+This job supports the following job data map parameters:
+
+jobClassName - the fully qualified Quartz job implementation class name. The job class must extend the Quartz org.quartz.Job interface.
+jobHomeDir - the Quartz job home directory that contains all classes and libraries required by the job. This directory must have the following structure:
+  classes - an optional directory containing classes and resources required by the Quartz job.
+  lib     - a directory containing libraries (JAR files) required by the Quartz job. Do not add the Quartz library into this directory because this library is already provided by QE!
+
+
 
 If you are going to fork QuartzDesk Executor, please change the root package name from com.quartzdesk to a different name so that it is clear your forked version is not the original QuartzDesk Executor version maintained by us. Thank you.
