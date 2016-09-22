@@ -1,4 +1,3 @@
-# quartzdesk-executor
 QuartzDesk Executor (QE) is a simple, yet very powerful Quartz scheduler based webapp that allows you to replace legacy scheduling systems, such as e.g. Unix/Linux cron, with a distributed scheduling system that offers many advantages such as a nice GUI, persistent execution history, job execution notifications, job chaining, visual statistics, etc. To make use of all these extra features, it is required that you install QuartzDesk (www.quartzdesk.com). QuartzDesk is a generic management and monitoring platform for Java Quartz schedulers embedded in all types of Java applications.
 
 Out of the box, QE provides the following Quartz job implementation classes that you can use to create and schedule various types of jobs:
@@ -10,9 +9,9 @@ A Quartz job implementation class that can be used to execute local commands (e.
 
 This job supports the following job data map parameters:
 
-command – a shell command or script to execute on the local host.
-commandWorkDir – an optional work directory to pass to the executed command / script as the "current working directory".
-commandArgs – an optional, space-separated list of arguments to pass to the command / script. If you need to pass an argument containing spaces, enclose the argument value in double or single quotes.
+command â€“ a shell command or script to execute on the local host.
+commandWorkDir â€“ an optional work directory to pass to the executed command / script as the "current working directory".
+commandArgs â€“ an optional, space-separated list of arguments to pass to the command / script. If you need to pass an argument containing spaces, enclose the argument value in double or single quotes.
 
 #
 # com.quartzdesk.executor.core.job.SshRemoteCommandExecutorJob
@@ -21,13 +20,13 @@ A Quartz job implementation class that can be used to execute commands (e.g. she
 
 This job supports the following job data map parameters:
 
-sshHost – a host name or IP of the remote host where the command or script should be executed.
-sshPort – an SSH port number of the SSHD service running on the remote host.
-sshUser – an SSH username to authenticate the user with.
+sshHost â€“ a host name or IP of the remote host where the command or script should be executed.
+sshPort â€“ an SSH port number of the SSHD service running on the remote host.
+sshUser â€“ an SSH username to authenticate the user with.
 sshPassword - an SSH password to authenticate the user with if the password-based authentication should be used.
-sshPrivKeyFile – filepath of the SSH private key file to authenticate the user with if the key-based authentication should be used.
-command – a shell command or script to execute on the remote host.
-commandArgs – an optional, space-separated list of arguments to pass to the command / script. If you need to pass an argument containing spaces, enclose the argument value in double or single quotes.
+sshPrivKeyFile â€“ filepath of the SSH private key file to authenticate the user with if the key-based authentication should be used.
+command â€“ a shell command or script to execute on the remote host.
+commandArgs â€“ an optional, space-separated list of arguments to pass to the command / script. If you need to pass an argument containing spaces, enclose the argument value in double or single quotes.
 
 If both sshPassword and sshPrivKeyFile are specified, then the key-based authentication takes precedence.
 
@@ -38,9 +37,9 @@ A Quartz job implementation class that can be used to execute HTTP POST requests
 
 This job supports the following job data map parameters:
 
-url – the URL to send the HTTP POST requests to.
-username – an optional HTTP Basic authentication username.
-password – an optional HTTP Basic authentication password.
+url â€“ the URL to send the HTTP POST requests to.
+username â€“ an optional HTTP Basic authentication username.
+password â€“ an optional HTTP Basic authentication password.
 
 #
 # com.quartzdesk.executor.core.job.SqlQueryExecutorJob
@@ -49,11 +48,11 @@ A Quartz job implementation class that can be used to execute arbitrary SQL quer
 
 This job supports the following job data map parameters:
 
-jdbcDriver – the fully-qualified class name of the JDBC driver to use. The driver must be on the QE application's classpath.
-jdbcUsername – a JDBC username.
-jdbcPassword – a JDBC password.
-jdbcUrl – a JDBC URL pointing to the target database.
-sqlQuery – the SQL query to execute.
+jdbcDriver â€“ the fully-qualified class name of the JDBC driver to use. The driver must be on the QE application's classpath.
+jdbcUsername â€“ a JDBC username.
+jdbcPassword â€“ a JDBC password.
+jdbcUrl â€“ a JDBC URL pointing to the target database.
+sqlQuery â€“ the SQL query to execute.
 
 
 #
