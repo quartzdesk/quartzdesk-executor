@@ -145,6 +145,6 @@ Thank you.
 If you want to contribute your changes and improvements, please contact us so that we can send you our contributing guidelines. Included are coding standards, and notes on development.
 
 
-# Copyright and license
+# Copyright and License
 
 Code and documentation copyright 2015-2016 the QuartzDesk Executor authors and QuartzDesk.com. Code and docs released under the MIT license.
