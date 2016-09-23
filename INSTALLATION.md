@@ -194,7 +194,7 @@ Otherwise add the JVM system properties used for the QuartzDesk Lite Edition.
 
 ## 6. Install QuartzDesk JVM Agent (optional, but strongly recommended)
 
-In order to use all of the advanced QuartzDesk platform features, such as access to the persistent job execution history access, job execution notifications, job chaining, execution statistics, etc., you need to install the QuartzDesk JVM Agent on the JVM running the QE application. Please refer to the [QuartzDesk JVM Agent Installation and Upgrade Guide](https://www.quartzdesk.com/documentation/installation-and-upgrade-guides) for details
+In order to use all of the advanced QuartzDesk platform features, such as access to the persistent job execution history, job execution notifications, job chaining, execution statistics, etc., you need to install the QuartzDesk JVM Agent on the JVM running the QE application. Please refer to the [QuartzDesk JVM Agent Installation and Upgrade Guide](https://www.quartzdesk.com/documentation/installation-and-upgrade-guides) for details
 
 
 ## 7. Deploy QE WAR 
