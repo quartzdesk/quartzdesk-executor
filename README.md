@@ -93,7 +93,7 @@ This job supports the following job data map parameters:
 
 # Installation
 
-**QE is a Spring-based web application that can be deployed to any Java servlet container or application server**. At this time we only provide installation instructions for Apache Tomcat. For details, please refer to [INSTALLATION.md](INSTALLATION.md). 
+**QE is a Spring-based web application that can be deployed to any Java servlet container or application server**. At this time we only provide installation instructions for Apache Tomcat. For details, please refer to [INSTALLATION-Tomcat.md](INSTALLATION-Tomcat.md). 
 
 
 # Forking
