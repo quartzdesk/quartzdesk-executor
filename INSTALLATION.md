@@ -2,14 +2,14 @@
 
 QuartzDesk Executor (QE) requires a database. The database contains Quartz JDBC job store tables as well as other objects required by QE itself. QE supports the following popular database management systems (DBMS):
  
- | DBMS                       | Minimum Version          |
- |:---------------------------|:-------------------------|
- | DB2                        | 10.1                     |
- | H2                         | 1.3.174                  |
- | Microsoft SQL Server       | 2008 R2 SP1              |
- | MySQL                      | 5.6.4                    |
- | Oracle                     | 10.2 (10g R2)            |
- | PostgreSQL                 | 9.1                      |
+| DBMS                       | Minimum Version          |
+|:---------------------------|:-------------------------|
+| DB2                        | 10.1                     |
+| H2                         | 1.3.174                  |
+| Microsoft SQL Server       | 2008 R2 SP1              |
+| MySQL                      | 5.6.4                    |
+| Oracle                     | 10.2 (10g R2)            |
+| PostgreSQL                 | 9.1                      |
 
 
 ## 1. Database
