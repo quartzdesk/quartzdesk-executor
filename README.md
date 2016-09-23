@@ -91,6 +91,11 @@ This job supports the following job data map parameters:
 &nbsp;&nbsp;&nbsp;&nbsp;`lib`: a directory containing libraries (JAR files) required by the Quartz job. Do not add the Quartz library into this directory because this library is already provided by QE!
 
 
+# Installation
+
+**QE is a Spring-based web application that can be deployed to any Java servlet container or application server**. At this time we only provide installation instructions for Apache Tomcat. For details, please refer to the [INSTALLATION.md](INSTALLATION.md) document. 
+
+
 # Forking
 
 We encourage you to fork, extend, repackage and distribute QE and all derivative work as you want. We only kindly ask you to follow these guidelines:
