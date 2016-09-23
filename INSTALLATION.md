@@ -21,7 +21,7 @@ Copy the JDBC driver of the used database to the Tomcat's shared lib directory (
 
 
 ## 3. Data Source
-Open `TOMCAT_HOME/conf/server.xml` and add a new data source definition in the `GlobalNamingResources` element.
+Open `TOMCAT_HOME/conf/server.xml` and add a new data source definition under the `GlobalNamingResources` element.
 
 #### DB2
 ```xml
