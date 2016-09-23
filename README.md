@@ -1,6 +1,7 @@
 QuartzDesk Executor (QE) is a simple, yet powerful Quartz scheduler based web application that allows you to replace legacy scheduling systems, such as Unix/Linux cron, with a robust, scalable and optionally distributed scheduling system that offers many advantages such as:
 
 * User-friendly and web-based GUI.
+* Viewing the list of all currently executing jobs.
 * Persistent execution history of individual jobs and triggers.
 * Job execution notifications (email, IM, SNMP Trap, external web-service, ...).
 * Job chaining capabilities allowing you to create complex workflows.
