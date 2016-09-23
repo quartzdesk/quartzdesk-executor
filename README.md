@@ -90,6 +90,17 @@ This job supports the following job data map parameters:
 &nbsp;&nbsp;&nbsp;&nbsp;`lib`: a directory containing libraries (JAR files) required by the Quartz job. Do not add the Quartz library into this directory because this library is already provided by QE!
 
 
+# Contributing
+
+If you want to contribute your fixes, changes and improvements, please contact us so that we can send you our contributing guidelines. Included are coding standards, and notes on development.
+
+
+
 # Forking
 
-If you are going to fork QE, please change the root package name from *com.quartzdesk* to a different name so that it is clear your forked version is not the original QuartzDesk Executor version that is maintained by us. Thank you.
+If you want to fork QE, please change the root package name of your forked version from *com.quartzdesk* to a different package name so that it is clear your forked version is not the original QuartzDesk Executor version that is maintained by us. Also, please do not refer to your forked version as QuartzDesk Executor or QE. Thank you.
+
+
+# Copyright and license
+
+Code and documentation copyright 2015-2016 the QuartzDesk Executor authors and QuartzDesk.com. Code and docs released under the MIT license.
