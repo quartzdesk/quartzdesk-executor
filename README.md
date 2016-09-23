@@ -1,4 +1,6 @@
-QuartzDesk Executor (QE) is a simple, yet powerful Quartz scheduler based web application that allows you to replace legacy scheduling systems, such as Unix/Linux cron, with a robust, scalable and optionally distributed scheduling system that offers many advantages such as:
+# Introduction
+
+QuartzDesk Executor (QE) is a simple, yet powerful Java Quartz scheduler based web application that allows you to replace legacy scheduling systems, such as Unix/Linux cron, with a robust, scalable and optionally distributed scheduling system that offers many advantages such as:
 
 * User-friendly and web-based GUI.
 * Viewing the list of all currently executing jobs.
@@ -12,9 +14,40 @@ QuartzDesk Executor (QE) is a simple, yet powerful Quartz scheduler based web ap
 
 **In order to make use of all these features, it is required that you also install [QuartzDesk](https://www.quartzdesk.com).** QuartzDesk is an enterprise-class management and monitoring platform for Java Quartz schedulers embedded in all types of Java applications. 
 
-# ![QuartzDesk GUI](media/quartzdesk-gui.png)
+![QuartzDesk GUI](media/quartzdesk-gui.png)
+
+
+# Requirements
+
+#### Java
+JDK 1.6 or newer.
+
+#### Application Container / Server
+Any modern Java servlet container or application server. QE is known to work on:
+
+* Apache Tomcat
+* IBM Websphere AS
+* Oracle GlassFish AS
+* Oracle WebLogic AS
+* RedHat JBoss AS
+* WildFly AS
+
+#### Database
+ 
+| DBMS                       | Minimum Version          |
+|:---------------------------|:-------------------------|
+| DB2                        | 10.1                     |
+| H2                         | 1.3.174                  |
+| Microsoft SQL Server       | 2008 R2 SP1              |
+| MySQL                      | 5.6.4                    |
+| Oracle                     | 10.2 (10g R2)            |
+| PostgreSQL                 | 9.1                      |
+
+
 
 # Available Quartz Job Implementation Classes
+
+QE provides the following Quartz job implementation classes that can be used to schedule various types of tasks.
 
 ## ![](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.LocalCommandExecutorJob
 A Quartz job implementation class that can be used to execute local commands (e.g. shell commands) and scripts located on the local host (i.e. the host QE has been deployed on).
