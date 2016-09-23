@@ -100,7 +100,7 @@ This job supports the following job data map parameters:
 
 We encourage you to fork, extend, repackage and distribute QE and all derivative work as you want. We only kindly ask you to follow these guidelines:
 
-* Please change the root package name of your forked version from `com.quartzdesk` to a different package name so that it is clear your forked version is not the original QE version that we maintain. 
+* Please change the root package name of your forked version from `com.quartzdesk` to a different package name so that it is clear your forked version is not the original QE version that is maintained by us. 
 * Please do not refer to your forked version as QuartzDesk Executor, nor as QE. 
 * Please consider including a link to our QuartzDesk Executor GitHub repository (https://github.com/quartzdesk/quartzdesk-executor) in your documentation. 
 
