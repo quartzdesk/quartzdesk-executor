@@ -188,7 +188,7 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dcom.sun.management.jmxremote.authenticate=fals
  
 If you are going to install the QuartzDesk JVM Agent (see the next installation step), you can make use of one of the available JMX connectors provided by the agent. These connectors can be enabled in the QuartzDesk JVM Agent configuration properties file. 
 
-Otherwise add the JVM system properties described above for the QuartzDesk Lite Edition.  
+Otherwise add the JVM system properties used for the QuartzDesk Lite Edition.  
 
 
 
