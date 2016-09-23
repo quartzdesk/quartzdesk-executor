@@ -102,7 +102,7 @@ We encourage you to fork, extend, repackage and distribute QE and all derivative
 
 * Please change the root package name of your forked version from *com.quartzdesk* to a different package name so that it is clear your forked version is not the original QE version that we maintain. 
 * Please do not refer to your forked version as QuartzDesk Executor, nor as QE. 
-* Please consider including a link to our QuartzDesk Executor GitHub repository in your documentation. 
+* Please consider including a link to our QuartzDesk Executor GitHub repository (https://github.com/quartzdesk/quartzdesk-executor) in your documentation. 
 
 Thank you.
 
