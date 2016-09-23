@@ -16,7 +16,7 @@ QuartzDesk Executor (QE) is a simple, yet powerful Quartz scheduler based web ap
 
 # Available Quartz Job Implementation Classes
 
-## ![Quartz Job Implementation Class](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.LocalCommandExecutorJob
+## ![](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.LocalCommandExecutorJob
 A Quartz job implementation class that can be used to execute local commands (e.g. shell commands) and scripts located on the local host (i.e. the host QE has been deployed on).
 
 This job supports the following job data map parameters:
@@ -27,7 +27,7 @@ This job supports the following job data map parameters:
 
 `commandArgs`: an optional, space-separated list of arguments to pass to the command / script. If you need to pass an argument containing spaces, enclose the argument value in double or single quotes.
 
-## ![Quartz Job Implementation Class](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.SshRemoteCommandExecutorJob
+## ![](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.SshRemoteCommandExecutorJob
 A Quartz job implementation class that can be used to execute commands (e.g. shell commands) and scripts located on a remote host over SSH. This job requires the remote host to run the SSHD service through which commands and scripts are executed.
 
 This job supports the following job data map parameters:
@@ -49,7 +49,7 @@ This job supports the following job data map parameters:
 If both `sshPassword` and `sshPrivKeyFile` are specified, then the key-based authentication takes precedence.
 
 
-## ![Quartz Job Implementation Class](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.UrlInvokerJob
+## ![](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.UrlInvokerJob
 A Quartz job implementation class that can be used to execute HTTP POST requests to the configured URL.
 
 This job supports the following job data map parameters:
@@ -61,7 +61,7 @@ This job supports the following job data map parameters:
 `password`: an optional HTTP Basic authentication password.
 
 
-## ![Quartz Job Implementation Class](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.SqlQueryExecutorJob
+## ![](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.SqlQueryExecutorJob
 A Quartz job implementation class that can be used to execute arbitrary SQL queries on a local or remote DB server through JDBC. If the executed query returns a result set, the data is exported into the CSV format and saved as the job's execution result that can be viewed in the QuartzDesk GUI, passed to chained jobs, or used in execution notification rules to fire notification messages.
 
 This job supports the following job data map parameters:
@@ -77,7 +77,7 @@ This job supports the following job data map parameters:
 `sqlQuery`: the SQL query to execute.
 
 
-## ![Quartz Job Implementation Class](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.ExternalQuartzJobExecutorJob
+## ![](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.ExternalQuartzJobExecutorJob
 A Quartz job implementation class that allows you to schedule externalized Quartz job implementation classes that reside outside of QE. Therefore you can easily update these externalized Quartz jobs without restarting and redeploying QE and you can even schedule execution of multiple versions of the same Quartz job implementation class.
 
 This job supports the following job data map parameters:
