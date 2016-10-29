@@ -31,18 +31,19 @@
 
 	<name>QuartzDesk Executor</name>
 
-	<description>A scalable and generic job scheduling application that can be used to schedule execution of native shell scripts (*.sh, *.bat, *.cmd, ...), executable files (*.exe, ...), SQL commands, HTTP POST requests etc. QuartzDesk Executor can be, for example, used as a replacement of traditional Unix/Linux Cron-based scheduling systems.</description>
+	<description>QuartzDesk Executor (QE) is a scalable and generic job scheduling application that can be used to schedule execution of native shell scripts (*.sh, *.bat, *.cmd, ...), executable files (*.exe, ...), SQL commands, HTTP POST requests etc. QE can be, for example, used as a replacement of traditional Unix/Linux Cron-based scheduling systems.</description>
 
   <inceptionYear>2015</inceptionYear>
 
   <organization>
     <name>QuartzDesk.com</name>
-    <url>http://www.quartzdesk.com</url>
+    <url>https://www.quartzdesk.com</url>
   </organization>
 
   <scm>
     <developerConnection>scm:svn:svn://scm.quartzdesk.com/quartzdesk/quartzdesk-executor/trunk</developerConnection>
     <connection>scm:svn:svn://scm.quartzdesk.com/quartzdesk/quartzdesk-executor/trunk</connection>
+    <url>https://github.com/quartzdesk/quartzdesk-executor</url>
   </scm>
 
   <modules>
