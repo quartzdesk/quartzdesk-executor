@@ -19,19 +19,18 @@
     -->
     <vendor.id>com.quartzdesk</vendor.id>
 
+    <com.quartzdesk.version>2.7.0</com.quartzdesk.version>
+
     <com.h2database.h2.version>1.3.170</com.h2database.h2.version>
-
-    <com.quartzdesk.version>2.7.0-SNAPSHOT</com.quartzdesk.version>
-
     <org.hibernate.version>4.3.11.Final</org.hibernate.version>
-
     <org.quartz-scheduler.quartz.version>2.2.3</org.quartz-scheduler.quartz.version>
-
     <org.slf4j.version>1.7.21</org.slf4j.version>
-
     <org.springframework.version>4.3.0.RELEASE</org.springframework.version>
-
   </properties>
+
+	<name>QuartzDesk Executor</name>
+
+	<description>A scalable and generic job scheduling application that can be used to schedule execution of native shell scripts (*.sh, *.bat, *.cmd, ...), executable files (*.exe, ...), SQL commands, HTTP POST requests etc. QuartzDesk Executor can be, for example, used as a replacement of traditional Unix/Linux Cron-based scheduling systems.</description>
 
   <inceptionYear>2015</inceptionYear>
 
@@ -650,7 +649,6 @@
           <tagBase>svn://scm.quartzdesk.com/quartzdesk/quartzdesk-executor/tags</tagBase>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <preparationGoals>-Dmaven.test.skip=true clean verify</preparationGoals>
-          <!-- <goals>deploy changes:announcement-generate changes:announcement-mail</goals> -->
           <goals>-Dmaven.test.skip=true install</goals>
         </configuration>
       </plugin>
