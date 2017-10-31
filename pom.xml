@@ -11,7 +11,7 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.1.0</version>
 
   <parent>
     <groupId>com.quartzdesk-parent-pom</groupId>
@@ -20,7 +20,7 @@
   </parent>
 
   <properties>
-    <com.quartzdesk.version>3.0.0</com.quartzdesk.version>
+    <com.quartzdesk.version>3.1.0</com.quartzdesk.version>
 
     <org.hibernate.version>4.3.11.Final</org.hibernate.version>
     <org.quartz-scheduler.quartz.version>2.3.0</org.quartz-scheduler.quartz.version>
