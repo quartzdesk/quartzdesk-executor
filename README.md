@@ -20,7 +20,7 @@ QuartzDesk Executor (QE) is a simple, yet powerful Java Quartz scheduler based w
 # Requirements
 
 ### Java
-JDK 1.6 or newer.
+JDK 1.7 or newer.
 
 ### Application Container / Server
 Any modern Java servlet container or application server. QE is known to work on:
