@@ -147,4 +147,4 @@ If you want to contribute your changes and improvements, please contact us so th
 
 # Copyright and License
 
-Code and documentation copyright 2015-2016 the QuartzDesk Executor authors and QuartzDesk.com. Code and docs released under the MIT license.
+Code and documentation copyright 2015-2018 the QuartzDesk Executor authors and QuartzDesk.com. Code and docs released under the MIT license.
