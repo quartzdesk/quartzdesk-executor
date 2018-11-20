@@ -722,20 +722,17 @@ public final class DateTimeUtils
    * <li>seconds</li>
    * <li>milliseconds</li>
    * </ul>
-   * The passed calendar is not modified by this method.
    *
-   * @param calendar a calendar to trim.
+   * @param cal a calendar to trim.
    * @return the trimmed calendar.
    */
-  public static Calendar trimToDay( Calendar calendar )
+  public static Calendar trimToDay( Calendar cal )
   {
-    Calendar cloneCal = (Calendar) calendar.clone();
-    cloneCal.set( Calendar.HOUR_OF_DAY, 0 );
-    cloneCal.set( Calendar.MINUTE, 0 );
-    cloneCal.set( Calendar.SECOND, 0 );
-    cloneCal.set( Calendar.MILLISECOND, 0 );
-
-    return cloneCal;
+    cal.set( Calendar.HOUR_OF_DAY, 0 );
+    cal.set( Calendar.MINUTE, 0 );
+    cal.set( Calendar.SECOND, 0 );
+    cal.set( Calendar.MILLISECOND, 0 );
+    return cal;
   }
 
 
