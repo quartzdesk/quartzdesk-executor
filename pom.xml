@@ -485,12 +485,6 @@
 
 
         <plugin>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.5.3</version>
-        </plugin>
-
-
-        <plugin>
           <artifactId>maven-shade-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
@@ -639,19 +633,6 @@
       </plugins>
     </pluginManagement>
 
-    <plugins>
-
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <tagBase>svn://scm.quartzdesk.com/quartzdesk/quartzdesk-executor/tags</tagBase>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <preparationGoals>-Dmaven.test.skip=true clean verify</preparationGoals>
-          <goals>-Dmaven.test.skip=true install</goals>
-        </configuration>
-      </plugin>
-
-    </plugins>
   </build>
 
 </project>
