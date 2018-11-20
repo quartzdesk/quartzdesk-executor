@@ -11,7 +11,7 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>3.4.0</version>
+  <version>3.5.0-SNAPSHOT</version>
 
   <parent>
     <groupId>com.quartzdesk-parent-pom</groupId>
@@ -20,12 +20,15 @@
   </parent>
 
   <properties>
-    <com.quartzdesk.version>3.4.0</com.quartzdesk.version>
+    <com.quartzdesk.version>3.5.0</com.quartzdesk.version>
 
-    <org.hibernate.version>4.3.11.Final</org.hibernate.version>
+    <!--
+      The last version that supports Java 7.
+    -->
+    <org.hibernate.version>5.1.16.Final</org.hibernate.version>
     <org.quartz-scheduler.quartz.version>2.3.0</org.quartz-scheduler.quartz.version>
     <org.slf4j.version>1.7.25</org.slf4j.version>
-    <org.springframework.version>4.3.0.RELEASE</org.springframework.version>
+    <org.springframework.version>4.3.19.RELEASE</org.springframework.version>
   </properties>
 
 	<name>QuartzDesk Executor</name>
