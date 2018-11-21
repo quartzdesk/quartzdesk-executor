@@ -11,7 +11,7 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>3.5.0-SNAPSHOT</version>
+  <version>3.5.0</version>
 
   <parent>
     <groupId>com.quartzdesk-parent-pom</groupId>
