@@ -17,7 +17,7 @@
         <!--
           Fall-back sequence name for DBs that do not support identity columns (Oracle,...).
         -->
-        <param name="sequence">seq_qd_schema_update</param>
+        <param name="sequence_name">seq_qd_schema_update</param>
       </generator>
     </id>
 

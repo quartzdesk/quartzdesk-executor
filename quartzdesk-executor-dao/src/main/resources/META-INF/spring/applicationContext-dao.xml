@@ -49,7 +49,7 @@
 
   <!-- Hibernate session factory -->
   <bean id="sessionFactory"
-        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+        class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
         depends-on="javaAssistClassLoader">
 
     <property name="dataSource" ref="dataSource"/>
@@ -101,7 +101,7 @@
     defaultTimeout value overrides the default transaction timeout.
   -->
   <bean id="transactionManager"
-        class="org.springframework.orm.hibernate4.HibernateTransactionManager"
+        class="org.springframework.orm.hibernate5.HibernateTransactionManager"
         p:dataSource-ref="dataSource"
         p:sessionFactory-ref="sessionFactory"
         p:globalRollbackOnParticipationFailure="false"
