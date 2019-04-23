@@ -9,9 +9,11 @@ import com.quartzdesk.executor.common.text.StringUtils;
 import com.quartzdesk.executor.core.CommonConst;
 
 import org.quartz.DisallowConcurrentExecution;
+import org.quartz.InterruptableJob;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.UnableToInterruptJobException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -21,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -48,14 +52,74 @@ import java.util.regex.Pattern;
 @DisallowConcurrentExecution
 public class LocalCommandExecutorJob
     extends AbstractJob
+    implements InterruptableJob
 {
   private static final Logger log = LoggerFactory.getLogger( LocalCommandExecutorJob.class );
 
   private static final String JDM_KEY_COMMAND = "command";
+
   private static final String JDM_KEY_COMMAND_ARGS = "commandArgs";
+
   private static final String JDM_KEY_COMMAND_WORK_DIR = "commandWorkDir";
 
+  /**
+   * Maximum number of attempts to stop the started native process.
+   */
+  private static final int MAX_PROCESS_DESTROY_ATTEMPTS = 10;
+
   private static final String PROCESS_OUTPUT_EXECUTOR_BEAN_NAME = "processOutputExecutor";
+
+  private Process process;
+
+
+  @Override
+  public void interrupt()
+      throws UnableToInterruptJobException
+  {
+    if ( process != null )
+    {
+      log.info( "Interrupting native process: {}", process );
+
+      Long processPid = getProcessPid( process );
+
+      int attemptCount = 0;
+      while ( attemptCount < MAX_PROCESS_DESTROY_ATTEMPTS && isProcessAlive( process ) )
+      {
+        attemptCount++;
+
+        log.info( "Attempting to kill native process: {}. Attempt count: {}", process, attemptCount );
+        process.destroy();
+
+        try
+        {
+          Thread.sleep( 1000 );
+        }
+        catch ( InterruptedException e )
+        {
+          //
+        }
+      }
+
+      if ( isProcessAlive( process ) )
+      {
+        log.warn( "Failed to kill native process: {}", process );
+        if ( processPid == null )
+        {
+          throw new UnableToInterruptJobException(
+              "Cannot kill the started native process. Please kill the process in the operating system to stop this job." );
+        }
+        else
+        {
+          throw new UnableToInterruptJobException( "Cannot kill the started native process [pid=" + processPid +
+              "]. Please kill the process in the operating system to stop this job." );
+        }
+      }
+      else
+      {
+        log.info( "Successfully killed native process: {}", process );
+      }
+    }
+  }
 
 
   @Override
@@ -113,7 +177,7 @@ public class LocalCommandExecutorJob
 
       ExecutorService standardOutputExecutor = getProcessOutputExecutor( context );
 
-      Process process = processBuilder.start();
+      process = processBuilder.start();
 
       StandardOutputReaderCallable stdOutCallable = new StandardOutputReaderCallable( process.getInputStream() );
       Future<String> stdOutDataFuture = standardOutputExecutor.submit( stdOutCallable );
@@ -153,6 +217,71 @@ public class LocalCommandExecutorJob
     catch ( InterruptedException e )
     {
       throw new JobExecutionException( "Command process has been interrupted.", e );
+    }
+  }
+
+
+  /**
+   * Returns the {@link ExecutorService} instance to be used to read process standard and error
+   * output data.
+   *
+   * @param context the job execution context.
+   * @return the {@link ExecutorService} instance.
+   */
+  private ExecutorService getProcessOutputExecutor( JobExecutionContext context )
+  {
+    ApplicationContext appCtx = getApplicationContext( context );
+    return appCtx.getBean( PROCESS_OUTPUT_EXECUTOR_BEAN_NAME, ExecutorService.class );
+  }
+
+
+  /**
+   * Returns the PID of the specified process.
+   *
+   * @param process a process.
+   * @return the PID or null if not available.
+   */
+  private Long getProcessPid( Process process )
+  {
+    try
+    {
+      Method pidMethod = Process.class.getDeclaredMethod( "pid" );
+      return (Long) pidMethod.invoke( process );
+    }
+    catch ( NoSuchMethodException e )
+    {
+      // Process.pid method is available from Java 9
+      return null;
+    }
+    catch ( IllegalAccessException | InvocationTargetException e )
+    {
+      // pid method cannot be invoked for some reason
+      return null;
+    }
+    catch ( UnsupportedOperationException e )
+    {
+      // Process.pid method is available, but is not supported on this platform
+      return null;
+    }
+  }
+
+
+  /**
+   * Returns true if the specified process is alive (is still running), false otherwise.
+   *
+   * @param process a process.
+   * @return true if the specified process is alive (is still running), false otherwise.ø
+   */
+  private boolean isProcessAlive( Process process )
+  {
+    try
+    {
+      process.exitValue();  // throws exception if not finished
+      return false;
+    }
+    catch ( IllegalThreadStateException e )
+    {
+      return true;
     }
   }
 
@@ -200,20 +329,6 @@ public class LocalCommandExecutorJob
 
 
   /**
-   * Returns the {@link ExecutorService} instance to be used to read process standard and error
-   * output data.
-   *
-   * @param context the job execution context.
-   * @return the {@link ExecutorService} instance.
-   */
-  private ExecutorService getProcessOutputExecutor( JobExecutionContext context )
-  {
-    ApplicationContext appCtx = getApplicationContext( context );
-    return appCtx.getBean( PROCESS_OUTPUT_EXECUTOR_BEAN_NAME, ExecutorService.class );
-  }
-
-
-  /**
    * Runnable wrapper around the specified standard output stream that reads data
    * written to the output stream and writes them to the log using the INFO priority.
    */
@@ -222,10 +337,12 @@ public class LocalCommandExecutorJob
   {
     private BufferedReader reader;
 
+
     private StandardOutputReaderCallable( InputStream ins )
     {
       reader = new BufferedReader( new InputStreamReader( ins ) );
     }
+
 
     @Override
     public String call()

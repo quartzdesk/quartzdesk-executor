@@ -8,7 +8,6 @@ package com.quartzdesk.executor.core.job;
 import com.quartzdesk.executor.core.CommonConst;
 import com.quartzdesk.executor.core.CommonUtils;
 
-import org.quartz.InterruptableJob;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -38,6 +37,7 @@ public abstract class AbstractJob
    * property of the {@link SchedulerFactoryBean}.
    */
   private static final String SCHEDULER_CONTEXT_APPLICATION_CONTEXT_KEY = "applicationContext";
+
 
   /**
    * The method invoked by the Quartz scheduler.
@@ -108,6 +108,17 @@ public abstract class AbstractJob
     }
   }
 
+
+  /**
+   * Method that must be implemented by all jobs.
+   *
+   * @param context a {@link JobExecutionContext} instance.
+   * @throws JobExecutionException if an error occurs.
+   */
+  protected abstract void executeJob( JobExecutionContext context )
+      throws JobExecutionException;
+
+
   /**
    * Returns the {@link ApplicationContext} instance extracted from the scheduler context, or
    * null if not found.
@@ -129,30 +140,4 @@ public abstract class AbstractJob
       return null;
     }
   }
-
-
-  /**
-   * Returns true if this job should be interrupted, false otherwise. Interruptible
-   * jobs (implementing the {@link InterruptableJob} Quartz interface) should override
-   * this method.
-   * <p>
-   * This method in this base class always returns false.
-   * </p>
-   *
-   * @return true if this job should be interrupted, false otherwise.
-   */
-  protected boolean shouldBeInterrupted()
-  {
-    return false;
-  }
-
-
-  /**
-   * Method that must be implemented by all jobs.
-   *
-   * @param context a {@link JobExecutionContext} instance.
-   * @throws JobExecutionException if an error occurs.
-   */
-  protected abstract void executeJob( JobExecutionContext context )
-      throws JobExecutionException;
 }
