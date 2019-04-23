@@ -76,10 +76,15 @@ public class LocalCommandExecutorJob
   public void interrupt()
       throws UnableToInterruptJobException
   {
-    if ( process != null )
-    {
-      log.info( "Interrupting native process: {}", process );
+    log.info( "Received interrupt request to stop this job." );
 
+    if ( process == null )
+    {
+      log.warn( "The native process has not been started yet." );
+      throw new UnableToInterruptJobException( "Cannot kill the native process because it has not been started." );
+    }
+    else
+    {
       Long processPid = getProcessPid( process );
 
       int attemptCount = 0;
@@ -87,7 +92,7 @@ public class LocalCommandExecutorJob
       {
         attemptCount++;
 
-        log.info( "Attempting to kill native process: {}. Attempt count: {}", process, attemptCount );
+        log.info( "Attempting to kill the started native process: {}. Attempt count: {}", process, attemptCount );
         process.destroy();
 
         try
@@ -102,7 +107,7 @@ public class LocalCommandExecutorJob
 
       if ( isProcessAlive( process ) )
       {
-        log.warn( "Failed to kill native process: {}", process );
+        log.warn( "Failed to kill the started native process: {}", process );
         if ( processPid == null )
         {
           throw new UnableToInterruptJobException(
@@ -116,7 +121,7 @@ public class LocalCommandExecutorJob
       }
       else
       {
-        log.info( "Successfully killed native process: {}", process );
+        log.info( "Successfully killed the started native process: {}", process );
       }
     }
   }
