@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  ~ Copyright (c) 2015-2017 QuartzDesk.com.
+  ~ Copyright (c) 2015-2019 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
@@ -17,7 +17,19 @@
     <com.quartzdesk.version>4.0.0-SNAPSHOT</com.quartzdesk.version>
 
     <!--
-      The last version that supports Java 7.
+      Implementation-Vendor-Id used in manifests.
+    -->
+    <vendor.id>com.quartzdesk</vendor.id>
+
+    <!--
+      To prevent "[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources,
+      i.e. build is platform dependent!" messages in the build log and also to make the changes
+      plugin send release announcements in UTF-8.
+    -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!--
+      The last Hibernate version that supports Java 7.
     -->
     <org.hibernate.version>5.1.16.Final</org.hibernate.version>
     <org.quartz-scheduler.quartz.version>2.3.0</org.quartz-scheduler.quartz.version>
@@ -25,9 +37,9 @@
     <org.springframework.version>4.3.19.RELEASE</org.springframework.version>
   </properties>
 
-	<name>QuartzDesk Executor</name>
+  <name>QuartzDesk Executor</name>
 
-	<description>QuartzDesk Executor (QE) is a scalable and generic job scheduling application that can be used to schedule execution of native shell scripts (*.sh, *.bat, *.cmd, ...), executable files (*.exe, ...), SQL commands, HTTP POST requests etc. QE can be, for example, used as a replacement of traditional Unix/Linux Cron-based scheduling systems.</description>
+  <description>QuartzDesk Executor (QE) is a scalable and generic job scheduling application that can be used to schedule execution of native shell scripts (*.sh, *.bat, *.cmd, ...), executable files (*.exe, ...), SQL commands, HTTP POST requests etc. QE can be, for example, used as a replacement of traditional Unix/Linux Cron-based scheduling systems.</description>
 
   <inceptionYear>2015</inceptionYear>
 
@@ -35,6 +47,13 @@
     <name>QuartzDesk.com</name>
     <url>https://www.quartzdesk.com</url>
   </organization>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://github.com/quartzdesk/quartzdesk-executor/blob/master/LICENSE</url>
+    </license>
+  </licenses>
 
   <scm>
     <developerConnection>scm:svn:svn://scm.quartzdesk.com/quartzdesk/quartzdesk-executor/trunk</developerConnection>
@@ -125,9 +144,9 @@
       </dependency>
 
       <dependency>
-      	<groupId>commons-dbcp</groupId>
-      	<artifactId>commons-dbcp</artifactId>
-      	<version>1.4</version>
+        <groupId>commons-dbcp</groupId>
+        <artifactId>commons-dbcp</artifactId>
+        <version>1.4</version>
       </dependency>
 
       <dependency>
@@ -137,9 +156,9 @@
       </dependency>
 
       <dependency>
-      	<groupId>org.apache.httpcomponents</groupId>
-      	<artifactId>httpclient</artifactId>
-      	<version>4.4.1</version>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.4.1</version>
       </dependency>
 
       <dependency>
@@ -149,9 +168,9 @@
       </dependency>
 
       <dependency>
-      	<groupId>javax.mail</groupId>
-      	<artifactId>mail</artifactId>
-      	<version>1.4.5</version>
+        <groupId>javax.mail</groupId>
+        <artifactId>mail</artifactId>
+        <version>1.4.5</version>
       </dependency>
 
       <dependency>
@@ -197,9 +216,9 @@
       </dependency>
 
       <dependency>
-      	<groupId>org.jvnet.jaxb2_commons</groupId>
-      	<artifactId>jaxb2-basics-runtime</artifactId>
-      	<version>0.6.4</version>
+        <groupId>org.jvnet.jaxb2_commons</groupId>
+        <artifactId>jaxb2-basics-runtime</artifactId>
+        <version>0.6.4</version>
       </dependency>
 
       <dependency>
@@ -574,9 +593,9 @@
               setters are expected by various frameworks most notably the Dozer framework.
             -->
             <dependency>
-            	<groupId>net.java.dev.vcc.thirdparty</groupId>
-            	<artifactId>collection-setter-injector</artifactId>
-            	<version>0.5.0-1</version>
+              <groupId>net.java.dev.vcc.thirdparty</groupId>
+              <artifactId>collection-setter-injector</artifactId>
+              <version>0.5.0-1</version>
             </dependency>
           </dependencies>
         </plugin>
