@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 
 <!--
-  ~ Copyright (c) 2015-2019 QuartzDesk.com.
+  ~ Copyright (c) 2015-2020 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>quartzdesk-executor-domain</artifactId>
@@ -18,8 +19,12 @@
   <parent>
     <groupId>com.quartzdesk-executor</groupId>
     <artifactId>quartzdesk-executor-pom</artifactId>
-    <version>4.0.0-SNAPSHOT</version>
+    <version>4.0.0</version>
   </parent>
+
+  <properties>
+    <module.name>com.quartzdesk.executor.domain</module.name>
+  </properties>
 
   <dependencies>
 
@@ -31,6 +36,7 @@
       <scope>test</scope>
     </dependency>
 
+
     <!--
       Required at compile time and runtime to support various JAXB2 plugin features.
     -->
@@ -39,6 +45,7 @@
       <artifactId>jaxb2-basics-runtime</artifactId>
       <scope>compile</scope>
     </dependency>
+
 
     <dependency>
       <groupId>org.testng</groupId>
@@ -53,7 +60,7 @@
     <plugins>
 
       <plugin>
-        <groupId>com.redhat.rcm.maven.plugin</groupId>
+        <groupId>de.smartics.maven.plugin</groupId>
         <artifactId>buildmetadata-maven-plugin</artifactId>
         <executions>
           <execution>
@@ -85,10 +92,6 @@
                 -->
                 <arg>-Xfluent-api</arg>
                 <!--
-                  Set methods for collection values.
-                -->
-                <arg>-Xcollection-setter-injector</arg>
-                <!--
                   Support for deep-copying.
                   See http://confluence.highsource.org/display/J2B/Copyable+plugin
                 -->
@@ -98,19 +101,27 @@
                   See http://confluence.highsource.org/display/J2B/Equals+plugin
                 -->
                 <arg>-Xequals</arg>
+
                 <!--
                   Support for hashCode.
                   See http://confluence.highsource.org/display/J2B/HashCode+plugin
                 -->
-                <arg>-XhashCode</arg>
+                <!--<arg>-XhashCode</arg>-->
+
                 <!--
                   Support for toString.
                   See http://confluence.highsource.org/display/J2B/ToString+plugin
                 -->
                 <arg>-XtoString</arg>
+
+                <!--
+                  Support for collection setters.
+                  See https://github.com/highsource/jaxb2-basics/wiki/JAXB2-Setters-Plugin
+                -->
+                <arg>-Xsetters</arg>
+                <arg>-Xsetters-mode=direct</arg>
               </args>
               <extension>true</extension>
-              <forceRegenerate>true</forceRegenerate>
               <verbose>true</verbose>
 
               <!--

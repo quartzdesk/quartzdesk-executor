@@ -1,20 +1,23 @@
 <?xml version="1.0"?>
 
 <!--
-  ~ Copyright (c) 2015-2019 QuartzDesk.com.
+  ~ Copyright (c) 2015-2020 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>4.0.0-SNAPSHOT</version>
+  <version>4.0.0</version>
 
   <properties>
-    <com.quartzdesk.version>4.0.0-SNAPSHOT</com.quartzdesk.version>
+    <module.name>com.quartzdesk.executor</module.name>
+
+    <com.quartzdesk.version>4.0.0</com.quartzdesk.version>
 
     <!--
       Implementation-Vendor-Id used in manifests.
@@ -28,9 +31,9 @@
     -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <org.hibernate.version>5.4.5.Final</org.hibernate.version>
-    <org.quartz-scheduler.quartz.version>2.3.1</org.quartz-scheduler.quartz.version>
-    <org.slf4j.version>1.7.28</org.slf4j.version>
+    <org.hibernate.version>5.4.11.Final</org.hibernate.version>
+    <org.quartz-scheduler.quartz.version>2.3.2</org.quartz-scheduler.quartz.version>
+    <org.slf4j.version>1.7.29</org.slf4j.version>
     <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
   </properties>
 
@@ -81,6 +84,7 @@
         <version>${com.quartzdesk.version}</version>
       </dependency>
 
+
       <!--
         Library quartzdesk-api MUST be on the application runtime classpath in case
         the application is started in a JVM with the QuartzDesk JVM Agent. This library
@@ -99,26 +103,33 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.1.7</version>
+        <version>1.2.3</version>
       </dependency>
+
 
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
-        <version>1.1.7</version>
+        <version>1.2.3</version>
       </dependency>
 
+
+      <!--
+        Required by SshRemoteCommandExecutorJob to execute commands over SSH.
+      -->
       <dependency>
         <groupId>com.jcraft</groupId>
         <artifactId>jsch</artifactId>
         <version>0.1.53</version>
       </dependency>
 
+
       <dependency>
         <groupId>com.opencsv</groupId>
         <artifactId>opencsv</artifactId>
-        <version>3.7</version>
+        <version>3.10</version>
       </dependency>
+
 
       <dependency>
         <groupId>commons-beanutils</groupId>
@@ -134,11 +145,13 @@
         </exclusions>
       </dependency>
 
+
       <dependency>
         <groupId>commons-collections</groupId>
         <artifactId>commons-collections</artifactId>
         <version>3.2.1</version>
       </dependency>
+
 
       <dependency>
         <groupId>commons-dbcp</groupId>
@@ -146,23 +159,13 @@
         <version>1.4</version>
       </dependency>
 
+
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.1</version>
       </dependency>
 
-      <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.4.1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>${org.hibernate.version}</version>
-      </dependency>
 
       <dependency>
         <groupId>javax.mail</groupId>
@@ -170,17 +173,20 @@
         <version>1.4.5</version>
       </dependency>
 
+
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>
         <version>2.5</version>
       </dependency>
 
+
       <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>jstl</artifactId>
-        <version>1.2</version>
+        <groupId>javax.servlet.jsp.jstl</groupId>
+        <artifactId>javax.servlet.jsp.jstl-api</artifactId>
+        <version>${javax.servlet.jsp.jstl.version}</version>
       </dependency>
+
 
       <dependency>
         <groupId>javax.servlet.jsp</groupId>
@@ -188,11 +194,13 @@
         <version>2.1</version>
       </dependency>
 
+
       <dependency>
         <groupId>javaee</groupId>
         <artifactId>javaee-api</artifactId>
         <version>5</version>
       </dependency>
+
 
       <dependency>
         <groupId>log4j</groupId>
@@ -200,11 +208,45 @@
         <version>1.2.17</version>
       </dependency>
 
+
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.3</version>
+      </dependency>
+
+
       <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjtools</artifactId>
         <version>1.6.10</version>
       </dependency>
+
+
+      <dependency>
+        <groupId>org.glassfish.web</groupId>
+        <artifactId>javax.servlet.jsp.jstl</artifactId>
+        <version>${javax.servlet.jsp.jstl.version}</version>
+
+        <exclusions>
+          <!--
+            Excluded the transitive JSTL 1.2.0 API, because we use the JSTL 1.2.1 API.
+            See the javax.servlet.jsp.jstl#javax.servlet.jsp.jstl-api dependency above.
+          -->
+          <exclusion>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>jstl-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>${org.hibernate.version}</version>
+      </dependency>
+
 
       <dependency>
         <groupId>org.javassist</groupId>
@@ -212,11 +254,13 @@
         <version>3.17.1-GA</version>
       </dependency>
 
+
       <dependency>
         <groupId>org.jvnet.jaxb2_commons</groupId>
         <artifactId>jaxb2-basics-runtime</artifactId>
-        <version>0.6.4</version>
+        <version>1.11.1</version>
       </dependency>
+
 
       <dependency>
         <groupId>org.quartz-scheduler</groupId>
@@ -250,11 +294,13 @@
         <version>${org.slf4j.version}</version>
       </dependency>
 
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>log4j-over-slf4j</artifactId>
         <version>${org.slf4j.version}</version>
       </dependency>
+
 
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -262,17 +308,20 @@
         <version>${org.slf4j.version}</version>
       </dependency>
 
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>jul-to-slf4j</artifactId>
         <version>${org.slf4j.version}</version>
       </dependency>
 
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
         <version>${org.slf4j.version}</version>
       </dependency>
+
 
       <!--
         Core utilities used by other modules.
@@ -292,6 +341,7 @@
         </exclusions>
       </dependency>
 
+
       <!--
         Expression Language (depends on spring-core)
         Define this if you use Spring Expression APIs (org.springframework.expression.*)
@@ -304,6 +354,7 @@
       </dependency>
       -->
 
+
       <!--
         Bean Factory and JavaBeans utilities (depends on spring-core)
         Define this if you use Spring Bean APIs (org.springframework.beans.*)
@@ -313,6 +364,7 @@
         <artifactId>spring-beans</artifactId>
         <version>${org.springframework.version}</version>
       </dependency>
+
 
       <!--
         Aspect Oriented Programming (AOP) Framework (depends on spring-core, spring-beans)
@@ -324,6 +376,7 @@
         <version>${org.springframework.version}</version>
       </dependency>
 
+
       <!--
         Application Context (depends on spring-core, spring-expression, spring-aop, spring-beans)
         This is the central artifact for Spring's Dependency Injection Container and is generally always defined
@@ -333,6 +386,7 @@
         <artifactId>spring-context</artifactId>
         <version>${org.springframework.version}</version>
       </dependency>
+
 
       <!--
         Various Application Context utilities, including EhCache, JavaMail, Quartz, and Freemarker integration
@@ -344,6 +398,7 @@
         <version>${org.springframework.version}</version>
       </dependency>
 
+
       <!--
         JDBC Data Access Library (depends on core, beans, context, transaction)
         Define this if you use Spring's JdbcTemplate API (org.springframework.jdbc.*)
@@ -353,6 +408,7 @@
         <artifactId>spring-jdbc</artifactId>
         <version>${org.springframework.version}</version>
       </dependency>
+
 
       <!--
         Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA, and iBatis.
@@ -365,6 +421,7 @@
         <version>${org.springframework.version}</version>
       </dependency>
 
+
       <!--
         Object-to-XML Mapping (OXM) abstraction and integration with JAXB, JiBX, Castor, XStream, and XML Beans.
         (depends on spring-core, spring-beans, spring-context)
@@ -375,6 +432,7 @@
         <artifactId>spring-oxm</artifactId>
         <version>${org.springframework.version}</version>
       </dependency>
+
 
       <!--
         Transaction Management Abstraction (depends on spring-core, spring-beans, spring-aop, spring-context)
@@ -387,6 +445,7 @@
         <version>${org.springframework.version}</version>
       </dependency>
 
+
       <!--
         Web application development utilities applicable to both Servlet and Portlet Environments
         (depends on spring-core, spring-beans, spring-context)
@@ -398,6 +457,7 @@
         <version>${org.springframework.version}</version>
       </dependency>
 
+
       <!--
         Spring MVC for Servlet Environments (depends on spring-core, spring-beans, spring-context, spring-web)
         Define this if you use Spring MVC with a Servlet Container such as Apache Tomcat (org.springframework.web.servlet.*)
@@ -408,6 +468,7 @@
         <version>${org.springframework.version}</version>
       </dependency>
 
+
       <!--
         Support for testing Spring applications with tools such as JUnit and TestNG
         This artifact is generally always defined with a 'test' scope for the integration testing framework and unit testing stubs
@@ -417,6 +478,8 @@
         <artifactId>spring-test</artifactId>
         <version>${org.springframework.version}</version>
       </dependency>
+
+
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
@@ -433,15 +496,13 @@
 
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version>
+          <version>3.1</version>
           <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
+            <source>1.7</source>
+            <target>1.7</target>
             <!-- Include debugging information in generated bytecode. -->
             <debug>true</debug>
             <encoding>UTF-8</encoding>
-            <!-- Include metadata for reflection on method parameters in generated bytecode. -->
-            <parameters>true</parameters>
             <showDeprecation>true</showDeprecation>
             <showWarnings>true</showWarnings>
             <compilerArgs>
@@ -566,26 +627,15 @@
 
         <plugin>
           <groupId>org.jvnet.jaxb2.maven2</groupId>
-          <artifactId>maven-jaxb22-plugin</artifactId>
-          <version>0.13.3</version>
+           <artifactId>maven-jaxb2-plugin</artifactId>
+           <version>0.13.3</version>
 
           <dependencies>
-            <!--
-              Required to override the 0.9.0 jaxb2-basics-runtime version that is a transitive dependency of
-              maven-jaxbXX-plugin. 0.9.0 is lacking the org.jvnet.jaxb2_commons.lang.CopyTo2 class that is
-              required by the copyable and other plugins.
-            -->
-            <dependency>
-              <groupId>org.jvnet.jaxb2_commons</groupId>
-              <artifactId>jaxb2-basics-runtime</artifactId>
-              <version>0.12.0</version>
-            </dependency>
-
             <!--
               Required JAXB2 plugin to generate getters for boolean properties.
               JAXB2 implementation shipped with JDK1.6 that is used to compile the
               project generates only "is" getter and it makes the boolean property
-              invisible to various frameworks used in the projects (e.g. Jacson,
+              invisible to various frameworks used in the projects (e.g. Jackson,
               JSTL etc.).
             -->
             <dependency>
@@ -594,35 +644,41 @@
               <version>0.5</version>
             </dependency>
 
-            <!-- Support for -Xfluent-api -->
-            <dependency>
-              <groupId>net.java.dev.jaxb2-commons</groupId>
-              <artifactId>jaxb-fluent-api</artifactId>
-              <version>2.1.8</version>
-
-              <exclusions>
-                <exclusion>
-                  <groupId>com.sun.xml.bind</groupId>
-                  <artifactId>jaxb-xjc</artifactId>
-                </exclusion>
-              </exclusions>
-            </dependency>
-
-            <!-- Support for -Xcopyable xjc argument -->
+            <!-- Contains JAXB2 basics -Xfluent-api plugin -->
             <dependency>
               <groupId>org.jvnet.jaxb2_commons</groupId>
-              <artifactId>jaxb2-basics</artifactId>
-              <version>0.11.1</version>
+              <artifactId>jaxb2-fluent-api</artifactId>
+              <version>3.0</version>
             </dependency>
 
             <!--
-              Required JAXB2 plugin to generate setters for collections. Collection
-              setters are expected by various frameworks most notably the Dozer framework.
+              Contains various JAXB2 basics plugins. For example:
+                -Xsetters
+                -Xequals
+                -XhashCode
+                -Xmerge
+                -XtoString
+                -Xcopyable
+                ...
             -->
             <dependency>
-              <groupId>net.java.dev.vcc.thirdparty</groupId>
-              <artifactId>collection-setter-injector</artifactId>
-              <version>0.5.0-1</version>
+              <groupId>org.jvnet.jaxb2_commons</groupId>
+              <artifactId>jaxb2-basics</artifactId>
+              <version>1.11.1</version>
+            </dependency>
+
+            <!--
+              Required by *some* of the JAXB2 basics plugins. For example:
+                -Xequals
+                -XhashCode
+                -Xmerge
+                -XtoString
+                -Xcopyable
+            -->
+            <dependency>
+              <groupId>org.jvnet.jaxb2_commons</groupId>
+              <artifactId>jaxb2-basics-runtime</artifactId>
+              <version>1.11.1</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -647,7 +703,7 @@
                   <version>3.0.5</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>1.8</version>
+                  <version>1.7</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
