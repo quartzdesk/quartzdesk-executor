@@ -31,10 +31,10 @@
     -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <org.hibernate.version>5.4.9.Final</org.hibernate.version>
+    <org.hibernate.version>5.4.11.Final</org.hibernate.version>
     <org.quartz-scheduler.quartz.version>2.3.2</org.quartz-scheduler.quartz.version>
     <org.slf4j.version>1.7.29</org.slf4j.version>
-    <org.springframework.version>5.2.1.RELEASE</org.springframework.version>
+    <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
   </properties>
 
   <name>QuartzDesk Executor</name>
