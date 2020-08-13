@@ -149,7 +149,8 @@ public class SqlQueryExecutorJob
         csvWriter.writeAll( res, resultIncludeColumnNames, resultTrimWhiteSpace );
         csvWriter.close();
 
-        context.setResult( writer.getBuffer().toString() );
+        String resultTxt = writer.getBuffer().toString().trim();
+        context.setResult( resultTxt );
       }
       else
       {
