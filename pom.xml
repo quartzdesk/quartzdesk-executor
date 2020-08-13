@@ -134,7 +134,7 @@
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
-        <version>1.8.3</version>
+        <version>1.9.4</version>
 
         <exclusions>
           <!-- Commons-logging API provided by the SLF4j jcl-over-slf4j bridge -->
