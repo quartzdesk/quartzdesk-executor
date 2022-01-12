@@ -34,7 +34,7 @@
     <org.hibernate.version>5.4.18.Final</org.hibernate.version>
     <org.quartz-scheduler.quartz.version>2.3.2</org.quartz-scheduler.quartz.version>
     <org.slf4j.version>1.7.30</org.slf4j.version>
-    <org.springframework.version>5.2.7.RELEASE</org.springframework.version>
+    <org.springframework.version>5.3.14</org.springframework.version>
   </properties>
 
   <name>QuartzDesk Executor</name>
