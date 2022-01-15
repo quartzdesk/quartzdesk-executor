@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  ~ Copyright (c) 2015-2020 QuartzDesk.com.
+  ~ Copyright (c) 2015-2022 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.quartzdesk-executor</groupId>
     <artifactId>quartzdesk-executor-pom</artifactId>
-    <version>4.0.2</version>
+    <version>4.0.9</version>
   </parent>
 
   <properties>

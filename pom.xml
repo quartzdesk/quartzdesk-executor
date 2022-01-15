@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  ~ Copyright (c) 2015-2020 QuartzDesk.com.
+  ~ Copyright (c) 2015-2022 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
@@ -12,12 +12,12 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>4.0.2</version>
+  <version>4.0.9</version>
 
   <properties>
     <module.name>com.quartzdesk.executor</module.name>
 
-    <com.quartzdesk.version>4.0.2</com.quartzdesk.version>
+    <com.quartzdesk.version>4.0.9</com.quartzdesk.version>
 
     <!--
       Implementation-Vendor-Id used in manifests.
@@ -31,10 +31,10 @@
     -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <org.hibernate.version>5.4.18.Final</org.hibernate.version>
+    <org.hibernate.version>5.6.3.Final</org.hibernate.version>
     <org.quartz-scheduler.quartz.version>2.3.2</org.quartz-scheduler.quartz.version>
-    <org.slf4j.version>1.7.30</org.slf4j.version>
-    <org.springframework.version>5.2.7.RELEASE</org.springframework.version>
+    <org.slf4j.version>1.7.33</org.slf4j.version>
+    <org.springframework.version>5.3.15</org.springframework.version>
   </properties>
 
   <name>QuartzDesk Executor</name>
@@ -103,14 +103,14 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.2.3</version>
+        <version>1.2.10</version>
       </dependency>
 
 
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
-        <version>1.2.3</version>
+        <version>1.2.10</version>
       </dependency>
 
 
@@ -134,7 +134,7 @@
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
-        <version>1.8.3</version>
+        <version>1.9.4</version>
 
         <exclusions>
           <!-- Commons-logging API provided by the SLF4j jcl-over-slf4j bridge -->
@@ -149,7 +149,7 @@
       <dependency>
         <groupId>commons-collections</groupId>
         <artifactId>commons-collections</artifactId>
-        <version>3.2.1</version>
+        <version>3.2.2</version>
       </dependency>
 
 
@@ -163,7 +163,7 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.1</version>
+        <version>2.11.0</version>
       </dependency>
 
 
@@ -212,7 +212,7 @@
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
-        <version>4.5.3</version>
+        <version>4.5.13</version>
       </dependency>
 
 

@@ -94,6 +94,13 @@
           The scheduler thread will be marked as a daemon thread.
         -->
         <prop key="org.quartz.scheduler.makeSchedulerThreadDaemon">true</prop>
+
+        <!--
+          Required to make Quartz use the CascadingClassLoadHelper rather than org.springframework.scheduling.quartz.ResourceLoaderClassLoadHelper
+          used by the Spring Quartz factory bean.
+        -->
+        <prop key="org.quartz.scheduler.classLoadHelper.class">org.quartz.simpl.CascadingClassLoadHelper</prop>
+
         <!--
           The scheduler thread pool threads will be marked as daemon threads.
         -->
