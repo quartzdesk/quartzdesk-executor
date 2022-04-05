@@ -83,11 +83,17 @@ If both `sshPassword` and `sshPrivKeyFile` are specified, then the key-based aut
 
 
 ## ![](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.UrlInvokerJob
-A Quartz job implementation class that can be used to execute HTTP POST requests to the configured URL.
+A Quartz job implementation class that can be used to execute HTTP HEAD, GET and POST requests to the configured URL.
 
 This job supports the following job data map parameters:
 
-`url`: the URL to send the HTTP POST requests to.
+`url`: the URL to send the HTTP request to.
+
+`method`: the HTTP request method - HEAD, GET, POST. If not specified, GET method is assumed.
+
+`postBody`: an optional HTTP POST body data.
+
+`postBodyContentType`: an optional content type of the HTTP POST body (e.g. application/json). Required if `postBody` is present.
 
 `username`: an optional HTTP Basic authentication username.
 
