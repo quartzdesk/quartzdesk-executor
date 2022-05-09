@@ -99,6 +99,10 @@ This job supports the following job data map parameters:
 
 `password`: an optional HTTP Basic authentication password.
 
+`connectTimeout`: an optional connect timeout in milliseconds. By default, connect timeout is infinite.
+
+`socketTimeout`: an optional socket timeout in milliseconds. By default, socket timeout is infinite.
+
 
 ## ![](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.SqlQueryExecutorJob
 A Quartz job implementation class that can be used to execute arbitrary SQL queries on a local or remote DB server through JDBC. If the executed query returns a result set, the data is exported into the CSV format and saved as the job's execution result that can be viewed in the QuartzDesk GUI, passed to chained jobs, or used in execution notification rules to fire notification messages.
