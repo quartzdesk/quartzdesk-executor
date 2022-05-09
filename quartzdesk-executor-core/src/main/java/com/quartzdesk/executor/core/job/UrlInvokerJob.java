@@ -17,6 +17,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPost;
@@ -62,17 +63,56 @@ public class UrlInvokerJob
 {
   private static final Logger log = LoggerFactory.getLogger( UrlInvokerJob.class );
 
+  /**
+   * Name of the required job data map parameter containing the target HTTP URL to invoke.
+   */
   private static final String JDM_KEY_URL = "url";
 
+  /**
+   * Name of an optional job data map parameter containing the name of the HTTP request method to be used. If
+   * not specified, then GET method is used. The following values are supported:
+   * <ul>
+   *   <li>GET</li>
+   *   <li>POST</li>
+   *   <li>HEAD</li>
+   * </ul>
+   */
   private static final String JDM_METHOD = "method";
 
+  /**
+   * Name of an optional job data map parameter containing the HTTP POST body data.
+   */
   private static final String JDM_POST_BODY = "postBody";
 
+  /**
+   * Name of an optional job data map parameter containing the MIME type of the HTTP POST body data. Required
+   * if {@link #JDM_POST_BODY} job data map parameter is specified.
+   */
   private static final String JDM_POST_BODY_CONTENT_TYPE = "postBodyContentType";
 
+  /**
+   * Name of an optional job data map parameter containing an HTTP basic authentication username. Used together with
+   * {@link #JDM_KEY_PASSWORD}.
+   */
   private static final String JDM_KEY_USERNAME = "username";
 
+  /**
+   * Name of an optional job data map parameter containing an HTTP basic authentication password. Used together with
+   * {@link #JDM_KEY_USERNAME}.
+   */
   private static final String JDM_KEY_PASSWORD = "password";
+
+  /**
+   * Name of the optional job data map parameter containing a connection timeout in milliseconds. If not specified,
+   * the connection timeout is infinite.
+   */
+  private static final String JDM_KEY_CONNECT_TIMEOUT = "connectTimeout";
+
+  /**
+   * Name of the optional job data map parameter containing a socket timeout value in milliseconds. If not specified,
+   * the socket timeout is infinite.
+   */
+  private static final String JDM_KEY_SOCKET_TIMEOUT = "socketTimeout";
 
 
   @Override
@@ -190,7 +230,32 @@ public class UrlInvokerJob
       }
     }
 
-    CloseableHttpClient httpClient = httpClientBuilder.build();
+    int connectTimeout = 0;
+    if ( jobDataMap.containsKey( JDM_KEY_CONNECT_TIMEOUT ) )
+    {
+      connectTimeout = jobDataMap.getIntFromString( JDM_KEY_CONNECT_TIMEOUT );
+      if ( connectTimeout <= 0 )
+      {
+        connectTimeout = 0;
+      }
+    }
+
+    int socketTimeout = 0;
+    if ( jobDataMap.containsKey( JDM_KEY_SOCKET_TIMEOUT ) )
+    {
+      socketTimeout = jobDataMap.getIntFromString( JDM_KEY_SOCKET_TIMEOUT );
+      if ( socketTimeout <= 0 )
+      {
+        socketTimeout = 0;
+      }
+    }
+
+    RequestConfig config = RequestConfig.custom()
+        .setConnectTimeout( connectTimeout )
+        .setConnectionRequestTimeout( connectTimeout )  // intentionally using connectTimeout
+        .setSocketTimeout( socketTimeout ).build();
+
+    CloseableHttpClient httpClient = httpClientBuilder.setDefaultRequestConfig( config ).build();
 
     HttpUriRequest httpUriRequest;
 
@@ -262,6 +327,10 @@ public class UrlInvokerJob
       log.debug( "HTTP request line: {}", httpUriRequest.getRequestLine() );
 
       log.info( "Invoking target URL: {}", uri );
+
+      log.info( "Timeouts in milliseconds (0 = infinite): connectTimeout={}, socketTimeout={}", connectTimeout,
+          socketTimeout );
+
       String responseText = httpClient.execute( httpUriRequest, responseHandler );
 
       if ( StringUtils.isNotBlank( responseText ) )
