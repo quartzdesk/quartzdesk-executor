@@ -99,9 +99,11 @@ This job supports the following job data map parameters:
 
 `password`: an optional HTTP Basic authentication password.
 
-`connectTimeout`: an optional connect timeout in milliseconds. By default, connect timeout is infinite.
+`connectTimeout`: an optional connect timeout in milliseconds. This is the maximum time UrlInvokerJob waits for the HTTP connection to be established before failing with an error. By default, the connect timeout is infinite.
 
-`socketTimeout`: an optional socket timeout in milliseconds. By default, socket timeout is infinite.
+`socketTimeout`: an optional socket timeout in milliseconds. This is the maximum time UrlInvokerJob waits for the HTTP response data before failing with an error. By default, the socket timeout is infinite.
+
+`header[name]`: an optional custom HTTP header. The HTTP header's name must be enclosed in square brackets, e.g. `header[User-Agent]`.
 
 
 ## ![](media/job-impl-class-16x16.png) com.quartzdesk.executor.core.job.SqlQueryExecutorJob
