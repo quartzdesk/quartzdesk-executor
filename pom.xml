@@ -12,7 +12,7 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>4.0.13</version>
+  <version>4.0.14</version>
 
   <properties>
     <module.name>com.quartzdesk.executor</module.name>
@@ -31,10 +31,10 @@
     -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <org.hibernate.version>5.6.7.Final</org.hibernate.version>
+    <org.hibernate.version>5.6.10.Final</org.hibernate.version>
     <org.quartz-scheduler.quartz.version>2.3.2</org.quartz-scheduler.quartz.version>
     <org.slf4j.version>1.7.36</org.slf4j.version>
-    <org.springframework.version>5.3.19</org.springframework.version>
+    <org.springframework.version>5.3.20</org.springframework.version>
   </properties>
 
   <name>QuartzDesk Executor</name>
