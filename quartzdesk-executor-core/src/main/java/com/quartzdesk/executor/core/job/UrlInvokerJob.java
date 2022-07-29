@@ -5,9 +5,11 @@
 
 package com.quartzdesk.executor.core.job;
 
+import com.quartzdesk.executor.common.CommonConst;
 import com.quartzdesk.executor.common.text.StringUtils;
 
 import org.apache.commons.codec.Charsets;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHeaders;
@@ -103,6 +105,23 @@ public class UrlInvokerJob
   private static final String JDM_KEY_PASSWORD = "password";
 
   /**
+   * Prefix of an optional job data map parameter containing an HTTP header. The job data map can contain multiple
+   * such parameters and their names have the following format:
+   * <pre>
+   *   header[HTTP Header Name]
+   *
+   *   For example:
+   *   header[User-Agent]
+   * </pre>
+   */
+  private static final String JDM_HEADER_PREFIX = "header[";
+
+  /**
+   * Suffix of an optional job data map parameter containing an HTTP header.
+   */
+  private static final String JDM_HEADER_SUFFIX = "]";
+
+  /**
    * Name of the optional job data map parameter containing a connection timeout in milliseconds. If not specified,
    * the connection timeout is infinite.
    */
@@ -179,13 +198,27 @@ public class UrlInvokerJob
     httpClientBuilder.addInterceptorLast(
         (HttpRequestInterceptor) ( httpRequest, httpContext ) -> httpRequest.removeHeaders( HttpHeaders.USER_AGENT ) );
 
+    // add custom HTTP headers
+    httpClientBuilder.addInterceptorLast( (HttpRequestInterceptor) ( httpRequest, httpContext ) -> {
+      for ( String key : jobDataMap.keySet() )
+      {
+        if ( key.startsWith( JDM_HEADER_PREFIX ) && key.endsWith( JDM_HEADER_SUFFIX ) )
+        {
+          String headerName = key.substring( JDM_HEADER_PREFIX.length(), key.length() - 1 );
+          if ( !headerName.isEmpty() )
+          {
+            String headerValue = jobDataMap.getString( key );
+            httpRequest.addHeader( headerName, headerValue );
+          }
+        }
+      }
+    } );
+
     if ( username != null && password != null )
     {
       // use HTTP basic authentication
       CredentialsProvider credsProvider = new BasicCredentialsProvider();
-      credsProvider.setCredentials(
-          AuthScope.ANY,
-          new UsernamePasswordCredentials( username, password ) );
+      credsProvider.setCredentials( AuthScope.ANY, new UsernamePasswordCredentials( username, password ) );
 
       httpClientBuilder.setDefaultCredentialsProvider( credsProvider );
     }
@@ -196,33 +229,30 @@ public class UrlInvokerJob
 
     if ( "https".equals( uri.getScheme() ) )
     {
-      TrustManager[] trustAllCerts = new TrustManager[] {
-          new X509TrustManager()
-          {
-            public void checkClientTrusted( X509Certificate[] certs, String authType )
-            {
-            }
+      TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager()
+      {
+        public void checkClientTrusted( X509Certificate[] certs, String authType )
+        {
+        }
 
 
-            public void checkServerTrusted( X509Certificate[] certs, String authType )
-            {
-            }
+        public void checkServerTrusted( X509Certificate[] certs, String authType )
+        {
+        }
 
 
-            public X509Certificate[] getAcceptedIssuers()
-            {
-              return null;
-            }
-          }
-      };
+        public X509Certificate[] getAcceptedIssuers()
+        {
+          return null;
+        }
+      } };
 
       try
       {
         SSLContext sc = SSLContext.getInstance( "SSL" );
         sc.init( null, trustAllCerts, new SecureRandom() );
 
-        httpClientBuilder.setSSLHostnameVerifier( NoopHostnameVerifier.INSTANCE )
-            .setSSLContext( sc );
+        httpClientBuilder.setSSLHostnameVerifier( NoopHostnameVerifier.INSTANCE ).setSSLContext( sc );
       }
       catch ( GeneralSecurityException e )
       {
@@ -254,6 +284,29 @@ public class UrlInvokerJob
         .setConnectTimeout( connectTimeout )
         .setConnectionRequestTimeout( connectTimeout )  // intentionally using connectTimeout
         .setSocketTimeout( socketTimeout ).build();
+
+    // collect and log all HTTP request headers
+    StringBuilder requestHeadersDump = new StringBuilder();
+    httpClientBuilder.addInterceptorLast( (HttpRequestInterceptor) ( httpRequest, httpContext ) -> {
+      Header[] httpRequestHeaders = httpRequest.getAllHeaders();
+      if ( httpRequestHeaders.length > 0 )
+      {
+        for ( int i = 0; i < httpRequestHeaders.length; i++ )
+        {
+          Header httpRequestHeader = httpRequestHeaders[i];
+          requestHeadersDump.append( "  " )
+              .append( httpRequestHeader.getName() )
+              .append( " : " )
+              .append( httpRequestHeader.getValue() );
+
+          if ( i < httpRequestHeaders.length - 1 )
+            requestHeadersDump.append( CommonConst.NL );
+        }
+
+        // log the HTTP request headers if they have been set
+        log.info( "HTTP request headers:{}{}", CommonConst.NL, requestHeadersDump );
+      }
+    } );
 
     CloseableHttpClient httpClient = httpClientBuilder.setDefaultRequestConfig( config ).build();
 
@@ -319,17 +372,16 @@ public class UrlInvokerJob
         }
         else
         {
-          throw new ClientProtocolException(
-              "URL: " + uri + " returned unexpected response status code: " + status );
+          throw new ClientProtocolException( "URL: " + uri + " returned unexpected response status code: " + status );
         }
       };
 
       log.debug( "HTTP request line: {}", httpUriRequest.getRequestLine() );
 
-      log.info( "Invoking target URL: {}", uri );
-
       log.info( "Timeouts in milliseconds (0 = infinite): connectTimeout={}, socketTimeout={}", connectTimeout,
           socketTimeout );
+
+      log.info( "Invoking target URL: {}", uri );
 
       String responseText = httpClient.execute( httpUriRequest, responseHandler );
 
