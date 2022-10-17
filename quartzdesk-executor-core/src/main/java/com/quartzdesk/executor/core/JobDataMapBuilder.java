@@ -5,12 +5,16 @@ import com.quartzdesk.executor.common.text.MacroExpander;
 import com.quartzdesk.executor.domain.convert.VersionConverter;
 import com.quartzdesk.executor.domain.model.common.Version;
 
+import org.quartz.CalendarIntervalTrigger;
+import org.quartz.CronTrigger;
+import org.quartz.DailyTimeIntervalTrigger;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerMetaData;
+import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.core.QuartzScheduler;
 import org.quartz.core.QuartzSchedulerResources;
@@ -79,13 +83,21 @@ public class JobDataMapBuilder
 
   private static final String EXEC_TYPE_NORMAL = "NORMAL";
 
-  private static final String EXEC_TYPE_QD_SYSTEM = "QD_SYSTEM";
+  private static final String EXEC_TYPE_QD_SYSTEM = "SYSTEM";
 
-  private static final String EXEC_TYPE_QD_MANUAL = "QD_MANUAL";
+  private static final String EXEC_TYPE_QD_MANUAL = "MANUAL";
 
-  private static final String EXEC_TYPE_QD_JOB_CHAIN = "QD_JOB_CHAIN";
+  private static final String EXEC_TYPE_QD_JOB_CHAIN = "JOB_CHAIN";
 
-  private static final String EXEC_TYPE_QD_WEB_SERVICE = "QD_WEB_SERVICE";
+  private static final String EXEC_TYPE_QD_WEB_SERVICE = "WEB_SERVICE";
+
+  private static final String TRIGGER_TYPE_SIMPLE = "SIMPLE";
+
+  private static final String TRIGGER_TYPE_CRON = "CRON";
+
+  private static final String TRIGGER_TYPE_CALENDAR_INTERVAL = "CALENDAR_INTERVAL";
+
+  private static final String TRIGGER_TYPE_DAILY_TIME_INTERVAL = "DAILY_TIME_INTERVAL";
 
   private JobExecutionContext context;
 
@@ -205,7 +217,7 @@ public class JobDataMapBuilder
     Trigger trigger = context.getTrigger();
     macros.put( MACRO_TRIGGER_GROUP_NAME, trigger.getKey().getGroup() );
     macros.put( MACRO_TRIGGER_NAME, trigger.getKey().getName() );
-    macros.put( MACRO_TRIGGER_TYPE, trigger.getKey().getGroup() );
+    macros.put( MACRO_TRIGGER_TYPE, getTriggerType( context ) );
     macros.put( MACRO_TRIGGER_DESCRIPTION, trigger.getDescription() );
 
     /*
@@ -266,6 +278,41 @@ public class JobDataMapBuilder
 
       default:
         return EXEC_TYPE_NORMAL;
+    }
+  }
+
+
+  /**
+   * Returns the execution type for the executed job described by the specified Quartz job execution context.
+   * This method derives the execution type from the trigger group's name.
+   *
+   * @param context the Quartz job execution context.
+   * @return the execution type.
+   */
+  private String getTriggerType( JobExecutionContext context )
+  {
+    Trigger trigger = context.getTrigger();
+
+    if ( trigger instanceof SimpleTrigger )
+    {
+      return TRIGGER_TYPE_SIMPLE;
+    }
+    else if ( trigger instanceof CronTrigger )
+    {
+      return TRIGGER_TYPE_CRON;
+    }
+    else if ( trigger instanceof CalendarIntervalTrigger )
+    {
+      return TRIGGER_TYPE_CALENDAR_INTERVAL;
+    }
+    else if ( trigger instanceof DailyTimeIntervalTrigger )
+    {
+      return TRIGGER_TYPE_DAILY_TIME_INTERVAL;
+    }
+    else
+    {
+      // should never happen
+      return null;
     }
   }
 
