@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.quartzdesk-executor</groupId>
     <artifactId>quartzdesk-executor-pom</artifactId>
-    <version>4.0.14</version>
+    <version>4.0.15</version>
   </parent>
 
   <properties>
@@ -50,20 +50,6 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <scope>test</scope>
-    </dependency>
-
-
-    <dependency>
-      <groupId>commons-beanutils</groupId>
-      <artifactId>commons-beanutils</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-
-    <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
-      <scope>compile</scope>
     </dependency>
 
 
@@ -128,15 +114,6 @@
       <artifactId>spring-core</artifactId>
       <scope>compile</scope>
     </dependency>
-
-
-    <!--
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    -->
 
 
     <dependency>

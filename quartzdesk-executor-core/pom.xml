@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.quartzdesk-executor</groupId>
     <artifactId>quartzdesk-executor-pom</artifactId>
-    <version>4.0.14</version>
+    <version>4.0.15</version>
   </parent>
 
   <properties>
@@ -74,23 +74,22 @@
     </dependency>
 
 
+    <!--
+      Required runtime dependency of opencsv. Added manually to remove commons-logging dependency.
+    -->
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <scope>compile</scope>
+      <scope>runtime</scope>
     </dependency>
 
 
-    <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-
+    <!--
+      Required runtime dependency of opencsv. Added manually to resolve commons-lang3 version collision.
+    -->
     <dependency>
       <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
+      <artifactId>commons-text</artifactId>
       <scope>runtime</scope>
     </dependency>
 

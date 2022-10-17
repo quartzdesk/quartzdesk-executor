@@ -7,6 +7,7 @@ package com.quartzdesk.executor.core.job;
 
 import com.quartzdesk.executor.core.CommonConst;
 import com.quartzdesk.executor.core.CommonUtils;
+import com.quartzdesk.executor.core.JobDataMapBuilder;
 
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -20,6 +21,8 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.util.StopWatch;
 
 import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Common auxiliary base class for all Quartz jobs.
@@ -61,26 +64,29 @@ public abstract class AbstractJob
       if ( log.isInfoEnabled() )
         log.info( "Started scheduled job: {}", jobFullName );
 
+      JobDataMap jobDataMap = context.getMergedJobDataMap();
+
       if ( log.isDebugEnabled() )
       {
-        StringBuilder jobDataMapDump = new StringBuilder();
+        log.debug( "Job data map dump (BEFORE macros expansion):{}{}", CommonConst.NL,
+            getMapDump( jobDataMap ) );
+      }
 
-        // map that contains merged job data from the job detail data map and trigger data map
-        JobDataMap jobDataMap = context.getMergedJobDataMap();
-        for ( Iterator<String> keys = jobDataMap.keySet().iterator(); keys.hasNext(); )
-        {
-          String key = keys.next();
-          String value = CommonUtils.safeToString( jobDataMap.get( key ) );
+      JobDataMapBuilder jobDataMapBuilder = new JobDataMapBuilder( context );
 
-          jobDataMapDump.append( key )
-              .append( '=' )
-              .append( value );
+//      if ( log.isDebugEnabled() )
+//      {
+//        log.debug( "Job data map expansion macros:{}{}", CommonConst.NL, getMapDump( jobDataMapBuilder.getMacros() ) );
+//      }
 
-          if ( keys.hasNext() )
-            jobDataMapDump.append( CommonConst.NL );
-        }
+      JobDataMap expandedJobDataMap = jobDataMapBuilder.build();
 
-        log.debug( "Job data map dump:{}{}", CommonConst.NL, jobDataMapDump.toString() );
+      // replace all values in the original job data map with expanded values
+      jobDataMap.putAll( expandedJobDataMap );
+
+      if ( log.isDebugEnabled() )
+      {
+        log.debug( "Job data map dump (AFTER macros expansion):{}{}", CommonConst.NL, getMapDump( jobDataMap ) );
       }
 
       // Set the context class loader to be the class loader of the job class.
@@ -139,5 +145,30 @@ public abstract class AbstractJob
 
       return null;
     }
+  }
+
+
+  private String getMapDump( Map<String, ?> map )
+  {
+    Map<String, Object> sortedMap = new TreeMap<>();
+    sortedMap.putAll( map );
+
+    StringBuilder dump = new StringBuilder();
+
+    for ( Iterator<String> keys = sortedMap.keySet().iterator(); keys.hasNext(); )
+    {
+      String key = keys.next();
+      String value = CommonUtils.safeToString( sortedMap.get( key ) );
+
+      dump.append( "  " )
+          .append( key )
+          .append( '=' )
+          .append( value );
+
+      if ( keys.hasNext() )
+        dump.append( CommonConst.NL );
+    }
+
+    return dump.toString();
   }
 }

@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.quartzdesk-executor</groupId>
     <artifactId>quartzdesk-executor-pom</artifactId>
-    <version>4.0.14</version>
+    <version>4.0.15</version>
   </parent>
 
   <properties>
