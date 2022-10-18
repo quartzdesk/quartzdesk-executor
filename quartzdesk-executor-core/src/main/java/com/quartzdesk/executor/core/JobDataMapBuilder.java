@@ -101,13 +101,13 @@ public class JobDataMapBuilder
 
   private JobExecutionContext context;
 
-  private Map<String, ?> macros;
+  private MacroExpander macroExpander;
 
 
   public JobDataMapBuilder( JobExecutionContext context )
   {
     this.context = context;
-    macros = createMacros( context );
+    macroExpander = new MacroExpander( createMacros( context ) );
   }
 
 
@@ -122,8 +122,6 @@ public class JobDataMapBuilder
     JobDataMap origJobDataMap = context.getMergedJobDataMap();
     JobDataMap newJobDataMap = new JobDataMap();
 
-    MacroExpander macroExpander = new MacroExpander();
-
     for ( Map.Entry<String, Object> entry : origJobDataMap.entrySet() )
     {
       String key = entry.getKey();
@@ -133,14 +131,14 @@ public class JobDataMapBuilder
       if ( value instanceof String )
       {
         Set<String> expandedValues = new HashSet<>();
-        String expandedValue = macroExpander.expandMacros( (String) value, macros );
+        String expandedValue = macroExpander.expandMacros( (String) value );
         /*
          * Keep expanding macros while the expanded value keeps changing.
          */
         while ( !expandedValues.contains( expandedValue ) )
         {
           expandedValues.add( expandedValue );
-          expandedValue = macroExpander.expandMacros( expandedValue, macros );
+          expandedValue = macroExpander.expandMacros( expandedValue );
         }
         newJobDataMap.put( key, expandedValue );
       }
@@ -157,7 +155,7 @@ public class JobDataMapBuilder
 
   public Map<String, ?> getMacros()
   {
-    return macros;
+    return macroExpander.getMacros();
   }
 
 
