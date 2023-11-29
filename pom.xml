@@ -12,12 +12,12 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>4.0.16-SNAPSHOT</version>
+  <version>5.0.0</version>
 
   <properties>
     <module.name>com.quartzdesk.executor</module.name>
 
-    <com.quartzdesk.version>4.0.12</com.quartzdesk.version>
+    <com.quartzdesk.version>5.0.0</com.quartzdesk.version>
 
     <!--
       Implementation-Vendor-Id used in manifests.
@@ -31,18 +31,50 @@
     -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <ch.qos.logback.version>1.2.11</ch.qos.logback.version>
+    <!--
+      Most recent version that still supports Java 8.
+    -->
+    <ch.qos.logback.version>1.3.11</ch.qos.logback.version>
 
-    <org.javassist.version>3.29.2-GA</org.javassist.version>
+    <!--
+      servlet-api 3.1 (JavaEE 7)
+      jsp-api 2.3 (JavaEE 7)
+
+        GlassFish >= 4.0 (https://en.wikipedia.org/wiki/GlassFish)
+        JBoss     >= 7.0 (https://access.redhat.com/articles/113373)
+        Tomcat    >= 8.5 (https://tomcat.apache.org/whichversion.html)
+        WebLogic  >= 12.2.1 (https://en.wikipedia.org/wiki/Oracle_WebLogic_Server#Standards_support_by_version)
+        WebSphere >= 9.0 and Liberty Profile >= 8.5 (https://en.wikipedia.org/wiki/IBM_WebSphere_Application_Server#Version_history)
+        WildFly   >= 8.0.0 (https://docs.wildfly.org/)
+    -->
+    <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+    <javax.servlet.jsp-api.version>2.3.3</javax.servlet.jsp-api.version>
+
+    <javax.servlet.jsp.jstl-api.version>1.2.2</javax.servlet.jsp.jstl-api.version>
+    <javax.servlet.jsp.jstl-impl.version>1.2.5</javax.servlet.jsp.jstl-impl.version>
+
 
     <!--
       Most recent version that still supports Java 8.
     -->
-    <org.hibernate.version>5.6.12.Final</org.hibernate.version>
+    <org.hibernate.version>5.6.15.Final</org.hibernate.version>
 
-    <org.quartz-scheduler.quartz.version>2.3.2</org.quartz-scheduler.quartz.version>
-    <org.slf4j.version>1.7.36</org.slf4j.version>
-    <org.springframework.version>5.3.23</org.springframework.version>
+    <org.javassist.version>3.29.2-GA</org.javassist.version>
+
+    <!--
+      Most recent version that still supports Java 8 and old javax.* packages.
+    -->
+    <org.quartz-scheduler.quartz.version>2.4.0-rc2</org.quartz-scheduler.quartz.version>
+
+    <!--
+      Most recent version that still supports Java 8.
+    -->
+    <org.slf4j.version>2.0.9</org.slf4j.version>
+
+    <!--
+      Most recent version that still supports Java 8.
+    -->
+    <org.springframework.version>5.3.31</org.springframework.version>
   </properties>
 
   <name>QuartzDesk Executor</name>
@@ -53,7 +85,7 @@
 
   <organization>
     <name>QuartzDesk.com</name>
-    <url>https://www.quartzdesk.com</url>
+    <url>https://quartzdesk.com</url>
   </organization>
 
   <licenses>
@@ -111,14 +143,14 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.2.11</version>
+        <version>${ch.qos.logback.version}</version>
       </dependency>
 
 
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
-        <version>1.2.11</version>
+        <version>${ch.qos.logback.version}</version>
       </dependency>
 
 
@@ -191,22 +223,22 @@
 
       <dependency>
         <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
-        <version>2.5</version>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>${javax.servlet-api.version}</version>
+      </dependency>
+
+
+      <dependency>
+        <groupId>javax.servlet.jsp</groupId>
+        <artifactId>javax.servlet.jsp-api</artifactId>
+        <version>${javax.servlet.jsp-api.version}</version>
       </dependency>
 
 
       <dependency>
         <groupId>javax.servlet.jsp.jstl</groupId>
         <artifactId>javax.servlet.jsp.jstl-api</artifactId>
-        <version>${javax.servlet.jsp.jstl.version}</version>
-      </dependency>
-
-
-      <dependency>
-        <groupId>javax.servlet.jsp</groupId>
-        <artifactId>jsp-api</artifactId>
-        <version>2.1</version>
+        <version>${javax.servlet.jsp.jstl-api.version}</version>
       </dependency>
 
 
@@ -223,7 +255,7 @@
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-text</artifactId>
-        <version>1.10.0</version>
+        <version>1.11.0</version>
       </dependency>
 
 
@@ -233,7 +265,7 @@
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
-        <version>4.5.13</version>
+        <version>4.5.14</version>
 
         <exclusions>
           <!-- Commons-logging API provided by the SLF4j jcl-over-slf4j bridge -->
@@ -248,7 +280,7 @@
       <dependency>
         <groupId>org.glassfish.web</groupId>
         <artifactId>javax.servlet.jsp.jstl</artifactId>
-        <version>${javax.servlet.jsp.jstl.version}</version>
+        <version>${javax.servlet.jsp.jstl-impl.version}</version>
 
         <exclusions>
           <!--
@@ -267,6 +299,16 @@
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-core</artifactId>
         <version>${org.hibernate.version}</version>
+
+        <exclusions>
+          <!--
+            Excluded XML APIs because these APIs are already provided by JDK 1.6 and higher.
+          -->
+          <exclusion>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
 
@@ -288,6 +330,14 @@
       </dependency>
 
 
+      <!--
+        JAXB2 Basics Runtime APIs used in JAXB2 artifacts generated by XJC with the following plugins:
+          -Xequals
+          -XhashCode
+          -Xmerge
+          -XtoString
+          -Xcopyable
+      -->
       <dependency>
         <groupId>org.jvnet.jaxb2_commons</groupId>
         <artifactId>jaxb2-basics-runtime</artifactId>
@@ -301,33 +351,6 @@
         <version>${org.quartz-scheduler.quartz.version}</version>
 
         <exclusions>
-          <!--
-            Log4j API provided by org.slf4j:log4j-over-slf4j.
-          -->
-          <exclusion>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-          </exclusion>
-
-          <!--
-            C3p0 JDBC connection pooling support not needed (Quartz configured to use an application
-            server/container provided data source which is typically backed by a connection pool).
-          -->
-          <exclusion>
-            <groupId>com.mchange</groupId>
-            <artifactId>c3p0</artifactId>
-          </exclusion>
-
-          <exclusion>
-            <groupId>com.mchange</groupId>
-            <artifactId>mchange-commons-java</artifactId>
-          </exclusion>
-
-          <exclusion>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP-java7</artifactId>
-          </exclusion>
-
           <exclusion>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -528,10 +551,13 @@
       </dependency>
 
 
+      <!--
+        Most recent version that still supports Java 8.
+      -->
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
-        <version>7.5</version>
+        <version>7.5.1</version>
       </dependency>
 
     </dependencies>
@@ -624,9 +650,8 @@
 
 
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.3.0</version>
+          <artifactId>maven-toolchains-plugin</artifactId>
+          <version>3.1.0</version>
         </plugin>
 
 
@@ -670,6 +695,13 @@
               </property>
             </properties>
           </configuration>
+        </plugin>
+
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.3.0</version>
         </plugin>
 
 
@@ -758,6 +790,27 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+
+      <plugin>
+        <artifactId>maven-toolchains-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>toolchain</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <toolchains>
+            <jdk>
+              <!-- Project will be compiled with Sun JDK version 8 defined in ~/.m2/toolchains.xml -->
+              <version>8</version>
+              <vendor>sun</vendor>
+            </jdk>
+          </toolchains>
+        </configuration>
       </plugin>
 
     </plugins>
