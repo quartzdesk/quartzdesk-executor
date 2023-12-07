@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.quartzdesk-executor</groupId>
     <artifactId>quartzdesk-executor-pom</artifactId>
-    <version>5.0.0</version>
+    <version>5.0.1</version>
   </parent>
 
   <properties>
@@ -80,6 +80,14 @@
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+
+    <!-- Required runtime dependency of commons-text -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
       <scope>runtime</scope>
     </dependency>
 
