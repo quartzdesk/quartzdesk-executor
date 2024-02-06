@@ -42,7 +42,7 @@ public final class MacroExpander
   /**
    * Default format for {@link Date} objects - ISO 8601 (RFC 3339), e.g. "2012-06-27T12:31:00.003+0000".
    */
-  private static final String DEFAULT_PATTERN_DATE = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+  private static final String DEFAULT_PATTERN_DATE = "yyyy-MM-dd";
 
   private char startChar;
 

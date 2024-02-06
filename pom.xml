@@ -12,7 +12,7 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>5.0.1</version>
+  <version>5.0.2-SNAPSHOT</version>
 
   <properties>
     <module.name>com.quartzdesk.executor</module.name>
@@ -622,6 +622,7 @@
                 <Implementation-Vendor-Id>${vendor.id}</Implementation-Vendor-Id>
                 <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
                 <Implementation-Vendor-URL>${project.organization.url}</Implementation-Vendor-URL>
+                <!--suppress UnresolvedMavenProperty -->
                 <Build-Number>${build.number}</Build-Number>
               </manifestEntries>
             </archive>
