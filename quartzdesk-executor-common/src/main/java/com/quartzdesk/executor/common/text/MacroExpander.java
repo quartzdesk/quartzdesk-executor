@@ -42,19 +42,23 @@ public final class MacroExpander
   /**
    * Default format for {@link Date} objects - ISO 8601 (RFC 3339), e.g. "2012-06-27T12:31:00.003+0000".
    */
-  private static final String DEFAULT_PATTERN_DATE = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+  private static final String DEFAULT_PATTERN_DATE = "yyyy-MM-dd";
 
   private char startChar;
 
   private Locale locale;
 
+  private Map<String, ?> macros;
+
 
   /**
-   * Creates a new {@link MacroExpander} using the default macro start character and the default locale.
+   * Creates a new {@link MacroExpander} using the default macro start character and locale.
+   *
+   * @param macros the macros.
    */
-  public MacroExpander()
+  public MacroExpander( Map<String, ?> macros )
   {
-    this( DEFAULT_START_CHAR, Locale.getDefault() );
+    this( DEFAULT_START_CHAR, Locale.getDefault(), macros );
   }
 
 
@@ -62,10 +66,11 @@ public final class MacroExpander
    * Creates a new {@link MacroExpander} using the specified macro start character and the default locale.
    *
    * @param startChar a macro start character.
+   * @param macros    the macros.
    */
-  public MacroExpander( char startChar )
+  public MacroExpander( char startChar, Map<String, ?> macros )
   {
-    this( startChar, Locale.getDefault() );
+    this( startChar, Locale.getDefault(), macros );
   }
 
 
@@ -74,27 +79,39 @@ public final class MacroExpander
    *
    * @param startChar a macro start character.
    * @param locale    a locale used for formatting macros that support formatting patterns.
+   * @param macros    the macros.
    */
-  public MacroExpander( char startChar, Locale locale )
+  public MacroExpander( char startChar, Locale locale, Map<String, ?> macros )
   {
     if ( Character.isWhitespace( startChar ) )
       throw new IllegalArgumentException( "Macro start character cannot be whitespace." );
 
     this.startChar = startChar;
     this.locale = locale;
+    this.macros = macros;
+  }
+
+
+  /**
+   * Returns the macros used by this instance.
+   *
+   * @return the macros used by this instance.
+   */
+  public Map<String, ?> getMacros()
+  {
+    return macros;
   }
 
 
   /**
    * Expands macros in the specified value and returns the expanded value.
    *
-   * @param value  a value with macros to be expanded.
-   * @param macros macros.
+   * @param value a value with macros to be expanded.
    * @return the expanded value.
    */
-  public String expandMacros( String value, Map<String, ?> macros )
+  public String expandMacros( String value )
   {
-    return expandMacros( value, 0, macros );
+    return expandMacros( value, 0 );
   }
 
 
@@ -104,10 +121,9 @@ public final class MacroExpander
    *
    * @param value      a value with macros to be expanded.
    * @param startIndex an index to start at.
-   * @param macros     a map with macro name-value pairs.
    * @return the expanded value.
    */
-  private String expandMacros( String value, int startIndex, Map<String, ?> macros )
+  private String expandMacros( String value, int startIndex )
   {
     String val = value;
 
@@ -149,12 +165,12 @@ public final class MacroExpander
           {
             // the macro is present in the macros map - i.e. it is a known macro => expand the macro value to ''
             val = val.substring( 0, i ) + val.substring( j + 1 );
-            val = expandMacros( val, i, macros );
+            val = expandMacros( val, i );
           }
           else
           {
             // the macro is not present in the macros map - i.e. it is an unknown macro => do not expand the macro
-            val = expandMacros( val, j, macros );
+            val = expandMacros( val, j );
           }
         }
         else
@@ -162,7 +178,7 @@ public final class MacroExpander
           String sMacroValue = format( macroValue, macroPattern );
 
           val = val.substring( 0, i ) + sMacroValue + val.substring( j + 1 );
-          val = expandMacros( val, i + sMacroValue.length(), macros );
+          val = expandMacros( val, i + sMacroValue.length() );
         }
       }
     }

@@ -148,7 +148,6 @@ public class LogbackInitContextListener
   @SuppressWarnings( "unchecked" )
   private String expandProperties( String value, ServletContext servletCtx )
   {
-    MacroExpander expander = new MacroExpander();
     Map<String, String> propertyMap = new HashMap<String, String>();
 
     // 1. JVM system properties - lowest priority
@@ -165,6 +164,7 @@ public class LogbackInitContextListener
       propertyMap.put( paramName, servletCtx.getInitParameter( paramName ) );
     }
 
-    return expander.expandMacros( value, propertyMap );
+    MacroExpander expander = new MacroExpander( propertyMap );
+    return expander.expandMacros( value );
   }
 }

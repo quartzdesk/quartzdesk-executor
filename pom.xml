@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  ~ Copyright (c) 2015-2022 QuartzDesk.com.
+  ~ Copyright (c) 2015-2024 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
@@ -12,12 +12,12 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>4.0.15</version>
+  <version>4.0.16</version>
 
   <properties>
     <module.name>com.quartzdesk.executor</module.name>
 
-    <com.quartzdesk.version>4.0.12</com.quartzdesk.version>
+    <com.quartzdesk.version>4.0.13</com.quartzdesk.version>
 
     <!--
       Implementation-Vendor-Id used in manifests.

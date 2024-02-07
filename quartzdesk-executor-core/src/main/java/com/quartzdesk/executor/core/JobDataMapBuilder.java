@@ -35,6 +35,12 @@ public class JobDataMapBuilder
 {
   private static final String MACRO_CURRENT_TIMESTAMP = "CURRENT_TIMESTAMP";
 
+  private static final String MACRO_CURRENT_DATE = "CURRENT_DATE";
+
+  private static final String MACRO_YESTERDAY_DATE = "YESTERDAY_DATE";
+
+  private static final String MACRO_TOMORROW_DATE = "TOMORROW_DATE";
+
   private static final String MACRO_SCHEDULER_OBJECT_NAME = "SCHEDULER_OBJECT_NAME";
 
   private static final String MACRO_SCHEDULER_VERSION = "SCHEDULER_VERSION";
@@ -101,13 +107,13 @@ public class JobDataMapBuilder
 
   private JobExecutionContext context;
 
-  private Map<String, ?> macros;
+  private MacroExpander macroExpander;
 
 
   public JobDataMapBuilder( JobExecutionContext context )
   {
     this.context = context;
-    macros = createMacros( context );
+    macroExpander = new MacroExpander( createMacros( context ) );
   }
 
 
@@ -122,8 +128,6 @@ public class JobDataMapBuilder
     JobDataMap origJobDataMap = context.getMergedJobDataMap();
     JobDataMap newJobDataMap = new JobDataMap();
 
-    MacroExpander macroExpander = new MacroExpander();
-
     for ( Map.Entry<String, Object> entry : origJobDataMap.entrySet() )
     {
       String key = entry.getKey();
@@ -133,14 +137,14 @@ public class JobDataMapBuilder
       if ( value instanceof String )
       {
         Set<String> expandedValues = new HashSet<>();
-        String expandedValue = macroExpander.expandMacros( (String) value, macros );
+        String expandedValue = macroExpander.expandMacros( (String) value );
         /*
          * Keep expanding macros while the expanded value keeps changing.
          */
         while ( !expandedValues.contains( expandedValue ) )
         {
           expandedValues.add( expandedValue );
-          expandedValue = macroExpander.expandMacros( expandedValue, macros );
+          expandedValue = macroExpander.expandMacros( expandedValue );
         }
         newJobDataMap.put( key, expandedValue );
       }
@@ -157,7 +161,7 @@ public class JobDataMapBuilder
 
   public Map<String, ?> getMacros()
   {
-    return macros;
+    return macroExpander.getMacros();
   }
 
 
@@ -174,7 +178,35 @@ public class JobDataMapBuilder
     /*
      * General macros.
      */
-    macros.put( MACRO_CURRENT_TIMESTAMP, Calendar.getInstance() );
+    // MACRO_CURRENT_TIMESTAMP
+    Calendar now = Calendar.getInstance();
+    macros.put( MACRO_CURRENT_TIMESTAMP, now );
+
+    // MACRO_CURRENT_DATE
+    Calendar today = (Calendar) now.clone();
+    today.set( Calendar.HOUR_OF_DAY, 0 );
+    today.set( Calendar.MINUTE, 0 );
+    today.set( Calendar.SECOND, 0 );
+    today.set( Calendar.MILLISECOND, 0 );
+    macros.put( MACRO_CURRENT_DATE, today.getTime() );
+
+    // MACRO_YESTERDAY_DATE
+    Calendar yesterday = (Calendar) now.clone();
+    yesterday.add( Calendar.DAY_OF_MONTH, -1 );
+    yesterday.set( Calendar.HOUR_OF_DAY, 0 );
+    yesterday.set( Calendar.MINUTE, 0 );
+    yesterday.set( Calendar.SECOND, 0 );
+    yesterday.set( Calendar.MILLISECOND, 0 );
+    macros.put( MACRO_YESTERDAY_DATE, yesterday.getTime() );
+
+    // MACRO_TOMORROW_DATE
+    Calendar tomorrow = (Calendar) now.clone();
+    tomorrow.add( Calendar.DAY_OF_MONTH, 1 );
+    tomorrow.set( Calendar.HOUR_OF_DAY, 0 );
+    tomorrow.set( Calendar.MINUTE, 0 );
+    tomorrow.set( Calendar.SECOND, 0 );
+    tomorrow.set( Calendar.MILLISECOND, 0 );
+    macros.put( MACRO_TOMORROW_DATE, tomorrow.getTime() );
 
     /*
      * Scheduler-related macros.

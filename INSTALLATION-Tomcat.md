@@ -1,17 +1,23 @@
 # Installation Instructions For Apache Tomcat
 
-## 1. Database
+## 1. Java
 
-QuartzDesk Executor (QE) requires a database. The database contains Quartz JDBC job store tables as well as other objects required by QE itself.
+QuartzDesk Executor (QE) requires Java 8 or higher.
+ 
+
+## 2. Database
+
+QE requires a database that hosts Quartz JDBC job store tables and other objects.
 
 Create a new and empty database in your database management system. The name of the database should be `quartzdesk_executor`.
+The database will be automatically populated with all required objects upon the first start of QE.
 
  
-## 2. JDBC Driver 
+## 3. JDBC Driver 
 Copy the JDBC driver of the used database to the Tomcat's shared lib directory (`TOMCAT_HOME/lib`).
 
 
-## 3. Data Source
+## 4. Data Source
 Open `TOMCAT_HOME/conf/server.xml` and add a new data source definition under the `GlobalNamingResources` element.
 
 #### DB2
@@ -125,7 +131,7 @@ Open `TOMCAT_HOME/conf/server.xml` and add a new data source definition under th
 Please ensure the configured DB user (`DB_USER`) is the owner of the `quartzdesk_executor` database or has sufficient rights to create and modify all database objects in the database.
 
 
-## 4. Work Directory
+## 5. Work Directory
 
 Create an empty work directory where QE will looks for its configuration files and where it will store its log files.
           
@@ -147,7 +153,7 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dquartzdesk-executor.work.dir=<WORK_DIR>"
 
 
 
-## 5. Enable Remote JMX Access
+## 6. Enable Remote JMX Access
 
 In order to connect and manage the Quartz scheduler embedded in the QE application from the QuartzDesk GUI, you need to enable remote JMX access to the JVM the QE application will be running on. The steps depend on the QuartzDesk edition that you intend to use.
 
@@ -183,12 +189,12 @@ Otherwise add the JVM system properties used for the QuartzDesk Lite Edition.
 
 
 
-## 6. Install QuartzDesk JVM Agent (optional, but strongly recommended)
+## 7. Install QuartzDesk JVM Agent (optional, but strongly recommended)
 
 In order to use all of the advanced QuartzDesk platform features, such as access to the persistent job execution history, job execution notifications, job chaining, execution statistics, etc., you need to install the QuartzDesk JVM Agent on the JVM running the QE application. Please refer to the [QuartzDesk JVM Agent Installation and Upgrade Guide](https://www.quartzdesk.com/documentation/installation-and-upgrade-guides) for details
 
 
-## 7. Deploy QE WAR 
+## 8. Deploy QE WAR 
 
 Deploy the QE application by copying the `quartzdesk-executor-web-<version>.war` file to the `TOMCAT_HOME/webapps` directory.
 
