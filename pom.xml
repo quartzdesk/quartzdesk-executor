@@ -12,12 +12,12 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>5.0.2-SNAPSHOT</version>
+  <version>5.0.2</version>
 
   <properties>
     <module.name>com.quartzdesk.executor</module.name>
 
-    <com.quartzdesk.version>5.0.2-SNAPSHOT</com.quartzdesk.version>
+    <com.quartzdesk.version>5.0.2</com.quartzdesk.version>
 
     <!--
       Implementation-Vendor-Id used in manifests.
