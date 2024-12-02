@@ -75,7 +75,7 @@
     <!--
       Most recent version that still supports Java 8.
     -->
-    <org.springframework.version>5.3.36</org.springframework.version>
+    <org.springframework.version>6.1.14</org.springframework.version>
   </properties>
 
   <name>QuartzDesk Executor</name>
