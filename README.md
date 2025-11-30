@@ -19,18 +19,49 @@ QuartzDesk Executor (QE) is a simple, yet powerful Java Quartz scheduler based w
 
 # Requirements
 
+## QuartzDesk Executor 6.x
+
+### Java
+JDK 17 or newer.
+
+### Application Container / Server
+Jakarta EE 11-compatible Java container or application server. QE has been tested and is known to work on:
+
+| Application Container / Server | Versions    |
+|:-------------------------------|:------------|
+| Apache Tomcat                  | 10.x, 11.x  |
+| IBM Websphere Liberty          | >= 23.0.0.3 |
+| Eclipse GlassFish AS           | >= 7.x      |
+| RedHat JBoss EAP               | >= 8.x      |
+| WildFly AS                     | >= 33.0.0   |
+
+### Database
+ 
+| DBMS                       | Minimum Version |
+|:---------------------------|:----------------|
+| DB2                        | 10.5            |
+| H2                         | 2.1.214         |
+| Microsoft SQL Server       | 11.0            |
+| MySQL                      | 8.0             |
+| Oracle                     | 19.0            |
+| PostgreSQL                 | 12.0            |
+
+
+## QuartzDesk Executor 4.x and 5.x
+
 ### Java
 JDK 8 or newer.
 
 ### Application Container / Server
-Any modern Java servlet container or application server. QE is known to work on:
+Jakarta EE 9-compatible Java container or application server. QE has been tested and is known to work on:
 
-* Apache Tomcat
-* IBM Websphere AS
-* Oracle GlassFish AS
-* Oracle WebLogic AS
-* RedHat JBoss AS
-* WildFly AS
+| Application Container / Server | Versions            |
+|:-------------------------------|:--------------------|
+| Apache Tomcat                  | 8.5.x, 9.x, 10.x    |
+| IBM Websphere AS               | 8.5, 9.0            |
+| Eclipse GlassFish AS           | 5.x, 6.x, 7.x       |
+| RedHat JBoss EAP               | 7.1.0, 7.2.0, 7.3.0 |
+| WildFly AS                     | 10.x - 29.x         |
 
 ### Database
  
@@ -42,7 +73,6 @@ Any modern Java servlet container or application server. QE is known to work on:
 | MySQL                      | 5.6.4                    |
 | Oracle                     | 10.2 (10g R2)            |
 | PostgreSQL                 | 9.1                      |
-
 
 
 # Available Quartz Job Implementation Classes
@@ -200,4 +230,4 @@ If you want to contribute your changes and improvements, please contact us so th
 
 # Copyright and License
 
-Code and documentation copyright 2015-2018 the QuartzDesk Executor authors and QuartzDesk.com. Code and docs released under the MIT license.
+Code and documentation copyright 2015-2025 the QuartzDesk Executor authors and QuartzDesk.com. Code and docs released under the MIT license.

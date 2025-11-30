@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013-2025 QuartzDesk.com.
+ * Licensed under the MIT license (https://opensource.org/licenses/MIT).
+ */
+
 package com.quartzdesk.executor.core;
 
 import com.quartzdesk.executor.common.DateTimeUtils;

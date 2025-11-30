@@ -28,6 +28,7 @@ public final class CommonUtils
   {
   }
 
+
   /**
    * Compares the two Objects for equality. This method returns true if both Objects are null,
    * or they are equal according to the {@link Object#equals(Object)} method, false otherwise.

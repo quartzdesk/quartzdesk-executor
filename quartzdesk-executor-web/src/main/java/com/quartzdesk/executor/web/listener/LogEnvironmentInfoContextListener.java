@@ -1,52 +1,53 @@
-/*
- * Copyright (c) 2015-2025 QuartzDesk.com.
- * Licensed under the MIT license (https://opensource.org/licenses/MIT).
- */
+ /*
+  * Copyright (c) 2013-2025 QuartzDesk.com.
+  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  */
 
-package com.quartzdesk.executor.web.listener;
+ package com.quartzdesk.executor.web.listener;
 
-import com.quartzdesk.executor.web.WorkDir;
+ import com.quartzdesk.executor.common.web.listener.env.AbstractLogEnvironmentInfoContextListener;
+ import com.quartzdesk.executor.web.WorkDir;
 
-import com.quartzdesk.executor.common.web.listener.env.AbstractLogEnvironmentInfoContextListener;
+ import jakarta.servlet.ServletContext;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+ import java.io.IOException;
+ import java.util.LinkedHashMap;
+ import java.util.Map;
 
-import jakarta.servlet.ServletContext;
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
+ /**
+  * Prints description of the QuartzDesk application environment into the log
+  * upon application startup.
+  */
+ public class LogEnvironmentInfoContextListener
+     extends AbstractLogEnvironmentInfoContextListener
+ {
+   private static final Logger log = LoggerFactory.getLogger( LogEnvironmentInfoContextListener.class );
 
-/**
- * Prints description of the QuartzDesk application environment into the log
- * upon application startup.
- */
-public class LogEnvironmentInfoContextListener
-    extends AbstractLogEnvironmentInfoContextListener
-{
-  private static final Logger log = LoggerFactory.getLogger( LogEnvironmentInfoContextListener.class );
 
-  @Override
-  protected String getApplicationName( ServletContext servletContext )
-  {
-    return "QuartzDesk Executor";
-  }
+   @Override
+   protected String getApplicationName( ServletContext servletContext )
+   {
+     return "QuartzDesk Executor";
+   }
 
-  @Override
-  protected Map<String, String> getExtendedInfo( ServletContext servletContext )
-  {
-    Map<String, String> info = new LinkedHashMap<String, String>();
 
-    try
-    {
-      WorkDir workDir = new WorkDir( servletContext );
-      info.put( "quartzdesk-executor.work.dir", workDir.getRoot().getAbsolutePath() );
-    }
-    catch ( IOException e )
-    {
-      // should not happen
-    }
+   @Override
+   protected Map<String, String> getExtendedInfo( ServletContext servletContext )
+   {
+     Map<String, String> info = new LinkedHashMap<String, String>();
 
-    return info;
-  }
-}
+     try
+     {
+       WorkDir workDir = new WorkDir( servletContext );
+       info.put( "quartzdesk-executor.work.dir", workDir.getRoot().getAbsolutePath() );
+     }
+     catch ( IOException e )
+     {
+       // should not happen
+     }
+
+     return info;
+   }
+ }

@@ -1,524 +1,525 @@
-/*
- * Copyright (c) 2015-2025 QuartzDesk.com.
- * Licensed under the MIT license (https://opensource.org/licenses/MIT).
- */
+ /*
+  * Copyright (c) 2013-2025 QuartzDesk.com.
+  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
+  */
 
-package com.quartzdesk.executor.domain.jaxb;
+ package com.quartzdesk.executor.domain.jaxb;
 
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+ import jakarta.xml.bind.JAXBContext;
+ import jakarta.xml.bind.JAXBElement;
+ import jakarta.xml.bind.JAXBException;
+ import jakarta.xml.bind.JAXBIntrospector;
+ import jakarta.xml.bind.Marshaller;
+ import jakarta.xml.bind.Unmarshaller;
+ import jakarta.xml.bind.annotation.XmlRootElement;
+ import jakarta.xml.bind.annotation.XmlSchema;
+ import jakarta.xml.bind.util.JAXBSource;
+ import org.xml.sax.SAXException;
+ import org.xml.sax.helpers.DefaultHandler;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.JAXBIntrospector;
-import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.Unmarshaller;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlSchema;
-import jakarta.xml.bind.util.JAXBSource;
-import javax.xml.namespace.QName;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.SchemaFactory;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+ import javax.xml.namespace.QName;
+ import javax.xml.transform.Source;
+ import javax.xml.transform.stream.StreamSource;
+ import javax.xml.validation.SchemaFactory;
+ import java.io.IOException;
+ import java.io.Reader;
+ import java.io.StringWriter;
+ import java.io.Writer;
+ import java.util.HashSet;
+ import java.util.List;
+ import java.util.Set;
 
-/**
- * A JAXB helper that slightly simplifies various JAXB operations.
- */
-public final class JaxbHelper
-{
-  private JAXBContext jaxb;
-
-  /**
-   * Private constructor to prevent direct instantiation.
-   *
-   * @param ctxPath a JAXB context path.
-   * @throws JAXBException if an error occurs.
-   */
-  private JaxbHelper( String ctxPath )
-      throws JAXBException
-  {
-    jaxb = JAXBContext.newInstance( ctxPath );
-  }
+ /**
+  * A JAXB helper that slightly simplifies various JAXB operations.
+  */
+ public final class JaxbHelper
+ {
+   private JAXBContext jaxb;
 
 
-  /**
-   * Private constructor to prevent direct instantiation.
-   *
-   * @param classesToBeBound a list of classes to be bound.
-   * @throws JAXBException if an error occurs.
-   */
-  private JaxbHelper( Class<?>... classesToBeBound )
-      throws JAXBException
-  {
-    jaxb = JAXBContext.newInstance( classesToBeBound );
-  }
+   /**
+    * Private constructor to prevent direct instantiation.
+    *
+    * @param ctxPath a JAXB context path.
+    * @throws JAXBException if an error occurs.
+    */
+   private JaxbHelper( String ctxPath )
+       throws JAXBException
+   {
+     jaxb = JAXBContext.newInstance( ctxPath );
+   }
 
 
-  /**
-   * Creates a new JAXBHelper instance.
-   *
-   * @param ctxPath a JAXB context path.
-   * @return the created JAXBHelper.
-   * @throws JAXBException if an error occurs.
-   */
-  public static JaxbHelper newInstance( String ctxPath )
-      throws JAXBException
-  {
-    return new JaxbHelper( ctxPath );
-  }
+   /**
+    * Private constructor to prevent direct instantiation.
+    *
+    * @param classesToBeBound a list of classes to be bound.
+    * @throws JAXBException if an error occurs.
+    */
+   private JaxbHelper( Class<?>... classesToBeBound )
+       throws JAXBException
+   {
+     jaxb = JAXBContext.newInstance( classesToBeBound );
+   }
 
 
-  /**
-   * Creates a new JAXBHelper instance.
-   *
-   * @param classesToBeBound a list of classes to be bound.
-   * @return the created JAXBHelper.
-   * @throws JAXBException if an error occurs.
-   */
-  public static JaxbHelper newInstance( List<Class<?>> classesToBeBound )
-      throws JAXBException
-  {
-    Class<?>[] classes = classesToBeBound.toArray( new Class[classesToBeBound.size()] );
-    return new JaxbHelper( classes );
-  }
+   /**
+    * Creates a new JAXBHelper instance.
+    *
+    * @param ctxPath a JAXB context path.
+    * @return the created JAXBHelper.
+    * @throws JAXBException if an error occurs.
+    */
+   public static JaxbHelper newInstance( String ctxPath )
+       throws JAXBException
+   {
+     return new JaxbHelper( ctxPath );
+   }
 
 
-  /**
-   * Creates a new JAXBHelper instance.
-   *
-   * @param classesToBeBound a list of classes to be bound.
-   * @return the created JAXBHelper.
-   * @throws JAXBException if an error occurs.
-   */
-  public static JaxbHelper newInstance( Class<?>... classesToBeBound )
-      throws JAXBException
-  {
-    return new JaxbHelper( classesToBeBound );
-  }
+   /**
+    * Creates a new JAXBHelper instance.
+    *
+    * @param classesToBeBound a list of classes to be bound.
+    * @return the created JAXBHelper.
+    * @throws JAXBException if an error occurs.
+    */
+   public static JaxbHelper newInstance( List<Class<?>> classesToBeBound )
+       throws JAXBException
+   {
+     Class<?>[] classes = classesToBeBound.toArray( new Class[classesToBeBound.size()] );
+     return new JaxbHelper( classes );
+   }
 
 
-  /**
-   * Creates a JAXB context path (package name) for the specified classes.
-   *
-   * @param clazzes a list of classes.
-   * @return the JAXB context path.
-   */
-  public static String getContextPath( Class<?>... clazzes )
-  {
-    Set<String> uniqueCtx = new HashSet<String>();
-
-    StringBuilder ctxPath = new StringBuilder();
-
-    for ( Class<?> clazz : clazzes )
-    {
-      String ctx = clazz.getPackage().getName();
-      if ( !uniqueCtx.contains( ctx ) )
-      {
-        if ( ctxPath.length() != 0 )
-          ctxPath.append( ':' );
-
-        ctxPath.append( ctx );
-        uniqueCtx.add( ctx );
-      }
-    }
-    return ctxPath.toString();
-  }
+   /**
+    * Creates a new JAXBHelper instance.
+    *
+    * @param classesToBeBound a list of classes to be bound.
+    * @return the created JAXBHelper.
+    * @throws JAXBException if an error occurs.
+    */
+   public static JaxbHelper newInstance( Class<?>... classesToBeBound )
+       throws JAXBException
+   {
+     return new JaxbHelper( classesToBeBound );
+   }
 
 
-  /**
-   * Returns the schema namespace URI for the specified JAXB type. The URI
-   * can then be used to create a {@link QName} instance that is necessary
-   * to instantiate a {@link JAXBElement}.
-   *
-   * @param type a JAXB generated type.
-   * @return the namespace URI.
-   */
-  @SuppressWarnings("unchecked")
-  public static String getNamespaceUriForType( Class<?> type )
-  {
-    String pkgInfoFqcn = type.getPackage().getName() + ".package-info";
-    try
-    {
-      /*
-       * package-info.class is a special class generated by JAXB - it contains the schema namespace
-       * URI for all generated classes.
-       */
-      Class<?> pkgInfo = Class.forName( pkgInfoFqcn );
-      XmlSchema schema = pkgInfo.getAnnotation( XmlSchema.class );
-      return schema.namespace();
-    }
-    catch ( ClassNotFoundException e )
-    {
-      return null;
-    }
-  }
+   /**
+    * Creates a JAXB context path (package name) for the specified classes.
+    *
+    * @param clazzes a list of classes.
+    * @return the JAXB context path.
+    */
+   public static String getContextPath( Class<?>... clazzes )
+   {
+     Set<String> uniqueCtx = new HashSet<String>();
+
+     StringBuilder ctxPath = new StringBuilder();
+
+     for ( Class<?> clazz : clazzes )
+     {
+       String ctx = clazz.getPackage().getName();
+       if ( !uniqueCtx.contains( ctx ) )
+       {
+         if ( ctxPath.length() != 0 )
+           ctxPath.append( ':' );
+
+         ctxPath.append( ctx );
+         uniqueCtx.add( ctx );
+       }
+     }
+     return ctxPath.toString();
+   }
 
 
-  /**
-   * Unmarshals the contents of the specified reader. This method does not
-   * perform any validation of the processed data.
-   * <p/>
-   * This method should be used in cases when the generated class that
-   * represents the type of the root element IS annotated with a
-   * {@link XmlRootElement}. In this case there is no need to pass the type
-   * of the root element to the
-   * unmarshaller.
-   *
-   * @param reader a reader with data to unmarshal.
-   * @return the unmarshalled document tree.
-   * @throws JAXBException if an error occurs during unmarshalling.
-   * @see JAXBContext
-   */
-  @SuppressWarnings("unchecked")
-  public Object unmarshal( Reader reader )
-      throws JAXBException
-  {
-    return unmarshal( reader, null, null );
-  }
+   /**
+    * Returns the schema namespace URI for the specified JAXB type. The URI
+    * can then be used to create a {@link QName} instance that is necessary
+    * to instantiate a {@link JAXBElement}.
+    *
+    * @param type a JAXB generated type.
+    * @return the namespace URI.
+    */
+   @SuppressWarnings( "unchecked" )
+   public static String getNamespaceUriForType( Class<?> type )
+   {
+     String pkgInfoFqcn = type.getPackage().getName() + ".package-info";
+     try
+     {
+       /*
+        * package-info.class is a special class generated by JAXB - it contains the schema namespace
+        * URI for all generated classes.
+        */
+       Class<?> pkgInfo = Class.forName( pkgInfoFqcn );
+       XmlSchema schema = pkgInfo.getAnnotation( XmlSchema.class );
+       return schema.namespace();
+     }
+     catch ( ClassNotFoundException e )
+     {
+       return null;
+     }
+   }
 
 
-  /**
-   * Unmarshals the contents of the specified reader. This method does not
-   * perform any validation of the processed data.
-   * <p/>
-   * * This method should be used in cases when the generated class that
-   * represents the type of the root element IS NOT annotated with a
-   * {@link XmlRootElement}. In this case the type of the root element
-   * must be passed to the unmarshaller.
-   *
-   * @param reader a reader with data to unmarshal.
-   * @param rootElementType the type of the root element.
-   * @return the unmarshalled document tree.
-   * @throws JAXBException if an error occurs during unmarshalling.
-   * @see JAXBContext
-   */
-  @SuppressWarnings("unchecked")
-  public Object unmarshal( Reader reader, Class<?> rootElementType )
-      throws JAXBException
-  {
-    return unmarshal( reader, rootElementType, null );
-  }
+   /**
+    * Unmarshals the contents of the specified reader. This method does not
+    * perform any validation of the processed data.
+    * <p/>
+    * This method should be used in cases when the generated class that
+    * represents the type of the root element IS annotated with a
+    * {@link XmlRootElement}. In this case there is no need to pass the type
+    * of the root element to the
+    * unmarshaller.
+    *
+    * @param reader a reader with data to unmarshal.
+    * @return the unmarshalled document tree.
+    * @throws JAXBException if an error occurs during unmarshalling.
+    * @see JAXBContext
+    */
+   @SuppressWarnings( "unchecked" )
+   public Object unmarshal( Reader reader )
+       throws JAXBException
+   {
+     return unmarshal( reader, null, null );
+   }
 
 
-  /**
-   * Unmarshals the contents of the specified reader into a document tree
-   * of the specified type. If the validationSchema parameter is not null,
-   * then this method also validates the processed data.
-   * <p/>
-   * This method should be used in cases when the generated class that
-   * represents the type of the root element IS annotated with a
-   * {@link XmlRootElement}. In this case there is no need to pass the
-   * type of the root element to the unmarshaller.
-   *
-   * @param reader a reader with data to unmarshal.
-   * @param validationSchemaSource a source of the XSD validation schema.
-   * @return the unmarshalled document tree.
-   * @throws JAXBException if an error occurs during unmarshalling.
-   * @see JAXBContext
-   */
-  public Object unmarshal( Reader reader, Source validationSchemaSource )
-      throws JAXBException
-  {
-    return unmarshal( reader, null, validationSchemaSource );
-  }
+   /**
+    * Unmarshals the contents of the specified reader. This method does not
+    * perform any validation of the processed data.
+    * <p/>
+    * * This method should be used in cases when the generated class that
+    * represents the type of the root element IS NOT annotated with a
+    * {@link XmlRootElement}. In this case the type of the root element
+    * must be passed to the unmarshaller.
+    *
+    * @param reader          a reader with data to unmarshal.
+    * @param rootElementType the type of the root element.
+    * @return the unmarshalled document tree.
+    * @throws JAXBException if an error occurs during unmarshalling.
+    * @see JAXBContext
+    */
+   @SuppressWarnings( "unchecked" )
+   public Object unmarshal( Reader reader, Class<?> rootElementType )
+       throws JAXBException
+   {
+     return unmarshal( reader, rootElementType, null );
+   }
 
 
-  /**
-   * Unmarshals the contents of the specified reader into a document tree
-   * of the specified type. If the validationSchema parameter is not null,
-   * then this method also validates the processed data.
-   * <p/>
-   * This method should be used in cases when the generated class that
-   * represents the type of the root element IS NOT annotated with a
-   * {@link XmlRootElement}. In this case the type of the root element must
-   * be passed to the unmarshaller.
-   *
-   * @param reader a reader with data to unmarshal.
-   * @param rootElementType the type of the root element.
-   * @param validationSchemaSource a source of the XSD validation schema.
-   * @return the unmarshalled document tree.
-   * @throws JAXBException if an error occurs during unmarshalling.
-   * @see JAXBContext
-   */
-  public Object unmarshal( Reader reader, Class<?> rootElementType, Source validationSchemaSource )
-      throws JAXBException
-  {
-    Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-
-    if ( validationSchemaSource != null )
-    {
-      SchemaFactory schFact = SchemaFactory.newInstance( "http://www.w3.org/2001/XMLSchema" );
-      try
-      {
-        unmarshaller.setSchema( schFact.newSchema( validationSchemaSource ) );
-      }
-      catch ( SAXException e )
-      {
-        throw new JAXBException( "Error creating schema.", e );
-      }
-    }
-
-    Source source = new StreamSource( reader );
-
-    /*
-     * The following hack is used to get around JAXB unmarshaller returning
-     * a JAXBElement instance in cases when the root element class is not
-     * annotated with a XmlRootElement annotation and the type has to be
-     * passed to the unmarshalling method as a parameter.
-     * See http://weblogs.java.net/blog/kohsuke/archive/2006/03/why_does_jaxb_p.html
-     * for details.
-     */
-
-    Object result = rootElementType == null ?
-        unmarshaller.unmarshal( source ) : unmarshaller.unmarshal( source, rootElementType );
-
-    if ( result instanceof JAXBElement )
-    {
-      JAXBElement<?> element = (JAXBElement<?>) result;
-      result = element.getValue();
-    }
-
-    return result;
-  }
+   /**
+    * Unmarshals the contents of the specified reader into a document tree
+    * of the specified type. If the validationSchema parameter is not null,
+    * then this method also validates the processed data.
+    * <p/>
+    * This method should be used in cases when the generated class that
+    * represents the type of the root element IS annotated with a
+    * {@link XmlRootElement}. In this case there is no need to pass the
+    * type of the root element to the unmarshaller.
+    *
+    * @param reader                 a reader with data to unmarshal.
+    * @param validationSchemaSource a source of the XSD validation schema.
+    * @return the unmarshalled document tree.
+    * @throws JAXBException if an error occurs during unmarshalling.
+    * @see JAXBContext
+    */
+   public Object unmarshal( Reader reader, Source validationSchemaSource )
+       throws JAXBException
+   {
+     return unmarshal( reader, null, validationSchemaSource );
+   }
 
 
-  /**
-   * Marshals the specified content tree into the specified writer.
-   *
-   * @param content a content tree.
-   * @param writer a writer.
-   * @throws JAXBException if an error occurs unmarshalling the job list.
-   * @see JAXBContext
-   */
-  public void marshal( Object content, Writer writer )
-      throws JAXBException
-  {
-    marshal( content, writer, false );
-  }
+   /**
+    * Unmarshals the contents of the specified reader into a document tree
+    * of the specified type. If the validationSchema parameter is not null,
+    * then this method also validates the processed data.
+    * <p/>
+    * This method should be used in cases when the generated class that
+    * represents the type of the root element IS NOT annotated with a
+    * {@link XmlRootElement}. In this case the type of the root element must
+    * be passed to the unmarshaller.
+    *
+    * @param reader                 a reader with data to unmarshal.
+    * @param rootElementType        the type of the root element.
+    * @param validationSchemaSource a source of the XSD validation schema.
+    * @return the unmarshalled document tree.
+    * @throws JAXBException if an error occurs during unmarshalling.
+    * @see JAXBContext
+    */
+   public Object unmarshal( Reader reader, Class<?> rootElementType, Source validationSchemaSource )
+       throws JAXBException
+   {
+     Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+
+     if ( validationSchemaSource != null )
+     {
+       SchemaFactory schFact = SchemaFactory.newInstance( "http://www.w3.org/2001/XMLSchema" );
+       try
+       {
+         unmarshaller.setSchema( schFact.newSchema( validationSchemaSource ) );
+       }
+       catch ( SAXException e )
+       {
+         throw new JAXBException( "Error creating schema.", e );
+       }
+     }
+
+     Source source = new StreamSource( reader );
+
+     /*
+      * The following hack is used to get around JAXB unmarshaller returning
+      * a JAXBElement instance in cases when the root element class is not
+      * annotated with a XmlRootElement annotation and the type has to be
+      * passed to the unmarshalling method as a parameter.
+      * See http://weblogs.java.net/blog/kohsuke/archive/2006/03/why_does_jaxb_p.html
+      * for details.
+      */
+
+     Object result = rootElementType == null ?
+         unmarshaller.unmarshal( source ) : unmarshaller.unmarshal( source, rootElementType );
+
+     if ( result instanceof JAXBElement )
+     {
+       JAXBElement<?> element = (JAXBElement<?>) result;
+       result = element.getValue();
+     }
+
+     return result;
+   }
 
 
-  /**
-   * Marshals the specified content tree into the specified writer.
-   *
-   * @param content a content tree.
-   * @param writer a writer.
-   * @param asFragment a flag indicating if the created XML document is a fragment (e.g.
-   * it should not contain the XML preambule).
-   * @throws JAXBException if an error occurs unmarshalling the job list.
-   * @see JAXBContext
-   */
-  public void marshal( Object content, Writer writer, boolean asFragment )
-      throws JAXBException
-  {
-    Marshaller marshaller = jaxb.createMarshaller();
-    marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
-
-    if ( asFragment )
-      marshaller.setProperty( Marshaller.JAXB_FRAGMENT, Boolean.TRUE );
-
-    marshaller.marshal( content, writer );
-  }
+   /**
+    * Marshals the specified content tree into the specified writer.
+    *
+    * @param content a content tree.
+    * @param writer  a writer.
+    * @throws JAXBException if an error occurs unmarshalling the job list.
+    * @see JAXBContext
+    */
+   public void marshal( Object content, Writer writer )
+       throws JAXBException
+   {
+     marshal( content, writer, false );
+   }
 
 
-  /**
-   * Marshals the specified JAXB root element into the specified writer.
-   *
-   * @param rootElement a JAXB root element.
-   * @param writer a writer.
-   * @throws JAXBException if an error occurs unmarshalling the job list.
-   * @see JAXBContext
-   */
-  public void marshal( JAXBElement<?> rootElement, Writer writer )
-      throws JAXBException
-  {
-    marshal( rootElement, writer, false );
-  }
+   /**
+    * Marshals the specified content tree into the specified writer.
+    *
+    * @param content    a content tree.
+    * @param writer     a writer.
+    * @param asFragment a flag indicating if the created XML document is a fragment (e.g.
+    *                   it should not contain the XML preambule).
+    * @throws JAXBException if an error occurs unmarshalling the job list.
+    * @see JAXBContext
+    */
+   public void marshal( Object content, Writer writer, boolean asFragment )
+       throws JAXBException
+   {
+     Marshaller marshaller = jaxb.createMarshaller();
+     marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+
+     if ( asFragment )
+       marshaller.setProperty( Marshaller.JAXB_FRAGMENT, Boolean.TRUE );
+
+     marshaller.marshal( content, writer );
+   }
 
 
-  /**
-   * Marshals the specified JAXB root element into the specified writer.
-   *
-   * @param rootElement a JAXB root element.
-   * @param writer a writer.
-   * @param asFragment a flag indicating if the created XML document is a fragment (e.g.
-   * it should not contain the XML preambule).
-   * @throws JAXBException if an error occurs unmarshalling the job list.
-   * @see JAXBContext
-   */
-  public void marshal( JAXBElement<?> rootElement, Writer writer, boolean asFragment )
-      throws JAXBException
-  {
-    Marshaller marshaller = jaxb.createMarshaller();
-    marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
-
-    if ( asFragment )
-      marshaller.setProperty( Marshaller.JAXB_FRAGMENT, Boolean.TRUE );
-
-    marshaller.marshal( rootElement, writer );
-  }
+   /**
+    * Marshals the specified JAXB root element into the specified writer.
+    *
+    * @param rootElement a JAXB root element.
+    * @param writer      a writer.
+    * @throws JAXBException if an error occurs unmarshalling the job list.
+    * @see JAXBContext
+    */
+   public void marshal( JAXBElement<?> rootElement, Writer writer )
+       throws JAXBException
+   {
+     marshal( rootElement, writer, false );
+   }
 
 
-  /**
-   * Marshals the specified document tree into a string.
-   *
-   * @param content a content tree.
-   * @return the marshalled data as a string.
-   * @throws JAXBException if an error occurs unmarshalling the job list.
-   */
-  public String marshal( Object content )
-      throws JAXBException
-  {
-    return marshal( content, false );
-  }
+   /**
+    * Marshals the specified JAXB root element into the specified writer.
+    *
+    * @param rootElement a JAXB root element.
+    * @param writer      a writer.
+    * @param asFragment  a flag indicating if the created XML document is a fragment (e.g.
+    *                    it should not contain the XML preambule).
+    * @throws JAXBException if an error occurs unmarshalling the job list.
+    * @see JAXBContext
+    */
+   public void marshal( JAXBElement<?> rootElement, Writer writer, boolean asFragment )
+       throws JAXBException
+   {
+     Marshaller marshaller = jaxb.createMarshaller();
+     marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+
+     if ( asFragment )
+       marshaller.setProperty( Marshaller.JAXB_FRAGMENT, Boolean.TRUE );
+
+     marshaller.marshal( rootElement, writer );
+   }
 
 
-  /**
-   * Marshals the specified document tree into a string.
-   *
-   * @param content a content tree.
-   * @param asFragment a flag indicating if the created XML document is a fragment (e.g.
-   * it should not contain the XML preambule).
-   * @return the marshalled data as a string.
-   * @throws JAXBException if an error occurs unmarshalling the job list.
-   */
-  public String marshal( Object content, boolean asFragment )
-      throws JAXBException
-  {
-    StringWriter writer = new StringWriter();
-    try
-    {
-      marshal( content, writer, asFragment );
-      return writer.toString();
-    }
-    finally
-    {
-      try
-      {
-        writer.close();
-
-      }
-      catch ( IOException e )
-      {
-        // should never happen
-        throw new JAXBException( "Error closing string writer: " + writer );
-      }
-    }
-  }
+   /**
+    * Marshals the specified document tree into a string.
+    *
+    * @param content a content tree.
+    * @return the marshalled data as a string.
+    * @throws JAXBException if an error occurs unmarshalling the job list.
+    */
+   public String marshal( Object content )
+       throws JAXBException
+   {
+     return marshal( content, false );
+   }
 
 
-  /**
-   * Validates the contents of the specified document tree.
-   *
-   * @param jaxbElement a root document tree element.
-   * @param validationSchemaSource a source of the XSD validation schema.
-   * @throws JAXBException if a validation error occurs.
-   * @see JAXBContext
-   */
-  public void validate( Object jaxbElement, Source validationSchemaSource )
-      throws JAXBException
-  {
-    Marshaller marshaller = jaxb.createMarshaller();
-    marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE );
+   /**
+    * Marshals the specified document tree into a string.
+    *
+    * @param content    a content tree.
+    * @param asFragment a flag indicating if the created XML document is a fragment (e.g.
+    *                   it should not contain the XML preambule).
+    * @return the marshalled data as a string.
+    * @throws JAXBException if an error occurs unmarshalling the job list.
+    */
+   public String marshal( Object content, boolean asFragment )
+       throws JAXBException
+   {
+     StringWriter writer = new StringWriter();
+     try
+     {
+       marshal( content, writer, asFragment );
+       return writer.toString();
+     }
+     finally
+     {
+       try
+       {
+         writer.close();
 
-    if ( validationSchemaSource != null )
-    {
-      SchemaFactory schFact = SchemaFactory.newInstance( "http://www.w3.org/2001/XMLSchema" );
-      try
-      {
-        marshaller.setSchema( schFact.newSchema( validationSchemaSource ) );
-      }
-      catch ( SAXException e )
-      {
-        throw new JAXBException( "Error creating schema.", e );
-      }
-    }
-
-    // throws JAXBException in case of a validation error, DefaultHandler ignores all SAX events
-    marshaller.marshal( jaxbElement, new DefaultHandler() );
-  }
-
-
-  /**
-   * Creates a deep-copy of the specified JAXB content tree.
-   *
-   * @param content a the root of the content tree to deep-copy.
-   * @param <T> the content tree type.
-   * @return the deep copy of the specified content tree.
-   * @throws JAXBException if an error occurs.
-   */
-  @SuppressWarnings("unchecked")
-  public <T> T deepCopy( T content )
-      throws JAXBException
-  {
-    if ( content == null )
-      return null;
-
-    QName elementName = getElementName( content );
-    if ( elementName == null )
-    {
-      // wrap the content in JAXBElement
-      JAXBElement<T> jaxbElement = wrapInJAXBElement( content, "deepCopyRoot" );  // auxiliary root element
-      Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-      JAXBSource source = new JAXBSource( jaxb, jaxbElement );
-      return ( (JAXBElement<T>) unmarshaller.unmarshal( source, content.getClass() ) ).getValue();
-    }
-    else
-    {
-      if ( content instanceof JAXBElement )
-      {
-        JAXBElement<T> jaxbElement = (JAXBElement<T>) content;
-        Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-        JAXBSource source = new JAXBSource( jaxb, jaxbElement );
-        return ( (JAXBElement<T>) unmarshaller.unmarshal( source, jaxbElement.getValue().getClass() ) ).getValue();
-      }
-      else
-      {
-        JAXBElement<T> jaxbElement = wrapInJAXBElement( content, "deepCopyRoot" );  // auxiliary root element
-        Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-        JAXBSource source = new JAXBSource( jaxb, jaxbElement );
-        return (T) unmarshaller.unmarshal( source );
-      }
-    }
-  }
+       }
+       catch ( IOException e )
+       {
+         // should never happen
+         throw new JAXBException( "Error closing string writer: " + writer );
+       }
+     }
+   }
 
 
-  /**
-   * Returns the {@link JAXBElement} wrapping the specified value.
-   *
-   * @param value a value.
-   * @param elementName the element name.
-   * @param <T> the value type.
-   * @return the {@link JAXBElement} instance.
-   */
-  @SuppressWarnings("unchecked")
-  public <T> JAXBElement<T> wrapInJAXBElement( T value, String elementName )
-  {
-    String namespaceUri = getNamespaceUriForType( value.getClass() );
-    QName qName = new QName( namespaceUri, elementName );
+   /**
+    * Validates the contents of the specified document tree.
+    *
+    * @param jaxbElement            a root document tree element.
+    * @param validationSchemaSource a source of the XSD validation schema.
+    * @throws JAXBException if a validation error occurs.
+    * @see JAXBContext
+    */
+   public void validate( Object jaxbElement, Source validationSchemaSource )
+       throws JAXBException
+   {
+     Marshaller marshaller = jaxb.createMarshaller();
+     marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE );
 
-    return new JAXBElement<T>( qName, (Class<T>) value.getClass(), value );
-  }
+     if ( validationSchemaSource != null )
+     {
+       SchemaFactory schFact = SchemaFactory.newInstance( "http://www.w3.org/2001/XMLSchema" );
+       try
+       {
+         marshaller.setSchema( schFact.newSchema( validationSchemaSource ) );
+       }
+       catch ( SAXException e )
+       {
+         throw new JAXBException( "Error creating schema.", e );
+       }
+     }
+
+     // throws JAXBException in case of a validation error, DefaultHandler ignores all SAX events
+     marshaller.marshal( jaxbElement, new DefaultHandler() );
+   }
 
 
-  /**
-   * Returns the {@link QName} of the specified content tree, null if the QName cannot be determined.
-   * This method returns a non-null value iff the specified content tree is annotated with the
-   * {@link XmlRootElement} annotation, or it is an {@link JAXBElement} instance.
-   *
-   * @param content a content tree.
-   * @return the {@link QName} of the specified content tree, null if the QName cannot be determined.
-   */
-  public QName getElementName( Object content )
-  {
-    JAXBIntrospector introspector = jaxb.createJAXBIntrospector();
-    return introspector.getElementName( content );
-  }
-}
+   /**
+    * Creates a deep-copy of the specified JAXB content tree.
+    *
+    * @param content a the root of the content tree to deep-copy.
+    * @param <T>     the content tree type.
+    * @return the deep copy of the specified content tree.
+    * @throws JAXBException if an error occurs.
+    */
+   @SuppressWarnings( "unchecked" )
+   public <T> T deepCopy( T content )
+       throws JAXBException
+   {
+     if ( content == null )
+       return null;
+
+     QName elementName = getElementName( content );
+     if ( elementName == null )
+     {
+       // wrap the content in JAXBElement
+       JAXBElement<T> jaxbElement = wrapInJAXBElement( content, "deepCopyRoot" );  // auxiliary root element
+       Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+       JAXBSource source = new JAXBSource( jaxb, jaxbElement );
+       return ( (JAXBElement<T>) unmarshaller.unmarshal( source, content.getClass() ) ).getValue();
+     }
+     else
+     {
+       if ( content instanceof JAXBElement )
+       {
+         JAXBElement<T> jaxbElement = (JAXBElement<T>) content;
+         Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+         JAXBSource source = new JAXBSource( jaxb, jaxbElement );
+         return ( (JAXBElement<T>) unmarshaller.unmarshal( source, jaxbElement.getValue().getClass() ) ).getValue();
+       }
+       else
+       {
+         JAXBElement<T> jaxbElement = wrapInJAXBElement( content, "deepCopyRoot" );  // auxiliary root element
+         Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+         JAXBSource source = new JAXBSource( jaxb, jaxbElement );
+         return (T) unmarshaller.unmarshal( source );
+       }
+     }
+   }
+
+
+   /**
+    * Returns the {@link JAXBElement} wrapping the specified value.
+    *
+    * @param value       a value.
+    * @param elementName the element name.
+    * @param <T>         the value type.
+    * @return the {@link JAXBElement} instance.
+    */
+   @SuppressWarnings( "unchecked" )
+   public <T> JAXBElement<T> wrapInJAXBElement( T value, String elementName )
+   {
+     String namespaceUri = getNamespaceUriForType( value.getClass() );
+     QName qName = new QName( namespaceUri, elementName );
+
+     return new JAXBElement<T>( qName, (Class<T>) value.getClass(), value );
+   }
+
+
+   /**
+    * Returns the {@link QName} of the specified content tree, null if the QName cannot be determined.
+    * This method returns a non-null value iff the specified content tree is annotated with the
+    * {@link XmlRootElement} annotation, or it is an {@link JAXBElement} instance.
+    *
+    * @param content a content tree.
+    * @return the {@link QName} of the specified content tree, null if the QName cannot be determined.
+    */
+   public QName getElementName( Object content )
+   {
+     JAXBIntrospector introspector = jaxb.createJAXBIntrospector();
+     return introspector.getElementName( content );
+   }
+ }
