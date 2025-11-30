@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
@@ -7,10 +7,11 @@ package com.quartzdesk.executor.common.spring.metadata;
 
 import com.quartzdesk.executor.common.io.IOUtils;
 import com.quartzdesk.executor.common.text.UTF8Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
+import org.springframework.lang.NonNull;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -56,8 +57,7 @@ public class BuildPropertiesFactoryBean
     return moduleName;
   }
 
-  @Required
-  public void setModuleName( String moduleName )
+  public void setModuleName( @NonNull String moduleName )
   {
     this.moduleName = moduleName;
   }

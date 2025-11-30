@@ -1,30 +1,29 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
 package com.quartzdesk.executor.dao.schema;
 
+import com.quartzdesk.executor.common.CommonConst;
 import com.quartzdesk.executor.dao.DaoException;
 import com.quartzdesk.executor.domain.convert.VersionComparator;
 import com.quartzdesk.executor.domain.convert.VersionConverter;
 import com.quartzdesk.executor.domain.model.common.Version;
 import com.quartzdesk.executor.domain.model.db.SchemaUpdate;
 
-import com.quartzdesk.executor.common.CommonConst;
-
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.lang.NonNull;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,35 +52,37 @@ public class DatabaseSchemaManager
   private Version productVersion;
 
   private DatabaseSchemaDao databaseSchemaDao;
+
   private String initScriptsRoot;
+
   private String upgradeScriptsRoot;
 
-  @Required
-  public void setTransactionManager( PlatformTransactionManager transactionManager )
+
+  public void setTransactionManager( @NonNull PlatformTransactionManager transactionManager )
   {
     this.transactionManager = transactionManager;
   }
 
-  @Required
-  public void setProductVersion( Version productVersion )
+
+  public void setProductVersion( @NonNull Version productVersion )
   {
     this.productVersion = productVersion;
   }
 
-  @Required
-  public void setDatabaseSchemaDao( DatabaseSchemaDao databaseSchemaDao )
+
+  public void setDatabaseSchemaDao( @NonNull DatabaseSchemaDao databaseSchemaDao )
   {
     this.databaseSchemaDao = databaseSchemaDao;
   }
 
-  @Required
-  public void setInitScriptsRoot( String initScriptsRoot )
+
+  public void setInitScriptsRoot( @NonNull String initScriptsRoot )
   {
     this.initScriptsRoot = initScriptsRoot;
   }
 
-  @Required
-  public void setUpgradeScriptsRoot( String upgradeScriptsRoot )
+
+  public void setUpgradeScriptsRoot( @NonNull String upgradeScriptsRoot )
   {
     this.upgradeScriptsRoot = upgradeScriptsRoot;
   }
@@ -117,11 +118,9 @@ public class DatabaseSchemaManager
           List<URL> scriptUrls = getInitScriptUrls();
 
           log.info( "Initializing empty database schema to {} by applying SQL scripts: {}{}",
-              new Object[] {
-                  VersionConverter.INSTANCE.toString( desiredSchemaVersion ),
-                  CommonConst.NL,
-                  dumpScriptList( scriptUrls )
-              } );
+              VersionConverter.INSTANCE.toString( desiredSchemaVersion ),
+              CommonConst.NL,
+              dumpScriptList( scriptUrls ) );
 
           databaseSchemaDao.initializeOrUpgradeSchema( scriptUrls, desiredSchemaVersion );
         }
@@ -153,12 +152,10 @@ public class DatabaseSchemaManager
             {
               log.info(
                   "Formally upgrading database schema {} -> {} because no SQL upgrade scripts are available for {} -> {}",
-                  new Object[] {
-                      VersionConverter.INSTANCE.toString( currentSchemaVersion ),
-                      VersionConverter.INSTANCE.toString( desiredSchemaVersion ),
-                      VersionConverter.INSTANCE.toString( currentSchemaVersion ),
-                      VersionConverter.INSTANCE.toString( desiredSchemaVersion )
-                  } );
+                  VersionConverter.INSTANCE.toString( currentSchemaVersion ),
+                  VersionConverter.INSTANCE.toString( desiredSchemaVersion ),
+                  VersionConverter.INSTANCE.toString( currentSchemaVersion ),
+                  VersionConverter.INSTANCE.toString( desiredSchemaVersion ) );
 
               // formal upgrade of the QuartzDesk schema version to the current QuartzDesk version
               SchemaUpdate schemaUpdate = new SchemaUpdate()
@@ -172,11 +169,10 @@ public class DatabaseSchemaManager
             else
             {
               log.info( "Upgrading database schema {} -> {} by applying SQL upgrade scripts: {}{}",
-                  new Object[] {
-                      VersionConverter.INSTANCE.toString( currentSchemaVersion ),
-                      VersionConverter.INSTANCE.toString( desiredSchemaVersion ),
-                      CommonConst.NL,
-                      dumpScriptList( scriptUrls )} );
+                  VersionConverter.INSTANCE.toString( currentSchemaVersion ),
+                  VersionConverter.INSTANCE.toString( desiredSchemaVersion ),
+                  CommonConst.NL,
+                  dumpScriptList( scriptUrls ) );
 
               // applies scripts and inserts a new schema update record
               databaseSchemaDao.initializeOrUpgradeSchema( scriptUrls, desiredSchemaVersion );
@@ -203,7 +199,7 @@ public class DatabaseSchemaManager
     }
     else
     {
-      // the current database version is higher then the agent version (someone must have upgraded
+      // the current database version is higher than the agent version (someone must have upgraded
       // the database without upgrading this agent)
       throw new DaoException(
           "Detected QuartzDesk schema version (" +

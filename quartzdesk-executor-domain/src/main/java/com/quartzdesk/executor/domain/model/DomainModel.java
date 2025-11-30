@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
 package com.quartzdesk.executor.domain.model;
 
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 
 /**

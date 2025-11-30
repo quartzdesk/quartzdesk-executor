@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
@@ -35,7 +35,7 @@ public class ApplicationContextProvider
   public void setApplicationContext( ApplicationContext appCtx )
   {
     /*
-     * Little bit ugly assignment to a static field from a non-static context,
+     * An ugly assignment to a static field from a non-static context,
      * but there is no other way...
      */
     ApplicationContextProvider.appCtx = appCtx;

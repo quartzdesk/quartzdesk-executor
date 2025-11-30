@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2015-2020 QuartzDesk.com.
+  ~ Copyright (c) 2015-2025 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
@@ -33,7 +33,7 @@
       <column name="maintenance" not-null="true"/>
     </property>
 
-    <property name="appliedAt" type="QD_TIMESTAMP_WITH_TZ">
+    <property name="appliedAt" type="QD_CALENDAR">
       <column name="applied_at" not-null="true"/>
     </property>
 

@@ -1,25 +1,21 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
 package com.quartzdesk.executor.dao.schema;
 
+import com.quartzdesk.executor.common.db.DatabaseScriptExecutor;
+import com.quartzdesk.executor.common.db.DbUtils;
 import com.quartzdesk.executor.dao.AbstractDao;
 import com.quartzdesk.executor.domain.model.common.Version;
 import com.quartzdesk.executor.domain.model.db.SchemaUpdate;
 
-import com.quartzdesk.executor.common.db.DatabaseScriptExecutor;
-
-import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.jdbc.Work;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -32,6 +28,13 @@ public class DatabaseSchemaDao
   private static final Logger log = LoggerFactory.getLogger( DatabaseSchemaDao.class );
 
   /**
+   * SQL query to return the list of schema updates sorted by their IDs in the descending order.
+   */
+  private static final String SQL_SELECT_SCHEMA_UPDATES =
+      "SELECT * FROM qd_schema_update u ORDER BY u.schema_update_id DESC";
+
+
+  /**
    * Returns the {@link SchemaUpdate} instance with the specified ID, null if
    * no such instance exists.
    *
@@ -42,7 +45,32 @@ public class DatabaseSchemaDao
   public SchemaUpdate getSchemaUpdate( Long schemaUpdateId )
   {
     Session session = getSessionFactory().getCurrentSession();
-    return (SchemaUpdate) session.get( SchemaUpdate.class, schemaUpdateId );
+    return session.get( SchemaUpdate.class, schemaUpdateId );
+  }
+
+
+  /**
+   * Returns the list of {@link SchemaUpdate} instances representing all schema updates. The list is sorted in
+   * descending order by the schema update ID. I.e. the most recent update is first.
+   *
+   * @return the list of {@link SchemaUpdate} instances representing all schema updates.
+   */
+  public List<SchemaUpdate> getSchemaUpdates()
+  {
+    // WE NEED TO USE AN SQL QUERY RATHER THAN AN HQL QUERY BECAUSE SOME OF THE TABLE COLUMNS (LICENSE_SN AND
+    // LICENSE_TYPE) MAY NOT EXIST (PRIOR TO 3.0.0) AND THAT WOULD TRIGGER AN ERROR IN HIBERNATE
+
+    return getJdbcTemplate().query( SQL_SELECT_SCHEMA_UPDATES,
+        ( rs, rowNum ) -> {
+          SchemaUpdate schemaUpdate = new SchemaUpdate()
+              .withId( rs.getLong( "schema_update_id" ) )
+              .withMajor( rs.getInt( "major" ) )
+              .withMinor( rs.getInt( "minor" ) )
+              .withMaintenance( rs.getInt( "maintenance" ) )
+              .withAppliedAt( DbUtils.getTimestamp( rs, "applied_at" ) );
+
+          return schemaUpdate;
+        } );
   }
 
 
@@ -64,28 +92,10 @@ public class DatabaseSchemaDao
       // table qd_schema_update exists; get the latest schema update record from the qd_schema_update table
       log.debug( "Schema update history table 'qd_schema_update' exists." );
 
-      Query query = session.createQuery( "from SchemaUpdate u order by u.id desc" );
-      query.setMaxResults( 1 );  // only the most recent record
+      List<SchemaUpdate> schemaUpdates = getSchemaUpdates();
 
-      SchemaUpdate schemaUpdate = (SchemaUpdate) query.uniqueResult();
-
-      if ( schemaUpdate == null )
-      {
-        // pre 1.1.2 QuartzDesk versions did not populate the qd_schema_update table so we initialize it with 0.0.0
-        schemaUpdate = new SchemaUpdate()
-            .withMajor( 0 )
-            .withMinor( 0 )
-            .withMaintenance( 0 )
-            .withAppliedAt( Calendar.getInstance() );
-
-        insertSchemaUpdate( schemaUpdate );
-
-        return schemaUpdate;
-      }
-      else
-      {
-        return schemaUpdate;
-      }
+      // null if no records found, otherwise the first record (the most recent record)
+      return schemaUpdates.isEmpty() ? null : schemaUpdates.get( 0 );
     }
     else
     {
@@ -118,25 +128,19 @@ public class DatabaseSchemaDao
   public void initializeOrUpgradeSchema( final List<URL> scriptUrls, final Version schemaVersion )
   {
     Session session = getSessionFactory().getCurrentSession();
-    session.doWork( new Work()
-    {
-      @Override
-      public void execute( Connection connection )
-          throws SQLException
-      {
-        DatabaseScriptExecutor scriptExecutor = new DatabaseScriptExecutor();
-        scriptExecutor.addScriptUrls( scriptUrls );
+    session.doWork( connection -> {
+      DatabaseScriptExecutor scriptExecutor = new DatabaseScriptExecutor();
+      scriptExecutor.addScriptUrls( scriptUrls );
 
-        scriptExecutor.executeScripts( connection );
+      scriptExecutor.executeScripts( connection );
 
-        SchemaUpdate schemaUpdate = new SchemaUpdate()
-            .withMajor( schemaVersion.getMajor() )
-            .withMinor( schemaVersion.getMinor() )
-            .withMaintenance( schemaVersion.getMaintenance() )
-            .withAppliedAt( Calendar.getInstance() );
+      SchemaUpdate schemaUpdate = new SchemaUpdate()
+          .withMajor( schemaVersion.getMajor() )
+          .withMinor( schemaVersion.getMinor() )
+          .withMaintenance( schemaVersion.getMaintenance() )
+          .withAppliedAt( Calendar.getInstance() );
 
-        insertSchemaUpdate( schemaUpdate );
-      }
+      insertSchemaUpdate( schemaUpdate );
     } );
   }
 }

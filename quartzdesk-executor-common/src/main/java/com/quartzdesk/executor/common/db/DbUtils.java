@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Various DB related utility methods.
@@ -37,7 +38,7 @@ public final class DbUtils
    * Maps sequence names onto selects used to obtain the next sequence value.
    */
   private static final Map<String, String> SEQ_QUERY_CACHE =
-      Collections.synchronizedMap( new HashMap<String, String>() );
+      Collections.synchronizedMap( new HashMap<>() );
 
 
   /**
@@ -298,6 +299,48 @@ public final class DbUtils
   {
     java.sql.Date v = res.getDate( name );
     return res.wasNull() ? null : new Date( v.getTime() );
+  }
+
+
+  /**
+   * Returns the {@link Calendar} representing the timestamp value from the specified result set column. The returned
+   * calendar uses the default time zone.
+   *
+   * @param res        a result set.
+   * @param columnName a column name.
+   * @return the {@link Calendar} instance, or null if the value is null.
+   * @throws SQLException if a DB error occurs.
+   */
+  public static Calendar getTimestamp( ResultSet res, String columnName )
+      throws SQLException
+  {
+    return getTimestamp( res, columnName, TimeZone.getDefault() );
+  }
+
+
+  /**
+   * Returns the {@link Calendar} representing the timestamp value from the specified result set column. The returned
+   * calendar uses the specified time-zone.
+   *
+   * @param res        a result set.
+   * @param columnName a column name.
+   * @return the {@link Calendar} instance, or null if the value is null.
+   * @throws SQLException if a DB error occurs.
+   */
+  public static Calendar getTimestamp( ResultSet res, String columnName, TimeZone timeZone )
+      throws SQLException
+  {
+    Calendar calendar = DateTimeUtils.createResetCalendar( timeZone );
+    Timestamp timestamp = res.getTimestamp( columnName, calendar );
+    if ( res.wasNull() )
+    {
+      return null;
+    }
+    else
+    {
+      calendar.setTime( timestamp );
+      return calendar;
+    }
   }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
@@ -8,12 +8,13 @@ package com.quartzdesk.executor.dao;
 import com.quartzdesk.executor.common.db.DbUtils;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.jdbc.Work;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.lang.NonNull;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -27,24 +28,36 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Common base-class for all DAO classes.
  */
 public abstract class AbstractDao
-    extends HibernateDaoSupport
 {
   private static final Logger log = LoggerFactory.getLogger( AbstractDao.class );
+
+  private SessionFactory sessionFactory;
 
   private JdbcTemplate jdbcTemplate;
 
 
   /**
    * Set the Hibernate SessionFactory to be used by this DAO.
-   * Will automatically create a HibernateTemplate for the given SessionFactory.
    *
-   * @see #createHibernateTemplate
-   * @see #setHibernateTemplate
+   * @param dataSource a data source.
    */
-  @Required
-  public final void setDataSource( DataSource dataSource )
+  @Autowired
+  public final void setDataSource( @NonNull DataSource dataSource )
   {
     jdbcTemplate = new JdbcTemplate( dataSource );
+  }
+
+
+  public SessionFactory getSessionFactory()
+  {
+    return sessionFactory;
+  }
+
+
+  @Autowired
+  public void setSessionFactory( @NonNull SessionFactory sessionFactory )
+  {
+    this.sessionFactory = sessionFactory;
   }
 
 
@@ -66,7 +79,7 @@ public abstract class AbstractDao
    */
   public void initialize( Object proxy )
   {
-    getHibernateTemplate().initialize( proxy );
+    getSessionFactory().getCurrentSession().refresh( proxy );
   }
 
 

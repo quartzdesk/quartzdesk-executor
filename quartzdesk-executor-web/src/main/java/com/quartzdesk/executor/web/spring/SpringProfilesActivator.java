@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
@@ -33,10 +33,8 @@ import java.util.Properties;
  * <li>mssql</li>
  * <li>mysql</li>
  * <li>mysql_innodb</li>
- * <li>oracle8</li>
- * <li>oracle9</li>
- * <li>postgres81</li>
- * <li>postgres82</li>
+ * <li>oracle</li>
+ * <li>postgresql</li>
  * </ul>
  */
 public class SpringProfilesActivator

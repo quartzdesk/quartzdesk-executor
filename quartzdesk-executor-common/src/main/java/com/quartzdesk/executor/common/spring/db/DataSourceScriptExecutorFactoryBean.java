@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
@@ -10,9 +10,9 @@ import com.quartzdesk.executor.common.db.DbUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.Resource;
+import org.springframework.lang.NonNull;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -37,8 +37,7 @@ public class DataSourceScriptExecutorFactoryBean
     return dataSource;
   }
 
-  @Required
-  public void setDataSource( DataSource dataSource )
+  public void setDataSource( @NonNull DataSource dataSource )
   {
     this.dataSource = dataSource;
   }
@@ -49,8 +48,7 @@ public class DataSourceScriptExecutorFactoryBean
     return scripts;
   }
 
-  @Required
-  public void setScripts( Resource[] scripts )
+  public void setScripts( @NonNull Resource[] scripts )
   {
     this.scripts = scripts;
   }

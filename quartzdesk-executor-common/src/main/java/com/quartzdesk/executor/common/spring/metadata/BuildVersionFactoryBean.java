@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 QuartzDesk.com.
+ * Copyright (c) 2015-2025 QuartzDesk.com.
  * Licensed under the MIT license (https://opensource.org/licenses/MIT).
  */
 
@@ -9,8 +9,8 @@ import com.quartzdesk.executor.common.type.Version;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
+import org.springframework.lang.NonNull;
 
 import java.util.Map;
 
@@ -33,8 +33,7 @@ public class BuildVersionFactoryBean
     return buildProperties;
   }
 
-  @Required
-  public void setBuildProperties( Map<String, String> buildProperties )
+  public void setBuildProperties( @NonNull Map<String, String> buildProperties )
   {
     this.buildProperties = buildProperties;
   }

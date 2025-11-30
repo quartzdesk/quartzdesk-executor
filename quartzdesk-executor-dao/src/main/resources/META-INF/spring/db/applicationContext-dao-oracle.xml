@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright (c) 2015-2020 QuartzDesk.com.
+  ~ Copyright (c) 2015-2025 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
@@ -10,14 +10,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
-       profile="postgres82">
+       profile="oracle">
 
   <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
     <property name="ignoreUnresolvablePlaceholders" value="false"/>
     <property name="ignoreResourceNotFound" value="false"/>
     <property name="locations">
       <list>
-        <value>classpath:META-INF/spring/db/dao-postgres82.properties</value>
+        <value>classpath:META-INF/spring/db/dao-oracle.properties</value>
       </list>
     </property>
   </bean>
@@ -32,7 +32,7 @@
         p:transactionManager-ref="transactionManager"
         p:databaseSchemaDao-ref="databaseSchemaDao"
         p:productVersion-ref="productVersion"
-        p:initScriptsRoot="/META-INF/db/quartzdesk-executor/init/postgres82"
-        p:upgradeScriptsRoot="/META-INF/db/quartzdesk-executor/upgrade/postgres82"/>
+        p:initScriptsRoot="/META-INF/db/quartzdesk-executor/init/oracle9"
+        p:upgradeScriptsRoot="/META-INF/db/quartzdesk-executor/upgrade/oracle9"/>
 
 </beans>

@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.quartzdesk-executor</groupId>
     <artifactId>quartzdesk-executor-pom</artifactId>
-    <version>5.0.2</version>
+    <version>6.0.0-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -37,12 +37,25 @@
     </dependency>
 
 
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+
     <!--
-      Required at compile time and runtime to support various JAXB2 plugin features.
+      Compile time dependency used in case the generated JAXB2 artifacts use either of the following
+      JAXB2 basics plugins:
+        -Xequals
+        -XhashCode
+        -Xmerge
+        -XtoString
+        -Xcopyable
     -->
     <dependency>
-      <groupId>org.jvnet.jaxb2_commons</groupId>
-      <artifactId>jaxb2-basics-runtime</artifactId>
+      <groupId>org.jvnet.jaxb</groupId>
+      <artifactId>jaxb-plugins-runtime</artifactId>
       <scope>compile</scope>
     </dependency>
 
@@ -72,9 +85,10 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.jvnet.jaxb2.maven2</groupId>
-        <artifactId>maven-jaxb2-plugin</artifactId>
+
+<plugin>
+        <groupId>org.jvnet.jaxb</groupId>
+        <artifactId>jaxb-maven-plugin</artifactId>
         <executions>
           <execution>
             <goals>
@@ -84,43 +98,53 @@
             <configuration>
               <args>
                 <!--
+                  Do not generate package-info.java.
+                -->
+                <arg>-npa</arg>
+
+                <!--
                   Get methods for boolean values.
                 -->
                 <arg>-Xboolean-getter</arg>
+
                 <!--
                   Fluent API support ("with" setters).
                 -->
                 <arg>-Xfluent-api</arg>
+
+                <!--
+                  Set methods for collection values.
+                -->
+                <arg>-Xsetters</arg>
+                <arg>-Xsetters-mode=direct</arg>
+
                 <!--
                   Support for deep-copying.
-                  See http://confluence.highsource.org/display/J2B/Copyable+plugin
                 -->
                 <arg>-Xcopyable</arg>
+
                 <!--
                   Support for equals.
-                  See http://confluence.highsource.org/display/J2B/Equals+plugin
                 -->
                 <arg>-Xequals</arg>
 
                 <!--
                   Support for hashCode.
-                  See http://confluence.highsource.org/display/J2B/HashCode+plugin
+
+                  Commented out to prevent StackOverflowErrors on WAS. These errors are produced
+                  when Hibernate flushes the session. During the flushing Hibernate invokes the
+                  hashCode method and this method invoked on a SchedulerConnection triggers the error
+                  due to cycles between Connection and ConnectionFolder objects (Connection references
+                  a ConnectionFolder and ConnectionFolder contains a list of Connection objects).
                 -->
                 <!--<arg>-XhashCode</arg>-->
 
                 <!--
                   Support for toString.
-                  See http://confluence.highsource.org/display/J2B/ToString+plugin
                 -->
                 <arg>-XtoString</arg>
-
-                <!--
-                  Support for collection setters.
-                  See https://github.com/highsource/jaxb2-basics/wiki/JAXB2-Setters-Plugin
-                -->
-                <arg>-Xsetters</arg>
-                <arg>-Xsetters-mode=direct</arg>
               </args>
+
               <extension>true</extension>
               <verbose>true</verbose>
 
@@ -129,6 +153,9 @@
                 are imported.
               -->
               <strict>false</strict>
+
+              <!-- Do not generate package-info.java -->
+              <packageLevelAnnotations>false</packageLevelAnnotations>
 
               <bindings>
                 <binding>
@@ -151,6 +178,14 @@
                   </fileset>
                 </schema>
               </schemas>
+
+              <plugins>
+                <plugin>
+                  <groupId>org.jvnet.jaxb</groupId>
+                  <artifactId>jaxb-plugins</artifactId>
+                  <version>${org.jvnet.jaxb.jaxb-maven-plugin.version}</version>
+                </plugin>
+             </plugins>
             </configuration>
           </execution>
         </executions>

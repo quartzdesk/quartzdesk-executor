@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright (c) 2015-2020 QuartzDesk.com.
+  ~ Copyright (c) 2015-2025 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
@@ -22,10 +22,8 @@
   <import resource="classpath:META-INF/spring/db/applicationContext-dao-mssql.xml"/>
   <import resource="classpath:META-INF/spring/db/applicationContext-dao-mysql.xml"/>
   <import resource="classpath:META-INF/spring/db/applicationContext-dao-mysql_innodb.xml"/>
-  <import resource="classpath:META-INF/spring/db/applicationContext-dao-oracle8.xml"/>
-  <import resource="classpath:META-INF/spring/db/applicationContext-dao-oracle9.xml"/>
-  <import resource="classpath:META-INF/spring/db/applicationContext-dao-postgres81.xml"/>
-  <import resource="classpath:META-INF/spring/db/applicationContext-dao-postgres82.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-oracle.xml"/>
+  <import resource="classpath:META-INF/spring/db/applicationContext-dao-postgresql.xml"/>
 
 
   <!--
@@ -63,24 +61,33 @@
     <property name="hibernateProperties">
       <props>
         <prop key="hibernate.dialect">${hibernate.db.dialect}</prop>
+
         <!--
           Write all SQL statements to console. This is an alternative to setting the log
           category org.hibernate.SQL to debug.
         -->
         <prop key="hibernate.show_sql">false</prop>
+
         <!--
           Pretty print the SQL in the log and console.
         -->
         <prop key="hibernate.format_sql">true</prop>
+
         <!--
           If enabled, Hibernate will collect statistics useful for performance tuning.
         -->
         <prop key="hibernate.generate_statistics">true</prop>
+
         <!--
           If turned on, Hibernate will generate comments inside the SQL, for easier debugging,
           defaults to false.
         -->
         <prop key="hibernate.use_sql_comments">true</prop>
+
+        <!--
+          If enabled, Hibernate will automatically transform *.hbm.xml mappings to mapping.xml mappings.
+        -->
+        <prop key="hibernate.transform_hbm_xml.enabled">true</prop>
 
         <!--
           Size of the batch used by Hibernate.
@@ -108,8 +115,7 @@
         p:defaultTimeout="300"/>
 
   <!--
-    Universal DAO base class that allows for mixing both Hibernate and plain JDBC operations
-    in a single transaction managed by the Hibernate transaction manager above.
+    DAO base class.
   -->
   <bean id="abstractDao"
         class="com.quartzdesk.executor.dao.AbstractDao"

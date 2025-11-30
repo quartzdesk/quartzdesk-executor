@@ -12,12 +12,12 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>5.0.2</version>
+  <version>6.0.0-SNAPSHOT</version>
 
   <properties>
     <module.name>com.quartzdesk.executor</module.name>
 
-    <com.quartzdesk.version>5.0.2</com.quartzdesk.version>
+    <com.quartzdesk.version>6.0.0-SNAPSHOT</com.quartzdesk.version>
 
     <!--
       Implementation-Vendor-Id used in manifests.
@@ -31,51 +31,43 @@
     -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <!--
-      Most recent version that still supports Java 8.
-    -->
-    <ch.qos.logback.version>1.3.14</ch.qos.logback.version>
+    <ch.qos.logback.version>1.5.21</ch.qos.logback.version>
+
+    <com.sun.xml.bind.jaxb-impl.version>4.0.6</com.sun.xml.bind.jaxb-impl.version>
+
+    <jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
 
     <!--
-      servlet-api 3.1 (JavaEE 7)
-      jsp-api 2.3 (JavaEE 7)
+      servlet-api 6.0.0 (Jakarta EE 10)
 
-        GlassFish >= 4.0 (https://en.wikipedia.org/wiki/GlassFish)
-        JBoss     >= 7.0 (https://access.redhat.com/articles/113373)
-        Tomcat    >= 8.5 (https://tomcat.apache.org/whichversion.html)
-        WebLogic  >= 12.2.1 (https://en.wikipedia.org/wiki/Oracle_WebLogic_Server#Standards_support_by_version)
-        WebSphere >= 9.0 and Liberty Profile >= 8.5 (https://en.wikipedia.org/wiki/IBM_WebSphere_Application_Server#Version_history)
-        WildFly   >= 8.0.0 (https://docs.wildfly.org/)
+        GlassFish >= 7.0 (https://en.wikipedia.org/wiki/GlassFish)
+        JBoss     >= 8.0 (https://access.redhat.com/articles/113373)
+        Tomcat    >= 10.1.x (https://tomcat.apache.org/whichversion.html)
+        WebSphere Liberty >= 23.0.0.3 (https://en.wikipedia.org/wiki/IBM_WebSphere_Application_Server#Version_history)
+        WildFly   >= 33.0.0 (https://docs.wildfly.org/)
     -->
-    <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-    <javax.servlet.jsp-api.version>2.3.3</javax.servlet.jsp-api.version>
+    <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+    <jakarta.servlet.jsp-api.version>3.1.1</jakarta.servlet.jsp-api.version>
 
-    <javax.servlet.jsp.jstl-api.version>1.2.2</javax.servlet.jsp.jstl-api.version>
-    <javax.servlet.jsp.jstl-impl.version>1.2.5</javax.servlet.jsp.jstl-impl.version>
+    <jakarta.servlet.jsp.jstl-api.version>3.0.2</jakarta.servlet.jsp.jstl-api.version>
+    <jakarta.servlet.jsp.jstl-impl.version>3.0.1</jakarta.servlet.jsp.jstl-impl.version>
 
-    <java.xml.bind.version>2.3.3</java.xml.bind.version>
+    <jakarta.xml.bind-api.version>4.0.4</jakarta.xml.bind-api.version>
 
-    <!--
-      Most recent version that still supports Java 8.
-    -->
-    <org.hibernate.version>5.6.15.Final</org.hibernate.version>
+    <org.glassfish.jaxb.version>4.0.6</org.glassfish.jaxb.version>
+
+    <!-- Latest Jakarta EE 10 compatible release. See https://hibernate.org/orm/releases/ -->
+    <org.hibernate.version>6.6.31.Final</org.hibernate.version>
 
     <org.javassist.version>3.30.2-GA</org.javassist.version>
 
-    <!--
-      Most recent version that still supports Java 8 and old javax.* packages.
-    -->
-    <org.quartz-scheduler.quartz.version>2.4.0-rc2</org.quartz-scheduler.quartz.version>
+    <org.jvnet.jaxb.jaxb-maven-plugin.version>4.0.11</org.jvnet.jaxb.jaxb-maven-plugin.version>
 
-    <!--
-      Most recent version that still supports Java 8.
-    -->
-    <org.slf4j.version>2.0.13</org.slf4j.version>
+    <org.quartz-scheduler.quartz.version>2.5.0</org.quartz-scheduler.quartz.version>
 
-    <!--
-      Most recent version that still supports Java 8.
-    -->
-    <org.springframework.version>5.3.36</org.springframework.version>
+    <org.slf4j.version>2.0.17</org.slf4j.version>
+
+    <org.springframework.version>6.2.12</org.springframework.version>
   </properties>
 
   <name>QuartzDesk Executor</name>
@@ -173,7 +165,7 @@
       <dependency>
         <groupId>com.opencsv</groupId>
         <artifactId>opencsv</artifactId>
-        <version>5.7.0</version>
+        <version>5.12.0</version>
 
         <exclusions>
           <!--
@@ -197,13 +189,20 @@
       </dependency>
 
 
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>${com.sun.xml.bind.jaxb-impl.version}</version>
+      </dependency>
+
+
       <!--
         Required runtime dependency of opencsv. Added explicitly to remove commons-logging dependency.
       -->
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
-        <version>1.9.4</version>
+        <version>1.11.0</version>
 
         <exclusions>
           <!-- Commons-logging API provided by the SLF4j jcl-over-slf4j bridge -->
@@ -215,31 +214,48 @@
       </dependency>
 
 
-<!--      <dependency>-->
-<!--        <groupId>org.apache.commons</groupId>-->
-<!--        <artifactId>commons-collections</artifactId>-->
-<!--        <version>4.4</version>-->
-<!--      </dependency>-->
-
-
       <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>${javax.servlet-api.version}</version>
+        <groupId>jakarta.annotation</groupId>
+        <artifactId>jakarta.annotation-api</artifactId>
+        <version>${jakarta.annotation-api.version}</version>
+      </dependency>
+
+
+      <!--
+        Required by Hibernate.
+      -->
+      <dependency>
+        <groupId>jakarta.persistence</groupId>
+        <artifactId>jakarta.persistence-api</artifactId>
+        <version>3.2.0</version>
       </dependency>
 
 
       <dependency>
-        <groupId>javax.servlet.jsp</groupId>
-        <artifactId>javax.servlet.jsp-api</artifactId>
-        <version>${javax.servlet.jsp-api.version}</version>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>${jakarta.servlet-api.version}</version>
       </dependency>
 
 
       <dependency>
-        <groupId>javax.servlet.jsp.jstl</groupId>
-        <artifactId>javax.servlet.jsp.jstl-api</artifactId>
-        <version>${javax.servlet.jsp.jstl-api.version}</version>
+        <groupId>jakarta.servlet.jsp</groupId>
+        <artifactId>jakarta.servlet.jsp-api</artifactId>
+        <version>${jakarta.servlet.jsp-api.version}</version>
+      </dependency>
+
+
+      <dependency>
+        <groupId>jakarta.servlet.jsp.jstl</groupId>
+        <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+        <version>${jakarta.servlet.jsp.jstl-api.version}</version>
+      </dependency>
+
+
+      <dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>${jakarta.xml.bind-api.version}</version>
       </dependency>
 
 
@@ -287,68 +303,72 @@
 
 
       <dependency>
-        <groupId>org.glassfish.web</groupId>
-        <artifactId>javax.servlet.jsp.jstl</artifactId>
-        <version>${javax.servlet.jsp.jstl-impl.version}</version>
-
-        <exclusions>
-          <!--
-            Excluded the transitive JSTL 1.2.0 API, because we use the JSTL 1.2.1 API.
-            See the javax.servlet.jsp.jstl#javax.servlet.jsp.jstl-api dependency above.
-          -->
-          <exclusion>
-            <groupId>javax.servlet.jsp.jstl</groupId>
-            <artifactId>jstl-api</artifactId>
-          </exclusion>
-        </exclusions>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-core</artifactId>
+        <version>${org.glassfish.jaxb.version}</version>
       </dependency>
 
 
       <dependency>
         <groupId>org.glassfish.jaxb</groupId>
         <artifactId>jaxb-runtime</artifactId>
-        <version>${java.xml.bind.version}</version>
+        <version>${org.glassfish.jaxb.version}</version>
       </dependency>
 
 
+      <dependency>
+        <groupId>org.glassfish.web</groupId>
+        <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+        <version>${jakarta.servlet.jsp.jstl-impl.version}</version>
+
+        <exclusions>
+          <!--
+            JSTL API already provided by the project.
+          -->
+          <exclusion>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
 
       <dependency>
-        <groupId>org.hibernate</groupId>
+        <groupId>org.hibernate.orm</groupId>
         <artifactId>hibernate-core</artifactId>
         <version>${org.hibernate.version}</version>
 
         <exclusions>
+          <!--
+            Java activation API already provided by jakarta.mail.
+          -->
+<!--          <exclusion>-->
+<!--            <groupId>javax.activation</groupId>-->
+<!--            <artifactId>javax.activation-api</artifactId>-->
+<!--          </exclusion>-->
 
           <!--
-            Java activation API already provided by org.hibernate:hibernate-core.
+            Java Persistence API already provided by project.
           -->
           <exclusion>
-            <groupId>jakarta.activation</groupId>
-            <artifactId>jakarta.activation-api</artifactId>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
           </exclusion>
 
           <!--
-            A newer version of Java XML Binding API already provided by project as a runtime dependency.
+            Java XML Binding API already provided by project.
           -->
           <exclusion>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
           </exclusion>
 
           <!--
-            A newer version of Java XML Binding Runtime already provided by project as a runtime dependency.
+            Java XML Binding Runtime already provided by project.
           -->
           <exclusion>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
-          </exclusion>
-
-          <!--
-            Excluded XML APIs because these APIs are already provided by JDK 1.6 and higher.
-          -->
-          <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -368,12 +388,13 @@
       <dependency>
         <groupId>org.jboss.logging</groupId>
         <artifactId>jboss-logging</artifactId>
-        <version>3.4.3.Final</version>
+        <version>3.6.1.Final</version>
       </dependency>
 
 
       <!--
-        JAXB2 Basics Runtime APIs used in JAXB2 artifacts generated by XJC with the following plugins:
+        Library used by generated JAXB2 artifacts generated with either of the following
+        JAXB2 basics plugins:
           -Xequals
           -XhashCode
           -Xmerge
@@ -381,9 +402,19 @@
           -Xcopyable
       -->
       <dependency>
-        <groupId>org.jvnet.jaxb2_commons</groupId>
-        <artifactId>jaxb2-basics-runtime</artifactId>
-        <version>1.11.1</version>
+        <groupId>org.jvnet.jaxb</groupId>
+        <artifactId>jaxb-plugins-runtime</artifactId>
+        <version>${org.jvnet.jaxb.jaxb-maven-plugin.version}</version>
+
+        <exclusions>
+          <!--
+            Provided by the project.
+          -->
+          <exclusion>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-core</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
 
@@ -599,7 +630,7 @@
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
-        <version>7.5.1</version>
+        <version>7.11.0</version>
       </dependency>
 
     </dependencies>
@@ -612,10 +643,11 @@
 
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version>
+          <version>3.14.1</version>
           <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
+            <!-- Both source and target are Java version 17 -->
+            <release>17</release>
+
             <!-- Include debugging information in generated bytecode. -->
             <debug>true</debug>
             <encoding>UTF-8</encoding>
@@ -630,8 +662,7 @@
 
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.5.0</version>
-
+          <version>3.6.1</version>
           <dependencies>
             <!--
               Extra enforcer rules not provided by Maven Enforcer Plugin out of the box.
@@ -640,7 +671,7 @@
             <dependency>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>extra-enforcer-rules</artifactId>
-              <version>1.8.0</version>
+              <version>1.10.0</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -648,7 +679,7 @@
 
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.4.2</version>
           <configuration>
             <archive>
               <!--
@@ -678,7 +709,7 @@
 
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.7.0</version>
+          <version>3.12.0</version>
           <configuration>
             <doclint>none</doclint>
             <quiet>true</quiet>
@@ -688,7 +719,7 @@
 
         <plugin>
           <artifactId>maven-release-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.1.1</version>
         </plugin>
 
 
@@ -754,68 +785,16 @@
 
 
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.6.0</version>
+          <groupId>org.jvnet.jaxb</groupId>
+          <artifactId>jaxb-maven-plugin</artifactId>
+          <version>${org.jvnet.jaxb.jaxb-maven-plugin.version}</version>
         </plugin>
 
 
         <plugin>
-          <groupId>org.jvnet.jaxb2.maven2</groupId>
-           <artifactId>maven-jaxb2-plugin</artifactId>
-           <version>0.15.1</version>
-
-          <dependencies>
-            <!--
-              Required JAXB2 plugin to generate getters for boolean properties.
-              JAXB2 implementation shipped with JDK1.6 that is used to compile the
-              project generates only "is" getter and it makes the boolean property
-              invisible to various frameworks used in the projects (e.g. Jackson,
-              JSTL etc.).
-            -->
-            <dependency>
-              <groupId>com.nebulent.xjc</groupId>
-              <artifactId>boolean-getter</artifactId>
-              <version>0.5</version>
-            </dependency>
-
-            <!-- Contains JAXB2 basics -Xfluent-api plugin -->
-            <dependency>
-              <groupId>org.jvnet.jaxb2_commons</groupId>
-              <artifactId>jaxb2-fluent-api</artifactId>
-              <version>3.0</version>
-            </dependency>
-
-            <!--
-              Contains various JAXB2 basics plugins. For example:
-                -Xsetters
-                -Xequals
-                -XhashCode
-                -Xmerge
-                -XtoString
-                -Xcopyable
-                ...
-            -->
-            <dependency>
-              <groupId>org.jvnet.jaxb2_commons</groupId>
-              <artifactId>jaxb2-basics</artifactId>
-              <version>1.11.1</version>
-            </dependency>
-
-            <!--
-              Required by *some* of the JAXB2 basics plugins. For example:
-                -Xequals
-                -XhashCode
-                -Xmerge
-                -XtoString
-                -Xcopyable
-            -->
-            <dependency>
-              <groupId>org.jvnet.jaxb2_commons</groupId>
-              <artifactId>jaxb2-basics-runtime</artifactId>
-              <version>1.11.1</version>
-            </dependency>
-          </dependencies>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.6.1</version>
         </plugin>
 
       </plugins>
@@ -860,9 +839,9 @@
         <configuration>
           <toolchains>
             <jdk>
-              <!-- Project will be compiled with Sun JDK version 8 defined in ~/.m2/toolchains.xml -->
-              <version>8</version>
-              <vendor>sun</vendor>
+              <!-- Project will be compiled with Oracle JDK version 17 defined in ~/.m2/toolchains.xml -->
+              <vendor>oracle</vendor>
+              <version>17</version>
             </jdk>
           </toolchains>
         </configuration>

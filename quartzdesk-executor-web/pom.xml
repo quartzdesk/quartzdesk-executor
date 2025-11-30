@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.quartzdesk-executor</groupId>
     <artifactId>quartzdesk-executor-pom</artifactId>
-    <version>5.0.2</version>
+    <version>6.0.0-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -86,8 +86,8 @@
 
 
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
       <!-- Provided by the servlet engine runtime -->
       <scope>provided</scope>
     </dependency>
