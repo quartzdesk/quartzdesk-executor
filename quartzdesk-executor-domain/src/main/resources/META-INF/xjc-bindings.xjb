@@ -5,11 +5,11 @@
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
-<bindings xmlns="http://java.sun.com/xml/ns/jaxb"
-          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+<bindings xmlns="https://jakarta.ee/xml/ns/jaxb"
           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
           extensionBindingPrefixes="xjc"
-          version="2.1">
+          version="3.0">
 
   <globalBindings>
 
