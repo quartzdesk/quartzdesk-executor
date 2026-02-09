@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright (c) 2013-2025 QuartzDesk.com.
+  ~ Copyright (c) 2013-2026 QuartzDesk.com.
   ~ Licensed under the MIT license (https://opensource.org/licenses/MIT).
   -->
 
@@ -12,12 +12,12 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>6.0.0-SNAPSHOT</version>
+  <version>6.0.0</version>
 
   <properties>
     <module.name>com.quartzdesk.executor</module.name>
 
-    <com.quartzdesk.version>6.0.0-SNAPSHOT</com.quartzdesk.version>
+    <com.quartzdesk.version>6.0.0</com.quartzdesk.version>
 
     <!--
       Implementation-Vendor-Id used in manifests.
@@ -67,7 +67,7 @@
 
     <org.slf4j.version>2.0.17</org.slf4j.version>
 
-    <org.springframework.version>6.2.14</org.springframework.version>
+    <org.springframework.version>6.2.15</org.springframework.version>
   </properties>
 
   <name>QuartzDesk Executor</name>

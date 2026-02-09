@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2025 QuartzDesk.com. All Rights Reserved.
+ * Copyright (c) 2013-2026 QuartzDesk.com. All Rights Reserved.
  * QuartzDesk.com PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 

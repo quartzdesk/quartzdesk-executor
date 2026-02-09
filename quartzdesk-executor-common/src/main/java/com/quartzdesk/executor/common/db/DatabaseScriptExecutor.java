@@ -1,4 +1,4 @@
- /*Copyright (c) 2013-2025 QuartzDesk.com.
+ /*Copyright (c) 2013-2026 QuartzDesk.com.
   * Licensed under the MIT license (https://opensource.org/licenses/MIT).
   */
 

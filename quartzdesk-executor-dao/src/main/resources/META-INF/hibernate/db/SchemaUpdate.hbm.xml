@@ -14,10 +14,8 @@
     <id name="id" type="QD_LONG">
       <column name="schema_update_id"/>
       <generator class="native">
-        <!--
-          Fall-back sequence name for DBs that do not support identity columns (Oracle,...).
-        -->
         <param name="sequence_name">seq_qd_schema_update</param>
+        <param name="increment_size">1</param>
       </generator>
     </id>
 
