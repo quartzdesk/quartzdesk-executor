@@ -12,12 +12,12 @@
   <groupId>com.quartzdesk-executor</groupId>
   <artifactId>quartzdesk-executor-pom</artifactId>
   <packaging>pom</packaging>
-  <version>6.0.0</version>
+  <version>6.0.3</version>
 
   <properties>
     <module.name>com.quartzdesk.executor</module.name>
 
-    <com.quartzdesk.version>6.0.0</com.quartzdesk.version>
+    <com.quartzdesk.version>6.0.3</com.quartzdesk.version>
 
     <!--
       Implementation-Vendor-Id used in manifests.
@@ -31,9 +31,9 @@
     -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <ch.qos.logback.version>1.5.21</ch.qos.logback.version>
+    <ch.qos.logback.version>1.6.5</ch.qos.logback.version>
 
-    <com.sun.xml.bind.jaxb-impl.version>4.0.6</com.sun.xml.bind.jaxb-impl.version>
+    <com.sun.xml.bind.jaxb-impl.version>4.0.9</com.sun.xml.bind.jaxb-impl.version>
 
     <jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
 
@@ -52,22 +52,22 @@
     <jakarta.servlet.jsp.jstl-api.version>3.0.2</jakarta.servlet.jsp.jstl-api.version>
     <jakarta.servlet.jsp.jstl-impl.version>3.0.1</jakarta.servlet.jsp.jstl-impl.version>
 
-    <jakarta.xml.bind-api.version>4.0.4</jakarta.xml.bind-api.version>
+    <jakarta.xml.bind-api.version>4.0.5</jakarta.xml.bind-api.version>
 
-    <org.glassfish.jaxb.version>4.0.6</org.glassfish.jaxb.version>
+    <org.glassfish.jaxb.version>4.0.9</org.glassfish.jaxb.version>
 
     <!-- Latest Jakarta EE 10 compatible release. See https://hibernate.org/orm/releases/ -->
-    <org.hibernate.version>6.6.31.Final</org.hibernate.version>
+    <org.hibernate.version>6.6.58.Final</org.hibernate.version>
 
-    <org.javassist.version>3.30.2-GA</org.javassist.version>
+    <org.javassist.version>3.33.0-GA</org.javassist.version>
 
-    <org.jvnet.jaxb.jaxb-maven-plugin.version>4.0.11</org.jvnet.jaxb.jaxb-maven-plugin.version>
+    <org.jvnet.jaxb.jaxb-maven-plugin.version>4.0.16</org.jvnet.jaxb.jaxb-maven-plugin.version>
 
     <org.quartz-scheduler.quartz.version>2.5.0</org.quartz-scheduler.quartz.version>
 
-    <org.slf4j.version>2.0.17</org.slf4j.version>
+    <org.slf4j.version>2.0.20</org.slf4j.version>
 
-    <org.springframework.version>6.2.15</org.springframework.version>
+    <org.springframework.version>6.2.19</org.springframework.version>
   </properties>
 
   <name>QuartzDesk Executor</name>
@@ -154,7 +154,7 @@
       <dependency>
         <groupId>com.github.mwiede</groupId>
         <artifactId>jsch</artifactId>
-        <version>2.27.7</version>
+        <version>2.28.7</version>
       </dependency>
 
 
@@ -280,7 +280,7 @@
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-text</artifactId>
-        <version>1.14.0</version>
+        <version>1.15.0</version>
       </dependency>
 
 
@@ -388,7 +388,7 @@
       <dependency>
         <groupId>org.jboss.logging</groupId>
         <artifactId>jboss-logging</artifactId>
-        <version>3.6.1.Final</version>
+        <version>3.6.3.Final</version>
       </dependency>
 
 
@@ -630,7 +630,7 @@
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
-        <version>7.11.0</version>
+        <version>7.12.0</version>
       </dependency>
 
     </dependencies>
@@ -643,7 +643,7 @@
 
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.14.1</version>
+          <version>3.16.0</version>
           <configuration>
             <!-- Both source and target are Java version 17 -->
             <release>17</release>
@@ -662,7 +662,7 @@
 
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.6.1</version>
+          <version>3.6.3</version>
           <dependencies>
             <!--
               Extra enforcer rules not provided by Maven Enforcer Plugin out of the box.
@@ -671,7 +671,7 @@
             <dependency>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>extra-enforcer-rules</artifactId>
-              <version>1.10.0</version>
+              <version>1.12.1</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -679,7 +679,7 @@
 
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.4.2</version>
+          <version>3.5.1</version>
           <configuration>
             <archive>
               <!--
@@ -719,25 +719,25 @@
 
         <plugin>
           <artifactId>maven-release-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>3.3.1</version>
         </plugin>
 
 
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.5.0</version>
         </plugin>
 
 
         <plugin>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.4.0</version>
         </plugin>
 
 
         <plugin>
           <artifactId>maven-toolchains-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.3.0</version>
         </plugin>
 
 
@@ -794,7 +794,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.6.1</version>
+          <version>3.6.2</version>
         </plugin>
 
       </plugins>
@@ -815,11 +815,14 @@
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>3.2.5</version>
+                  <version>3.9.05</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>1.8</version>
+                  <version>17</version>
                 </requireJavaVersion>
+                <enforceBytecodeVersion>
+                  <maxJdkVersion>17</maxJdkVersion>
+                </enforceBytecodeVersion>
               </rules>
             </configuration>
           </execution>
